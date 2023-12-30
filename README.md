@@ -1,5 +1,5 @@
 <!-- LTeX: enabled=false -->
-# nvim-chainsaw
+# nvim-chainsaw 🪚
 <!-- LTeX: enabled=true -->
 <!-- TODO uncomment shields when available in dotfyle.com 
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
