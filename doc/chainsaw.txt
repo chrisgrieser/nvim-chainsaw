@@ -3,18 +3,18 @@
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
 
-1. nvim-chainsaw                                      |chainsaw-nvim-chainsaw|
-  - Installation                         |chainsaw-nvim-chainsaw-installation|
-  - Built-in language support|chainsaw-nvim-chainsaw-built-in-language-support|
-  - Usage                                       |chainsaw-nvim-chainsaw-usage|
-  - Configuration                       |chainsaw-nvim-chainsaw-configuration|
-  - Add your own log statements|chainsaw-nvim-chainsaw-add-your-own-log-statements|
-  - Credits                                   |chainsaw-nvim-chainsaw-credits|
+1. nvim-chainsaw                                     |chainsaw-nvim-chainsaw-|
+  - Installation                        |chainsaw-nvim-chainsaw--installation|
+  - Built-in language support|chainsaw-nvim-chainsaw--built-in-language-support|
+  - Usage                                      |chainsaw-nvim-chainsaw--usage|
+  - Configuration                      |chainsaw-nvim-chainsaw--configuration|
+  - Add your own log statements|chainsaw-nvim-chainsaw--add-your-own-log-statements|
+  - Credits                                  |chainsaw-nvim-chainsaw--credits|
 
 ==============================================================================
-1. nvim-chainsaw                                      *chainsaw-nvim-chainsaw*
+1. nvim-chainsaw                                     *chainsaw-nvim-chainsaw-*
 
-Speed up log creation. Creates various kinds of language-specific log
+Speedup log creation. Creates various kinds of language-specific log
 statements, like logs of variables, assertions, or time-measuring.
 
 
@@ -28,7 +28,7 @@ https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed
 - |chainsaw-credits|
 
 
-INSTALLATION                             *chainsaw-nvim-chainsaw-installation*
+INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
 
 >lua
     -- lazy.nvim
@@ -39,7 +39,7 @@ INSTALLATION                             *chainsaw-nvim-chainsaw-installation*
 <
 
 
-BUILT-IN LANGUAGE SUPPORT   *chainsaw-nvim-chainsaw-built-in-language-support*
+BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
 - JavaScript / TypeScript
 - Lua
@@ -57,7 +57,7 @@ supported, see log-statements-data.lua
   simply similar statements with debugging purposes, such as `outline: 2px solid
   red !important;` to quickly assess whether a selector is correct or not.
 
-USAGE                                           *chainsaw-nvim-chainsaw-usage*
+USAGE                                          *chainsaw-nvim-chainsaw--usage*
 
 The plugin offers various types of log statements. Bind keymaps for the ones
 you want to use.
@@ -94,7 +94,7 @@ you want to use.
 <
 
 
-CONFIGURATION                           *chainsaw-nvim-chainsaw-configuration*
+CONFIGURATION                          *chainsaw-nvim-chainsaw--configuration*
 
 >lua
     -- default settings
@@ -108,7 +108,7 @@ CONFIGURATION                           *chainsaw-nvim-chainsaw-configuration*
 <
 
 
-ADD YOUR OWN LOG STATEMENTS*chainsaw-nvim-chainsaw-add-your-own-log-statements*
+ADD YOUR OWN LOG STATEMENTS*chainsaw-nvim-chainsaw--add-your-own-log-statements*
 
 Custom log statements are added in the `setup()` call. The values are formatter
 lua strings, meaning `%s` is a placeholder that will be dynamically replaced
@@ -134,7 +134,7 @@ PRs adding log statements for more languages are welcome!
 <
 
 
-CREDITS                                       *chainsaw-nvim-chainsaw-credits*
+CREDITS                                      *chainsaw-nvim-chainsaw--credits*
 
 **About Me** In my day job, I am a sociologist studying the social mechanisms
 underlying the digital economy. For my PhD project, I investigate the
