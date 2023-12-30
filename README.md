@@ -9,6 +9,8 @@
 Speed up log creation. Creates various kinds of language-specific log
 statements, like logs of variables, assertions, or time-measuring.
 
+https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9
+
 <!-- toc -->
 
 - [Installation](#installation)
