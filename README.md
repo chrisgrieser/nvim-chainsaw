@@ -6,50 +6,118 @@
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 -->
 
-Speed up log creation.
+Speed up log creation. Creates various kinds of language-specific log
+statements, like logs of variables, assertions, or time-measuring.
 
 <!-- toc -->
 
-- [Features](#features)
 - [Installation](#installation)
-- [Configuration](#configuration)
+- [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-- [Limitations](#limitations)
+- [Configuration](#configuration)
+- [Add your own log statements](#add-your-own-log-statements)
 - [Credits](#credits)
 
 <!-- tocstop -->
-
-## Features
--
 
 ## Installation
 
 ```lua
 -- lazy.nvim
-{
-	"chrisgrieser/nvim-chainsaw",
-},
+{ "chrisgrieser/nvim-chainsaw" },
 
 -- packer
-use {
-	"chrisgrieser/nvim-chainsaw",
-}
+use { "chrisgrieser/nvim-chainsaw" }
+```
+
+## Built-in language support
+- JavaScript / TypeScript
+- Lua
+- Python
+- Shell
+- AppleScript
+- CSS / SCSS
+
+Not every language supports every type of log statement. For details on what is
+supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
+
+> [!NOTE]
+> In languages like CSS with no log statements, `nvim-chainsaw` will simply
+> similar statements with debugging purposes, such as `outline: 2px solid red
+> !important;` to quickly assess whether a selector is correct or not.
+
+## Usage
+
+The plugin offers various types of log statements. Bind keymaps for the ones you
+want to use.
+
+```lua
+-- create log statement, and position the cursor to enter a message
+require("chainsaw").messageLog()
+
+-- log the name and value of the a variable
+-- normal mode: treesitter node or word under cursor, visual mode: selection
+require("chainsaw").variableLog()
+
+-- like variableLog, but with syntax specific to inspect an object, such as
+-- `console.log(JSON.stringify(foobar))` in javascript
+require("chainsaw").objectLog()
+
+-- assertion statement
+require("chainsaw").assertLog()
+
+-- Minimal log statement, with a random emoji for differentiation. Indented for
+-- use in structures like if/else, to quickly glance whether a condition was
+-- triggered or not. (Inspired by AppleScript's `beep` command.)
+require("chainsaw").beepLog()
+
+-- 1. call adds a statement that measures the time
+-- 2. call adds a statement that logs the time since
+require("chainsaw").timeLog()
+
+-- debug statements like `debugger` in javascript or `breakpoint()` in python
+require("chainsaw").debugLog()
+
+-- remove all log statements created by chainsaw
+require("chainsaw").removeLogs()
 ```
 
 ## Configuration
 
 ```lua
 -- default settings
-require("nvim-chainsaw").setup ({
-
+require("chainsaw").setup ({
+	-- The marker should be a unique string, since `.removeLogs()` will remove
+	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
+	marker = "🪚",
+	-- emojis used for `.beepLog()`
+	beepEmojis = { "🤖", "👽", "👾", "💣" },
 })
 ```
 
-## Usage
-- …
+## Add your own log statements
+Custom log statements are added in the `setup()` call. The values are formatter
+lua strings, meaning `%s` is a placeholder that will be dynamically replaced
+with the actual value. See
+[log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for examples.
 
-## Limitations
-- …
+PRs adding log statements for more languages are welcome!
+
+```lua
+require("chainsaw").setup ({
+	logStatements = {
+		messageLog = {
+			javascript = 'console.log("%s ");',
+			otherFiletype = … -- <-- add the statement for your filetype here
+		},
+		variableLog = {
+			javascript = 'console.log("%s %s:", %s);',
+			otherFiletype = … -- <-- add the statement for your filetype here
+		},
+		-- the same way for the other statement types
+	},
+})
+```
 
 ## Credits
 <!-- vale Google.FirstPerson = NO -->
