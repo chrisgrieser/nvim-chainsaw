@@ -90,11 +90,11 @@ function M.removeLogs()
 	vim.cmd.nohlsearch()
 
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
-	local msg = ("Removed %s log statements."):format(linesRemoved)
+	local msg = ("Removed %s lines."):format(linesRemoved)
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
 	vim.notify(msg, vim.log.levels.INFO, { title = "Chainsaw" })
 
-	vim.b["timelogStart"] = false
+	vim.b["timelogStart"] = true -- ensure next timelog insert start-statement
 end
 
 --------------------------------------------------------------------------------
