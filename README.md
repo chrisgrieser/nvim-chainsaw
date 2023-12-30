@@ -1,12 +1,12 @@
 <!-- LTeX: enabled=false -->
-# {{plugin-name}}
+# nvim-chainsaw
 <!-- LTeX: enabled=true -->
 <!-- TODO uncomment shields when available in dotfyle.com 
-<a href="https://dotfyle.com/plugins/chrisgrieser/{{plugin-name}}">
-<img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/{{plugin-name}}/shield"/></a>
+<a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
+<img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 -->
 
-{{plugin-desc}}
+Speed up log creation.
 
 <!-- toc -->
 
@@ -27,12 +27,12 @@
 ```lua
 -- lazy.nvim
 {
-	"chrisgrieser/{{plugin-name}}",
+	"chrisgrieser/nvim-chainsaw",
 },
 
 -- packer
 use {
-	"chrisgrieser/{{plugin-name}}",
+	"chrisgrieser/nvim-chainsaw",
 }
 ```
 
@@ -40,7 +40,7 @@ use {
 
 ```lua
 -- default settings
-require("{{plugin-name}}").setup ({
+require("nvim-chainsaw").setup ({
 
 })
 ```
