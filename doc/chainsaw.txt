@@ -1,0 +1,156 @@
+*chainsaw.txt*          For NVIM v0.8.0          Last change: 2023 December 30
+
+==============================================================================
+Table of Contents                                 *chainsaw-table-of-contents*
+
+1. nvim-chainsaw                                      |chainsaw-nvim-chainsaw|
+  - Installation                         |chainsaw-nvim-chainsaw-installation|
+  - Built-in language support|chainsaw-nvim-chainsaw-built-in-language-support|
+  - Usage                                       |chainsaw-nvim-chainsaw-usage|
+  - Configuration                       |chainsaw-nvim-chainsaw-configuration|
+  - Add your own log statements|chainsaw-nvim-chainsaw-add-your-own-log-statements|
+  - Credits                                   |chainsaw-nvim-chainsaw-credits|
+
+==============================================================================
+1. nvim-chainsaw                                      *chainsaw-nvim-chainsaw*
+
+Speed up log creation. Creates various kinds of language-specific log
+statements, like logs of variables, assertions, or time-measuring.
+
+- |chainsaw-installation|
+- |chainsaw-built-in-language-support|
+- |chainsaw-usage|
+- |chainsaw-configuration|
+- |chainsaw-add-your-own-log-statements|
+- |chainsaw-credits|
+
+
+INSTALLATION                             *chainsaw-nvim-chainsaw-installation*
+
+>lua
+    -- lazy.nvim
+    { "chrisgrieser/nvim-chainsaw" },
+    
+    -- packer
+    use { "chrisgrieser/nvim-chainsaw" }
+<
+
+
+BUILT-IN LANGUAGE SUPPORT   *chainsaw-nvim-chainsaw-built-in-language-support*
+
+- JavaScript / TypeScript
+- Lua
+- Python
+- Shell
+- AppleScript
+- CSS / SCSS
+
+Not every language supports every type of log statement. For details on what is
+supported, see log-statements-data.lua
+<./lua/chainsaw/log-statements-data.lua>.
+
+
+  [!NOTE] In languages like CSS with no log statements, `nvim-chainsaw` will
+  simply similar statements with debugging purposes, such as `outline: 2px solid
+  red !important;` to quickly assess whether a selector is correct or not.
+
+USAGE                                           *chainsaw-nvim-chainsaw-usage*
+
+The plugin offers various types of log statements. Bind keymaps for the ones
+you want to use.
+
+>lua
+    -- create log statement, and position the cursor to enter a message
+    require("chainsaw").messageLog()
+    
+    -- log the name and value of the a variable
+    -- normal mode: treesitter node or word under cursor, visual mode: selection
+    require("chainsaw").variableLog()
+    
+    -- like variableLog, but with syntax specific to inspect an object, such as
+    -- `console.log(JSON.stringify(foobar))` in javascript
+    require("chainsaw").objectLog()
+    
+    -- assertion statement
+    require("chainsaw").assertLog()
+    
+    -- Minimal log statement, with a random emoji for differentiation. Indented for
+    -- use in structures like if/else, to quickly glance whether a condition was
+    -- triggered or not. (Inspired by AppleScript's `beep` command.)
+    require("chainsaw").beepLog()
+    
+    -- 1. call adds a statement that measures the time
+    -- 2. call adds a statement that logs the time since
+    require("chainsaw").timeLog()
+    
+    -- debug statements like `debugger` in javascript or `breakpoint()` in python
+    require("chainsaw").debugLog()
+    
+    -- remove all log statements created by chainsaw
+    require("chainsaw").removeLogs()
+<
+
+
+CONFIGURATION                           *chainsaw-nvim-chainsaw-configuration*
+
+>lua
+    -- default settings
+    require("chainsaw").setup ({
+        -- The marker should be a unique string, since `.removeLogs()` will remove
+        -- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
+        marker = "🪚",
+        -- emojis used for `.beepLog()`
+        beepEmojis = { "🤖", "👽", "👾", "💣" },
+    })
+<
+
+
+ADD YOUR OWN LOG STATEMENTS*chainsaw-nvim-chainsaw-add-your-own-log-statements*
+
+Custom log statements are added in the `setup()` call. The values are formatter
+lua strings, meaning `%s` is a placeholder that will be dynamically replaced
+with the actual value. See log-statements-data.lua
+<./lua/chainsaw/log-statements-data.lua> for examples.
+
+PRs adding log statements for more languages are welcome!
+
+>lua
+    require("chainsaw").setup ({
+        logStatements = {
+            messageLog = {
+                javascript = 'console.log("%s ");',
+                otherFiletype = … -- <-- add the statement for your filetype here
+            },
+            variableLog = {
+                javascript = 'console.log("%s %s:", %s);',
+                otherFiletype = … -- <-- add the statement for your filetype here
+            },
+            -- the same way for the other statement types
+        },
+    })
+<
+
+
+CREDITS                                       *chainsaw-nvim-chainsaw-credits*
+
+**About Me** In my day job, I am a sociologist studying the social mechanisms
+underlying the digital economy. For my PhD project, I investigate the
+governance of the app economy and how software ecosystems manage the tension
+between innovation and compatibility. If you are interested in this subject,
+feel free to get in touch.
+
+**Blog** I also occasionally blog about vim: Nano Tips for Vim
+<https://nanotipsforvim.prose.sh>
+
+**Profiles** - reddit <https://www.reddit.com/user/pseudometapseudo> - Discord
+<https://discordapp.com/users/462774483044794368/> - Academic Website
+<https://chris-grieser.de/> - Twitter <https://twitter.com/pseudo_meta> -
+Mastodon <https://pkm.social/@pseudometa> - ResearchGate
+<https://www.researchgate.net/profile/Christopher-Grieser> - LinkedIn
+<https://www.linkedin.com/in/christopher-grieser-ba693b17a/>
+
+
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
