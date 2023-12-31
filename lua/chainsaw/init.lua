@@ -1,6 +1,7 @@
-local M = {}
-
 local u = require("chainsaw.utils")
+
+local M = {}
+local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 --------------------------------------------------------------------------------
 
 ---@class (exact) pluginConfig
@@ -28,7 +29,7 @@ function M.messageLog()
 	local logLines = u.getTemplateStr("messageLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
-	u.normal('f";') -- goto insert mode at correct location
+	normal('f";') -- goto insert mode at correct location
 	vim.cmd.startinsert()
 end
 
@@ -51,7 +52,7 @@ function M.assertLog()
 	local logLines = u.getTemplateStr("assertLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { varname, config.marker, varname })
-	u.normal("f,") -- goto the comma to edit the condition
+	normal("f,") -- goto the comma to edit the condition
 end
 
 ---adds simple "beep" log statement to check whether conditionals have been triggered
