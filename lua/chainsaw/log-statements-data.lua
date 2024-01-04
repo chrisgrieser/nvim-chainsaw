@@ -12,6 +12,7 @@ return {
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
 		scss = "outline: 2px solid red !important; /* %s */",
+		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);'
 	},
 	objectLog = {
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
@@ -37,6 +38,7 @@ return {
 		typescript = 'console.log("%s ");',
 		sh = 'echo "%s "',
 		applescript = 'log "%s "',
+		rust = 'println!("{} ", "%s");'
 	},
 	assertLog = {
 		lua = 'assert(%s, "%s %s")',
