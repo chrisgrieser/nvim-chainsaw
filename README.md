@@ -1,15 +1,13 @@
 <!-- LTeX: enabled=false -->
 # nvim-chainsaw 🪚
 <!-- LTeX: enabled=true -->
-<!-- TODO uncomment shields when available in dotfyle.com 
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
--->
 
 Speed up log creation. Creates various kinds of language-specific log
 statements, like logs of variables, assertions, or time-measuring.
 
-https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9
+<https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
 <!-- toc -->
 
@@ -44,7 +42,7 @@ Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
 > [!NOTE]
-> In languages like CSS with no log statements, `nvim-chainsaw` will simply
+> In languages like CSS with no log statements, `nvim-chainsaw` simply uses
 > similar statements with debugging purposes, such as `outline: 2px solid red
 > !important;` to quickly assess whether a selector is correct or not.
 
@@ -99,11 +97,11 @@ require("chainsaw").setup ({
 
 ## Add your own log statements
 Custom log statements are added in the `setup()` call. The values are formatter
-lua strings, meaning `%s` is a placeholder that will be dynamically replaced
+lua strings, meaning `%s` is a placeholder that is dynamically replaced
 with the actual value. See
 [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for examples.
 
-PRs adding log statements for more languages are welcome!
+PRs adding log statements for more languages are welcome.
 
 ```lua
 require("chainsaw").setup ({
