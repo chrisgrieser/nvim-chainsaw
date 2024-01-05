@@ -1,4 +1,4 @@
-*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 04
+*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 05
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -14,11 +14,13 @@ Table of Contents                                 *chainsaw-table-of-contents*
 ==============================================================================
 1. nvim-chainsaw                                     *chainsaw-nvim-chainsaw-*
 
+
+
 Speedup log creation. Creates various kinds of language-specific log
 statements, like logs of variables, assertions, or time-measuring.
 
 
-https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9
+<https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
 - |chainsaw-installation|
 - |chainsaw-built-in-language-support|
@@ -53,8 +55,8 @@ supported, see log-statements-data.lua
 <./lua/chainsaw/log-statements-data.lua>.
 
 
-  [!NOTE] In languages like CSS with no log statements, `nvim-chainsaw` will
-  simply similar statements with debugging purposes, such as `outline: 2px solid
+  [!NOTE] In languages like CSS with no log statements, `nvim-chainsaw` simply
+  uses similar statements with debugging purposes, such as `outline: 2px solid
   red !important;` to quickly assess whether a selector is correct or not.
 
 USAGE                                          *chainsaw-nvim-chainsaw--usage*
@@ -111,11 +113,11 @@ CONFIGURATION                          *chainsaw-nvim-chainsaw--configuration*
 ADD YOUR OWN LOG STATEMENTS*chainsaw-nvim-chainsaw--add-your-own-log-statements*
 
 Custom log statements are added in the `setup()` call. The values are formatter
-lua strings, meaning `%s` is a placeholder that will be dynamically replaced
-with the actual value. See log-statements-data.lua
+lua strings, meaning `%s` is a placeholder that is dynamically replaced with
+the actual value. See log-statements-data.lua
 <./lua/chainsaw/log-statements-data.lua> for examples.
 
-PRs adding log statements for more languages are welcome!
+PRs adding log statements for more languages are welcome.
 
 >lua
     require("chainsaw").setup ({
