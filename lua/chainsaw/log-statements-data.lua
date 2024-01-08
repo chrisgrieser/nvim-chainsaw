@@ -19,7 +19,7 @@ return {
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
 		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
 		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
-		javascript = 'console.log("%s %s:", JSON.ststringifyringify(%s))',
+		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 	},
 	beepLog = {
 		nvim_lua = 'vim.notify("%s beep %s")',
