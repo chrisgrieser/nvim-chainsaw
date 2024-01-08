@@ -35,7 +35,7 @@ INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
 >lua
     -- lazy.nvim
     { "chrisgrieser/nvim-chainsaw" },
-    
+
     -- packer
     use { "chrisgrieser/nvim-chainsaw" }
 <
@@ -43,7 +43,7 @@ INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
 
 BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript / TypeScript
+- JavaScript / TypeScript / TypeScriptReact
 - Lua
 - Python
 - Shell
@@ -67,30 +67,30 @@ you want to use.
 >lua
     -- create log statement, and position the cursor to enter a message
     require("chainsaw").messageLog()
-    
+
     -- log the name and value of the a variable
     -- normal mode: treesitter node or word under cursor, visual mode: selection
     require("chainsaw").variableLog()
-    
+
     -- like variableLog, but with syntax specific to inspect an object, such as
     -- `console.log(JSON.stringify(foobar))` in javascript
     require("chainsaw").objectLog()
-    
+
     -- assertion statement
     require("chainsaw").assertLog()
-    
+
     -- Minimal log statement, with a random emoji for differentiation. Indented for
     -- use in structures like if/else, to quickly glance whether a condition was
     -- triggered or not. (Inspired by AppleScript's `beep` command.)
     require("chainsaw").beepLog()
-    
+
     -- 1. call adds a statement that measures the time
     -- 2. call adds a statement that logs the time since
     require("chainsaw").timeLog()
-    
+
     -- debug statements like `debugger` in javascript or `breakpoint()` in python
     require("chainsaw").debugLog()
-    
+
     -- remove all log statements created by chainsaw
     require("chainsaw").removeLogs()
 <

@@ -8,6 +8,7 @@ return {
 		python = 'print(f"%s {%s = }")',
 		javascript = 'console.log("%s %s:", %s);',
 		typescript = 'console.log("%s %s:", %s);',
+		typescriptreact = 'console.log("%s %s:", %s);',
 		sh = 'echo "%s %s: $%s"',
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
@@ -16,7 +17,8 @@ return {
 	},
 	objectLog = {
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
-		typescript = 'console.log("%s %s:", %s)',
+		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
+		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 	},
 	beepLog = {
@@ -25,6 +27,7 @@ return {
 		python = 'print("%s beep %s")',
 		javascript = 'console.log("%s beep %s");',
 		typescript = 'console.log("%s beep %s");',
+		typescriptreact = 'console.log("%s beep %s");',
 		sh = 'echo "%s beep %s"',
 		applescript = "beep -- %s",
 		css = "outline: 2px solid red !important; /* %s */",
@@ -36,6 +39,7 @@ return {
 		python = 'print("%s ")',
 		javascript = 'console.log("%s ");',
 		typescript = 'console.log("%s ");',
+		typescriptreact = 'console.log("%s ");',
 		sh = 'echo "%s "',
 		applescript = 'log "%s "',
 		rust = 'println!("{} ", "%s");'
@@ -48,6 +52,7 @@ return {
 	debugLog = {
 		javascript = "debugger; // %s",
 		typescript = "debugger; // %s",
+		typescriptreact = "debugger; // %s",
 		python = "breakpoint()  # %s", -- https://docs.python.org/3.11/library/functions.html?highlight=breakpoint#breakpoint
 		sh = { -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 			"set -exuo pipefail # %s",
@@ -60,6 +65,7 @@ return {
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = +new Date(); // %s", -- not all JS engines support console.time()
 		typescript = 'console.time("%s");',
+		typescriptreact = 'console.time("%s");',
 		sh = "timelogStart=$(date +%%s) # %s",
 	},
 	timeLogStop = {
@@ -80,6 +86,7 @@ return {
 			"console.log(`%s: ${durationSecs}s`);",
 		},
 		typescript = 'console.timeEnd("%s");',
+		typescriptreact = 'console.timeEnd("%s");',
 		sh = {
 			"timelogEnd=$(date +%%s) && durationSecs = $((timelogEnd - timelogStart)) # %s",
 			'echo "%s ${durationSecs}s"',

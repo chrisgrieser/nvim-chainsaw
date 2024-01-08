@@ -31,7 +31,7 @@ use { "chrisgrieser/nvim-chainsaw" }
 ```
 
 ## Built-in language support
-- JavaScript / TypeScript
+- JavaScript / TypeScript / TypeScriptReact
 - Lua
 - Python
 - Shell
