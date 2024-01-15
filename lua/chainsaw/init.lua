@@ -11,10 +11,14 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
 ---@type pluginConfig
 local defaultConfig = {
-	-- should be a short, unique string (.removeLogs() will remove any line with it)
+	-- The marker should be a unique string, since `.removeLogs()` will remove
+	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
-	-- to differentiate between beepLog statements
-	beepEmojis = { "🤖", "👽", "👾", "💣" },
+
+	-- emojis used for `.beepLog()`
+	-- stylua: ignore
+	beepEmojis = { "1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ", "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟" },
+
 	logStatements = require("chainsaw.log-statements-data"),
 }
 
@@ -59,8 +63,12 @@ end
 function M.beepLog()
 	local logLines = u.getTemplateStr("beepLog", config.logStatements)
 	if not logLines then return end
-	local randomEmoji = config.beepEmojis[math.random(1, #config.beepEmojis)]
-	u.appendLines(logLines, { config.marker, randomEmoji })
+
+	if not vim.b.beepLogIndex then vim.b["beepLogIndex"] = 1 end
+	local emoji = config.beepEmojis[vim.b.beepLogIndex]
+	vim.b["beepLogIndex"] = vim.b.beepLogIndex + 1
+
+	u.appendLines(logLines, { config.marker, emoji })
 end
 
 function M.timeLog()
@@ -95,7 +103,9 @@ function M.removeLogs()
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
 	vim.notify(msg, vim.log.levels.INFO, { title = "Chainsaw" })
 
-	vim.b["timelogStart"] = true -- ensure next timelog insert start-statement
+	-- reeet these logs
+	vim.b["beepLogIndex"] = nil
+	vim.b["timelogStart"] = nil
 end
 
 --------------------------------------------------------------------------------

@@ -66,7 +66,7 @@ require("chainsaw").objectLog()
 -- assertion statement
 require("chainsaw").assertLog()
 
--- Minimal log statement, with a random emoji for differentiation. Indented for
+-- Minimal log statement, with an emoji for differentiation. Intended for
 -- use in structures like if/else, to quickly glance whether a condition was
 -- triggered or not. (Inspired by AppleScript's `beep` command.)
 require("chainsaw").beepLog()
@@ -90,8 +90,10 @@ require("chainsaw").setup ({
 	-- The marker should be a unique string, since `.removeLogs()` will remove
 	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
+
 	-- emojis used for `.beepLog()`
-	beepEmojis = { "🤖", "👽", "👾", "💣" },
+	-- stylua: ignore
+	beepEmojis = { "1️⃣ ", "2️⃣ ", "3️⃣ ", "4️⃣ ", "5️⃣ ", "6️⃣ ", "7️⃣ ", "8️⃣ ", "9️⃣ ", "🔟" },
 })
 ```
 
