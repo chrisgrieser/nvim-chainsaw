@@ -93,11 +93,18 @@ end
 function M.removeLogs()
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 
+	-- GUARD
+	if config.marker == "" then
+		vim.notify("No marker set.", vim.log.levels.ERROR, { title = "Chainsaw" })
+		return
+	end
+
 	-- escape for vim regex, in case `[]()` are used in the marker
 	local toRemove = config.marker:gsub("([%[%]()])", "\\%1")
-	vim.cmd(("silent g/%s/d"):format(toRemove))
+	vim.cmd(("silent global/%s/delete"):format(toRemove))
 	vim.cmd.nohlsearch()
 
+	-- notify on number of lines removed
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
 	local msg = ("Removed %s lines."):format(linesRemoved)
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
