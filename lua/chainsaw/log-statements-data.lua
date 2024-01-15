@@ -13,13 +13,15 @@ return {
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
 		scss = "outline: 2px solid red !important; /* %s */",
-		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);'
+		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
+		ruby = 'puts "%s %s: #{%s}"',
 	},
 	objectLog = {
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
 		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
 		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
+		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
 	beepLog = {
 		nvim_lua = 'vim.notify("%s beep %s")',
@@ -32,6 +34,7 @@ return {
 		applescript = "beep -- %s",
 		css = "outline: 2px solid red !important; /* %s */",
 		scss = "outline: 2px solid red !important; /* %s */",
+		ruby = 'puts "%s beep %s"',
 	},
 	messageLog = {
 		lua = 'print("%s ")',
@@ -42,7 +45,8 @@ return {
 		typescriptreact = 'console.log("%s ");',
 		sh = 'echo "%s "',
 		applescript = 'log "%s "',
-		rust = 'println!("{} ", "%s");'
+		rust = 'println!("{} ", "%s");',
+		ruby = 'puts "%s "',
 	},
 	assertLog = {
 		lua = 'assert(%s, "%s %s")',
@@ -67,6 +71,8 @@ return {
 		typescript = 'console.time("%s");',
 		typescriptreact = 'console.time("%s");',
 		sh = "timelogStart=$(date +%%s) # %s",
+		ruby =
+		'timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s'
 	},
 	timeLogStop = {
 		nvim_lua = {
@@ -90,6 +96,10 @@ return {
 		sh = {
 			"timelogEnd=$(date +%%s) && durationSecs = $((timelogEnd - timelogStart)) # %s",
 			'echo "%s ${durationSecs}s"',
+		},
+		ruby = {
+			'duration_secs = Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start # %s',
+			'puts "%s: #{duration_secs}s"'
 		},
 	},
 }
