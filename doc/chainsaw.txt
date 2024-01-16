@@ -1,4 +1,4 @@
-*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 15
+*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 16
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -49,6 +49,7 @@ BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 - Shell
 - AppleScript
 - CSS / SCSS
+- Ruby
 
 Not every language supports every type of log statement. For details on what is
 supported, see log-statements-data.lua
