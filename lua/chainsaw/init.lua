@@ -58,14 +58,14 @@ function M.assertLog()
 	normal("f,") -- goto the comma to edit the condition
 end
 
----adds simple "beep" log statement to check whether conditionals have been triggered
 function M.beepLog()
 	local logLines = u.getTemplateStr("beepLog", config.logStatements)
 	if not logLines then return end
 
-	if not vim.b.beepLogIndex then vim.b["beepLogIndex"] = 1 end
-	local emoji = config.beepEmojis[vim.b.beepLogIndex]
-	vim.b["beepLogIndex"] = vim.b.beepLogIndex + 1
+	if not vim.b.beepLogIdx then vim.b["beepLogIdx"] = 0 end
+	-- math.fmod() is lua's modulus
+	vim.b["beepLogIdx"] = math.fmod(vim.b.beepLogIdx, #config.beepEmojis) + 1
+	local emoji = config.beepEmojis[vim.b.beepLogIdx]
 
 	u.appendLines(logLines, { config.marker, emoji })
 end
@@ -109,8 +109,7 @@ function M.removeLogs()
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
 	vim.notify(msg, vim.log.levels.INFO, { title = "Chainsaw" })
 
-	-- reeet these logs
-	vim.b["beepLogIndex"] = nil
+	-- reset
 	vim.b["timelogStart"] = nil
 end
 
