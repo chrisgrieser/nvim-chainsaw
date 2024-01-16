@@ -81,8 +81,8 @@ you want to use.
     require("chainsaw").assertLog()
     
     -- Minimal log statement, with an emoji for differentiation. Intended for
-    -- use in structures like if/else, to quickly glance whether a condition was
-    -- triggered or not. (Inspired by AppleScript's `beep` command.)
+    -- structures like if/else, to quickly glance whether a condition was triggered
+    -- or not. (Inspired by AppleScript's `beep` command.)
     require("chainsaw").beepLog()
     
     -- 1. call adds a statement that measures the time
