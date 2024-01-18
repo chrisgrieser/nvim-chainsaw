@@ -4,8 +4,8 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
-Speed up log creation. Creates various kinds of language-specific log
-statements, like logs of variables, assertions, or time-measuring.
+Speed up log creation. Create various kinds of language-specific log statements, 
+such as logs of variables, assertions, or time-measuring.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
