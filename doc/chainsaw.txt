@@ -1,4 +1,4 @@
-*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 16
+*chainsaw.txt*           For NVIM v0.8.0          Last change: 2024 January 18
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -16,8 +16,8 @@ Table of Contents                                 *chainsaw-table-of-contents*
 
 
 
-Speedup log creation. Creates various kinds of language-specific log
-statements, like logs of variables, assertions, or time-measuring.
+Speedup log creation. Create various kinds of language-specific log statements,
+such as logs of variables, assertions, or time-measuring.
 
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
