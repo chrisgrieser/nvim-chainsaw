@@ -4,7 +4,7 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
-Speed up log creation. Create various kinds of language-specific log statements, 
+Speed up log creation. Create various kinds of language-specific log statements,
 such as logs of variables, assertions, or time-measuring.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
@@ -38,6 +38,7 @@ use { "chrisgrieser/nvim-chainsaw" }
 - AppleScript
 - CSS / SCSS
 - Ruby
+- Rust
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
@@ -48,7 +49,6 @@ supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua)
 > !important;` to quickly assess whether a selector is correct or not.
 
 ## Usage
-
 The plugin offers various types of log statements. Bind keymaps for the ones you
 want to use.
 
