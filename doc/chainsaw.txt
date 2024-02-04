@@ -8,7 +8,6 @@ Table of Contents                                 *chainsaw-table-of-contents*
   - Built-in language support|chainsaw-nvim-chainsaw--built-in-language-support|
   - Usage                                      |chainsaw-nvim-chainsaw--usage|
   - Configuration                      |chainsaw-nvim-chainsaw--configuration|
-  - Add your own log statements|chainsaw-nvim-chainsaw--add-your-own-log-statements|
   - Credits                                  |chainsaw-nvim-chainsaw--credits|
 
 ==============================================================================
@@ -25,8 +24,11 @@ such as logs of variables, assertions, or time-measuring.
 - |chainsaw-installation|
 - |chainsaw-built-in-language-support|
 - |chainsaw-usage|
+    - |chainsaw-list-of-commands|
+    - |chainsaw-smart-variable-identification|
 - |chainsaw-configuration|
-- |chainsaw-add-your-own-log-statements|
+    - |chainsaw-basic-configuration|
+    - |chainsaw-add-your-own-log-statements|
 - |chainsaw-credits|
 
 
@@ -66,6 +68,9 @@ USAGE                                          *chainsaw-nvim-chainsaw--usage*
 The plugin offers various types of log statements. Bind keymaps for the ones
 you want to use.
 
+
+LIST OF COMMANDS ~
+
 >lua
     -- create log statement, and position the cursor to enter a message
     require("chainsaw").messageLog()
@@ -98,24 +103,49 @@ you want to use.
 <
 
 
+SMART VARIABLE IDENTIFICATION ~
+
+When the variable under the cursor is an object with fields, `chainsaw`
+attempts to automatically select the field to log.
+
+>lua
+    myVariable.myF[i]eld = "foobar"
+    -- prints: myVariable.myField
+    
+    myVa[r]iable.myField = "foobar"
+    -- prints: myVariable
+<
+
+Filetypes currently supporting this feature: - Lua - Python - JavaScript /
+TypeScript / TypeScriptReact
+
+Requirements for this feature: - Treesitter parser for the language - nvim 0.9+
+
+
+  [!NOTE] This is still a Work-in-Progress feature. Support for more languages
+  and other forms of variable identification may be added in the future.
+
 CONFIGURATION                          *chainsaw-nvim-chainsaw--configuration*
+
+
+BASIC CONFIGURATION ~
 
 >lua
     -- default settings
-    require("chainsaw").setup ({
+    require("chainsaw").setup {
         -- The marker should be a unique string, since `.removeLogs()` will remove
         -- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
         marker = "🪚",
     
         -- emojis used for `.beepLog()`
         beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
-    })
+    }
 <
 
 
-ADD YOUR OWN LOG STATEMENTS*chainsaw-nvim-chainsaw--add-your-own-log-statements*
+ADD YOUR OWN LOG STATEMENTS ~
 
-Custom log statements are added in the `setup()` call. The values are formatter
+Custom log statements are added in the `setup()` call. The values are formatted
 lua strings, meaning `%s` is a placeholder that is dynamically replaced with
 the actual value. See log-statements-data.lua
 <./lua/chainsaw/log-statements-data.lua> for examples.
@@ -141,11 +171,11 @@ PRs adding log statements for more languages are welcome.
 
 CREDITS                                      *chainsaw-nvim-chainsaw--credits*
 
-**About Me** In my day job, I am a sociologist studying the social mechanisms
-underlying the digital economy. For my PhD project, I investigate the
-governance of the app economy and how software ecosystems manage the tension
-between innovation and compatibility. If you are interested in this subject,
-feel free to get in touch.
+In my day job, I am a sociologist studying the social mechanisms underlying the
+digital economy. For my PhD project, I investigate the governance of the app
+economy and how software ecosystems manage the tension between innovation and
+compatibility. If you are interested in this subject, feel free to get in
+touch.
 
 **Blog** I also occasionally blog about vim: Nano Tips for Vim
 <https://nanotipsforvim.prose.sh>
