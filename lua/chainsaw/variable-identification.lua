@@ -16,10 +16,12 @@ function M.getvar()
 		return varname
 	end
 
-	-- nvim prior to v0.9 OR no node under cursor -> get cword
+	-- nvim prior to v0.9 OR no node under cursor -> return cword
 	if not vim.treesitter.get_node then return vim.fn.expand("<cword>") end
 	local node = vim.treesitter.get_node()
 	if not node then return vim.fn.expand("<cword>") end
+
+	-----------------------------------------------------------------------------
 
 	-- smart variable identification: for fields, use parent node
 	local ft = vim.bo.filetype
@@ -40,8 +42,11 @@ function M.getvar()
 		if cursorOnField then node = node:parent():parent() end
 	end
 
+	-- return node text
 	local nodeText = vim.treesitter.get_node_text(node, 0)
-	nodeText = nodeText:gsub('"', "'") -- prevent nested quotes making log statement invalid
+	-- prevent nested quotes making log statement invalid. 
+	-- (Assumes log statements use `"` instead of `'`)
+	nodeText = nodeText:gsub('"', "'")
 	return nodeText
 end
 
