@@ -14,9 +14,11 @@ such as logs of variables, assertions, or time-measuring.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-- [Smart Variable Identification](#smart-variable-identification)
+	* [List of Commands](#list-of-commands)
+	* [Smart Variable Identification](#smart-variable-identification)
 - [Configuration](#configuration)
-- [Add your own log statements](#add-your-own-log-statements)
+	* [Basic Configuration](#basic-configuration)
+	* [Add your own log statements](#add-your-own-log-statements)
 - [Credits](#credits)
 
 <!-- tocstop -->
@@ -53,6 +55,8 @@ supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua)
 The plugin offers various types of log statements. Bind keymaps for the ones you
 want to use.
 
+### List of Commands
+
 ```lua
 -- create log statement, and position the cursor to enter a message
 require("chainsaw").messageLog()
@@ -84,7 +88,7 @@ require("chainsaw").debugLog()
 require("chainsaw").removeLogs()
 ```
 
-## Smart Variable Identification
+### Smart Variable Identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
 to automatically select the field to log.
 
@@ -106,25 +110,27 @@ Requirements for this feature:
 - nvim 0.9+
 
 > [!NOTE]
-> This is still a Work-in-Progress feature. Support for more languages other
-> forms of smart variable identification may be added in the future.
+> This is still a Work-in-Progress feature. Support for more languages and other
+> forms of variable identification may be added in the future.
 
 ## Configuration
 
+### Basic Configuration
+
 ```lua
 -- default settings
-require("chainsaw").setup ({
+require("chainsaw").setup {
 	-- The marker should be a unique string, since `.removeLogs()` will remove
 	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
 	-- emojis used for `.beepLog()`
 	beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
-})
+}
 ```
 
-## Add your own log statements
-Custom log statements are added in the `setup()` call. The values are formatter
+### Add your own log statements
+Custom log statements are added in the `setup()` call. The values are formatted
 lua strings, meaning `%s` is a placeholder that is dynamically replaced
 with the actual value. See
 [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for examples.
@@ -149,7 +155,6 @@ require("chainsaw").setup ({
 
 ## Credits
 <!-- vale Google.FirstPerson = NO -->
-__About Me__  
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and

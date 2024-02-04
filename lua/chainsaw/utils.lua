@@ -39,6 +39,5 @@ function M.getTemplateStr(logType, logsData)
 	return templateStr
 end
 
-
 --------------------------------------------------------------------------------
 return M
