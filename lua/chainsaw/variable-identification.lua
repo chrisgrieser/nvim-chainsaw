@@ -5,7 +5,7 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
 ---@return string
 ---@nodiscard
-function M.getvar()
+function M.getVar()
 	-- visual mode -> return selection
 	local isVisualMode = vim.fn.mode():find("[Vv]")
 	if isVisualMode then
@@ -42,12 +42,7 @@ function M.getvar()
 		if cursorOnField then node = node:parent():parent() end
 	end
 
-	-- return node text
-	local nodeText = vim.treesitter.get_node_text(node, 0)
-	-- prevent nested quotes making log statement invalid. 
-	-- (Assumes log statements use `"` instead of `'`)
-	nodeText = nodeText:gsub('"', "'")
-	return nodeText
+	return vim.treesitter.get_node_text(node, 0)
 end
 
 --------------------------------------------------------------------------------

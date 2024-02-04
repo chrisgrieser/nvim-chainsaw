@@ -8,13 +8,30 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 ---@param varsToInsert string[]
 function M.appendLines(logLines, varsToInsert)
 	local ln = vim.api.nvim_win_get_cursor(0)[1]
+	if type(logLines) == "string" then logLines = { logLines } end
 
+	-- Prevent nested quotes making logs invalid. 
+	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
+	local quotesInVar
+	for _, var in pairs(varsToInsert) do
+		quotesInVar = var:match("'") or var:match('"')
+		if quotesInVar then break end
+	end
+	if quotesInVar then
+		local replaceWith = quotesInVar == "'" and '"' or "'"
+		logLines = vim.tbl_map(
+			function(line) return line:gsub(quotesInVar, replaceWith) end,
+			logLines
+		)
+	end
+
+	-- ensure correct indentation
 	local indentBasedFts = { "python", "yaml", "elm" }
 	local isIndentBased = vim.tbl_contains(indentBasedFts, vim.bo.ft)
 	local indent = isIndentBased and vim.api.nvim_get_current_line():match("^%s*") or ""
 	local action = isIndentBased and "j" or "j=="
 
-	if type(logLines) == "string" then logLines = { logLines } end
+	-- insert all the lines
 	for _, line in pairs(logLines) do
 		local toInsert = indent .. line:format(unpack(varsToInsert))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })

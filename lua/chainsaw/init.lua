@@ -1,5 +1,5 @@
 local u = require("chainsaw.utils")
-local getvar = require("chainsaw.variable-identification").getvar
+local getVar = require("chainsaw.variable-identification").getVar
 
 local M = {}
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
@@ -33,26 +33,28 @@ function M.messageLog()
 	local logLines = u.getTemplateStr("messageLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
-	normal('f";') -- goto insert mode at correct location
+
+	-- goto insert mode at correct location
+	normal('f";') 
 	vim.cmd.startinsert()
 end
 
 function M.variableLog()
-	local varname = getvar()
+	local varname = getVar()
 	local logLines = u.getTemplateStr("variableLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.objectLog()
-	local varname = getvar()
+	local varname = getVar()
 	local logLines = u.getTemplateStr("objectLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.assertLog()
-	local varname = getvar()
+	local varname = getVar()
 	local logLines = u.getTemplateStr("assertLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { varname, config.marker, varname })
@@ -64,7 +66,7 @@ function M.beepLog()
 	if not logLines then return end
 
 	if not vim.b.beepLogIdx then vim.b["beepLogIdx"] = 0 end
-	-- math.fmod() is lua's modulus
+	-- `math.fmod()` is lua's modulus
 	vim.b["beepLogIdx"] = math.fmod(vim.b.beepLogIdx, #config.beepEmojis) + 1
 	local emoji = config.beepEmojis[vim.b.beepLogIdx]
 
