@@ -14,6 +14,7 @@ such as logs of variables, assertions, or time-measuring.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
+- [Smart Variable Identification](#smart-variable-identification)
 - [Configuration](#configuration)
 - [Add your own log statements](#add-your-own-log-statements)
 - [Credits](#credits)
@@ -82,6 +83,31 @@ require("chainsaw").debugLog()
 -- remove all log statements created by chainsaw
 require("chainsaw").removeLogs()
 ```
+
+## Smart Variable Identification
+When the variable under the cursor is an object with fields, `chainsaw` attempts
+to automatically select the field to log.
+
+```lua
+myVariable.myF[i]eld = "foobar"
+-- prints: myVariable.myField
+
+myVa[r]iable.myField = "foobar"
+-- prints: myVariable
+```
+
+Filetypes currently supporting this feature:
+- Lua
+- Python
+- JavaScript / TypeScript / TypeScriptReact
+
+Requirements for this feature:
+- Treesitter parser for the language
+- nvim 0.9+
+
+> [!NOTE]
+> This is still a Work-in-Progress feature. Support for more languages other
+> forms of smart variable identification may be added in the future.
 
 ## Configuration
 

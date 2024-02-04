@@ -3,26 +3,6 @@ local M = {}
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
----in normal mode, returns word under cursor, in visual mode, returns selection
----@return string
----@nodiscard
-function M.getVar()
-	local isVisualMode = vim.fn.mode():find("[Vv]")
-	if isVisualMode then
-		local prevReg = vim.fn.getreg("z")
-		normal('"zy')
-		local varname = vim.fn.getreg("z"):gsub('"', '//"')
-		vim.fn.setreg("z", prevReg)
-		return varname
-	else
-		if not (vim.treesitter.get_node and vim.treesitter.get_node()) then
-			return vim.fn.expand("<cword>")
-		end
-		local node = vim.treesitter.get_node() ---@cast node TSNode -- checked in condition above
-		return vim.treesitter.get_node_text(node, 0)
-	end
-end
-
 ---append string below current line
 ---@param logLines string|string[]
 ---@param varsToInsert string[]

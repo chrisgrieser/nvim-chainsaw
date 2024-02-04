@@ -1,4 +1,5 @@
 local u = require("chainsaw.utils")
+local getvar = require("chainsaw.variable-identification").getvar
 
 local M = {}
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
@@ -37,21 +38,21 @@ function M.messageLog()
 end
 
 function M.variableLog()
-	local varname = u.getVar()
+	local varname = getvar()
 	local logLines = u.getTemplateStr("variableLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.objectLog()
-	local varname = u.getVar()
+	local varname = getvar()
 	local logLines = u.getTemplateStr("objectLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.assertLog()
-	local varname = u.getVar()
+	local varname = getvar()
 	local logLines = u.getTemplateStr("assertLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { varname, config.marker, varname })
