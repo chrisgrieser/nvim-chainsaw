@@ -42,7 +42,10 @@ function M.getVar()
 		if cursorOnField then node = node:parent():parent() end
 	end
 
-	return vim.treesitter.get_node_text(node, 0)
+	-- GUARD on invalid node, fall back to cword
+	local nodeText = vim.treesitter.get_node_text(node, 0)
+	if nodeText:find("[\r\n]") then return vim.fn.expand("<cword>") end
+	return nodeText
 end
 
 --------------------------------------------------------------------------------
