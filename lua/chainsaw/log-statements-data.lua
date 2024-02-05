@@ -1,5 +1,9 @@
 ---@alias logStatementData table<string, table<string, string|string[]>>
 
+-- INFO 
+-- the strings may not include linebreaks. If you want to use multi-line log
+-- statements, use a list of strings instead, each string representing one line.
+
 ---@type logStatementData
 return {
 	variableLog = {

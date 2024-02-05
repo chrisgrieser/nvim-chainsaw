@@ -10,7 +10,7 @@ function M.appendLines(logLines, varsToInsert)
 	local ln = vim.api.nvim_win_get_cursor(0)[1]
 	if type(logLines) == "string" then logLines = { logLines } end
 
-	-- Prevent nested quotes making logs invalid. 
+	-- Prevent nested quotes making logs invalid.
 	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
 	local quotesInVar
 	for _, var in pairs(varsToInsert) do
@@ -40,19 +40,39 @@ function M.appendLines(logLines, varsToInsert)
 	end
 end
 
----get template string, if it does not exist, return nil
+---@param msg string
+local function warnNotify(msg) vim.notify(msg, vim.log.levels.WARN, { title = "Chainsaw" }) end
+
 ---@param logType string
 ---@param logsData logStatementData
----@return string|string[]|nil
+---@return string|string[]|false returns false if not configured or invalid
 ---@nodiscard
 function M.getTemplateStr(logType, logsData)
 	local ft = vim.bo.filetype
 	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
 	local templateStr = logsData[logType][ft]
+
+	-- GUARD unconfigured filetype
 	if not templateStr then
-		local msg = ("%s does not support %s yet."):format(logType, ft)
-		vim.notify(msg, vim.log.levels.WARN, { title = "Chainsaw" })
+		warnNotify(("There is no configuration for %s in %s."):format(logType, ft))
+		return false
 	end
+
+	-- GUARD template has line breaks, which are not accepted by nvim-api
+	local strArr = type(templateStr) == "string" and { templateStr } or templateStr
+	---@cast strArr string[]
+	for _, line in pairs(strArr) do
+		if line:find("[\r\n]") then
+			local msg = {
+				("Template for %s in %s has line breaks."):format(logType, ft),
+				"The nvim-api does not accept line breaks in string when appending text.",
+				"Use a list of strings instead, each string representing one line.",
+			}
+			warnNotify(table.concat(msg, "\n"))
+			return false
+		end
+	end
+
 	return templateStr
 end
 
