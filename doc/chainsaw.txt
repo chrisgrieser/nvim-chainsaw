@@ -29,6 +29,7 @@ such as logs of variables, assertions, or time-measuring.
 - |chainsaw-configuration|
     - |chainsaw-basic-configuration|
     - |chainsaw-add-your-own-log-statements|
+    - |chainsaw-have-your-formatter-ignore-the-log-statements|
 - |chainsaw-credits|
 
 
@@ -159,10 +160,6 @@ PRs adding log statements for more languages are welcome.
 >lua
     require("chainsaw").setup ({
         logStatements = {
-            messageLog = {
-                javascript = 'console.log("%s ");',
-                otherFiletype = … -- <-- add the statement for your filetype here
-            },
             variableLog = {
                 javascript = 'console.log("%s %s:", %s);',
                 otherFiletype = … -- <-- add the statement for your filetype here
@@ -173,9 +170,32 @@ PRs adding log statements for more languages are welcome.
 <
 
 
+HAVE YOUR FORMATTER IGNORE THE LOG STATEMENTS ~
+
+A common problem is that formatters like `prettier` break up the log
+statements, making them hard to read and also breaking `removeLogs()`, which
+relies on each line containing the marker emoji.
+
+The simplest method to deal with this is to customize the log statement in your
+configuration to include `// prettier-ignore`
+
+>lua
+    require("chainsaw").setup {
+        logStatements = {
+            variableLog = {
+                javascript = {
+                    "// prettier-ignore %s", -- adding this line
+                    'console.log("%s %s:", %s);',
+                },
+            },
+        },
+    }
+<
+
+
 CREDITS                                      *chainsaw-nvim-chainsaw--credits*
 
-In my day job, I am a sociologist studying the social mechanisms underlying the
+Inmy day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in
