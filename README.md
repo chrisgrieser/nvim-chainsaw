@@ -36,7 +36,7 @@ use { "chrisgrieser/nvim-chainsaw" }
 
 It is recommended to use **nvim 0.9+** and install the **Treesitter parsers**
 for the respective languages, as this improves variable identification. The
-plugin will fall back to the word under the cursor if those requirements are
+plugin falls back to the word under the cursor if those requirements are
 not met.
 
 ## Built-in language support
@@ -82,8 +82,8 @@ require("chainsaw").messageLog()
 -- or not. (Inspired by AppleScript's `beep` command.)
 require("chainsaw").beepLog()
 
--- 1. call adds a statement that measures the time
--- 2. call adds a statement that logs the time since
+-- 1st call: start measuring the time
+-- 2nd call: logs the time duration since
 require("chainsaw").timeLog()
 
 -- debug statements like `debugger` in javascript or `breakpoint()` in python
@@ -155,14 +155,14 @@ statements, making them hard to read and also breaking `removeLogs()`, which
 relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in
-your configuration to include `// prettier-ignore`:
+your configuration to include `/* prettier-ignore */`:
 
 ```lua
 require("chainsaw").setup {
 	logStatements = {
 		variableLog = {
 			javascript = {
-				"// prettier-ignore %s", -- adding this line
+				"/* prettier-ignore */ // %s", -- adding this line
 				'console.log("%s %s:", %s);',
 			},
 		},
