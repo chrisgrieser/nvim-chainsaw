@@ -33,23 +33,27 @@ such as logs of variables, assertions, or time-measuring.
 use { "chrisgrieser/nvim-chainsaw" }
 ```
 
+It is recommended to use **nvim 0.9+** and install the **Treesitter parsers**
+for the respective languages, as this improves variable identification. The
+plugin will fall back to the word under the cursor if those requirements are
+not met.
+
 ## Built-in language support
 - JavaScript / TypeScript / TypeScriptReact
 - Lua
 - Python
 - Shell
 - AppleScript
-- CSS / SCSS
+- CSS / SCSS\*
 - Ruby
 - Rust
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
-> [!NOTE]
-> In languages like CSS with no log statements, `nvim-chainsaw` simply uses
-> similar statements with debugging purposes, such as `outline: 2px solid red
-> !important;` to quickly assess whether a selector is correct or not.
+*\* For CSS, `nvim-chainsaw` simply uses similar statements with debugging
+purposes, such as `outline: 2px solid red !important;` to quickly assess whether
+a selector is correct or not.*
 
 ## Usage
 The plugin offers various types of log statements. Bind keymaps for the ones you
@@ -58,9 +62,6 @@ want to use.
 ### List of Commands
 
 ```lua
--- create log statement, and position the cursor to enter a message
-require("chainsaw").messageLog()
-
 -- log the name and value of the a variable
 -- normal mode: treesitter node or word under cursor, visual mode: selection
 require("chainsaw").variableLog()
@@ -69,8 +70,11 @@ require("chainsaw").variableLog()
 -- `console.log(JSON.stringify(foobar))` in javascript
 require("chainsaw").objectLog()
 
--- assertion statement
+-- assertion statement for the variable under the cursor
 require("chainsaw").assertLog()
+
+-- create log statement, and position the cursor to enter a message
+require("chainsaw").messageLog()
 
 -- Minimal log statement, with an emoji for differentiation. Intended for
 -- structures like if/else, to quickly glance whether a condition was triggered
@@ -90,7 +94,7 @@ require("chainsaw").removeLogs()
 
 ### Smart Variable Identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
-to automatically select the field to log.
+to automatically select the correct field.
 
 ```lua
 myVariable.myF[i]eld = "foobar"
@@ -105,13 +109,8 @@ Filetypes currently supporting this feature:
 - Python
 - JavaScript / TypeScript / TypeScriptReact
 
-Requirements for this feature:
-- Treesitter parser for the language
-- nvim 0.9+
-
-> [!NOTE]
-> This is still a Work-in-Progress feature. Support for more languages and other
-> forms of variable identification may be added in the future.
+PRs adding support for more languages are welcome. The relevant code section [can
+be found here](https://github.com/chrisgrieser/nvim-chainsaw/blob/f59f590858f2b0a2f4bf1005eb7e0472141f42f1/lua/chainsaw/variable-identification.lua#L28-L42).
 
 ## Configuration
 
@@ -160,10 +159,10 @@ digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in touch.
 
-__Blog__  
+**Blog**  
 I also occasionally blog about vim: [Nano Tips for Vim](https://nanotipsforvim.prose.sh)
 
-__Profiles__  
+**Profiles**  
 - [reddit](https://www.reddit.com/user/pseudometapseudo)
 - [Discord](https://discordapp.com/users/462774483044794368/)
 - [Academic Website](https://chris-grieser.de/)
