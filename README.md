@@ -19,6 +19,7 @@ such as logs of variables, assertions, or time-measuring.
 - [Configuration](#configuration)
 	* [Basic Configuration](#basic-configuration)
 	* [Add your own log statements](#add-your-own-log-statements)
+	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
 - [Credits](#credits)
 
 <!-- tocstop -->
@@ -139,10 +140,6 @@ PRs adding log statements for more languages are welcome.
 ```lua
 require("chainsaw").setup ({
 	logStatements = {
-		messageLog = {
-			javascript = 'console.log("%s ");',
-			otherFiletype = … -- <-- add the statement for your filetype here
-		},
 		variableLog = {
 			javascript = 'console.log("%s %s:", %s);',
 			otherFiletype = … -- <-- add the statement for your filetype here
@@ -150,6 +147,27 @@ require("chainsaw").setup ({
 		-- the same way for the other statement types
 	},
 })
+```
+
+### Have your formatter ignore the log statements
+A common problem is that formatters like `prettier` break up the log
+statements, making them hard to read and also breaking `removeLogs()`, which
+relies on each line containing the marker emoji.
+
+The simplest method to deal with this is to customize the log statement in
+your configuration to include `// prettier-ignore`:
+
+```lua
+require("chainsaw").setup {
+	logStatements = {
+		variableLog = {
+			javascript = {
+				"// prettier-ignore %s", -- adding this line
+				'console.log("%s %s:", %s);',
+			},
+		},
+	},
+}
 ```
 
 ## Credits
