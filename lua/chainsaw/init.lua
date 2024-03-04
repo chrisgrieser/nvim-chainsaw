@@ -35,7 +35,7 @@ function M.messageLog()
 	u.appendLines(logLines, { config.marker })
 
 	-- goto insert mode at correct location
-	normal('f";') 
+	normal('f";')
 	vim.cmd.startinsert()
 end
 
@@ -51,6 +51,12 @@ function M.objectLog()
 	local logLines = u.getTemplateStr("objectLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker, varname, varname })
+end
+
+function M.stracktraceLog()
+	local logLines = u.getTemplateStr("stracktraceLog", config.logStatements)
+	if not logLines then return end
+	u.appendLines(logLines, { config.marker })
 end
 
 function M.assertLog()
@@ -84,14 +90,12 @@ function M.timeLog()
 	vim.b["timeLogStart"] = not vim.b.timeLogStart
 end
 
--- simple debugger statement
 function M.debugLog()
 	local logLines = u.getTemplateStr("debugLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
 end
 
----Remove all log statements in the current buffer
 function M.removeLogs()
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 

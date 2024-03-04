@@ -77,9 +77,12 @@ require("chainsaw").assertLog()
 -- create log statement, and position the cursor to enter a message
 require("chainsaw").messageLog()
 
+-- prints the stacktrace of the current call
+require("chainsaw").stracktraceLog()
+
 -- Minimal log statement, with an emoji for differentiation. Intended for
--- structures like if/else, to quickly glance whether a condition was triggered
--- or not. (Inspired by AppleScript's `beep` command.)
+-- control flow inspection, i.e. to quickly glance whether a condition was
+-- triggered or not. (Inspired by AppleScript's `beep` command.)
 require("chainsaw").beepLog()
 
 -- 1st call: start measuring the time
@@ -88,6 +91,8 @@ require("chainsaw").timeLog()
 
 -- debug statements like `debugger` in javascript or `breakpoint()` in python
 require("chainsaw").debugLog()
+
+---------------------------------------------------
 
 -- remove all log statements created by chainsaw
 require("chainsaw").removeLogs()
