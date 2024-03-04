@@ -1,4 +1,4 @@
-*chainsaw.txt*          For NVIM v0.8.0          Last change: 2024 February 27
+*chainsaw.txt*            For NVIM v0.8.0           Last change: 2024 March 04
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -92,9 +92,12 @@ LIST OF COMMANDS ~
     -- create log statement, and position the cursor to enter a message
     require("chainsaw").messageLog()
     
+    -- prints the stacktrace of the current call
+    require("chainsaw").stracktraceLog()
+    
     -- Minimal log statement, with an emoji for differentiation. Intended for
-    -- structures like if/else, to quickly glance whether a condition was triggered
-    -- or not. (Inspired by AppleScript's `beep` command.)
+    -- control flow inspection, i.e. to quickly glance whether a condition was
+    -- triggered or not. (Inspired by AppleScript's `beep` command.)
     require("chainsaw").beepLog()
     
     -- 1st call: start measuring the time
@@ -103,6 +106,8 @@ LIST OF COMMANDS ~
     
     -- debug statements like `debugger` in javascript or `breakpoint()` in python
     require("chainsaw").debugLog()
+    
+    ---------------------------------------------------
     
     -- remove all log statements created by chainsaw
     require("chainsaw").removeLogs()
