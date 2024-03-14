@@ -8,7 +8,7 @@
 
 ---@type logStatementData
 return {
-	variableLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
+	variableLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
 		lua = 'print("%s %s: ", %s)',
 		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
@@ -22,7 +22,7 @@ return {
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
 	},
-	objectLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
+	objectLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
 		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
 		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
