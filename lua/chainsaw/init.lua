@@ -53,8 +53,8 @@ function M.objectLog()
 	u.appendLines(logLines, { config.marker, varname, varname })
 end
 
-function M.stracktraceLog()
-	local logLines = u.getTemplateStr("stracktraceLog", config.logStatements)
+function M.stacktraceLog()
+	local logLines = u.getTemplateStr("stacktraceLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
 end
