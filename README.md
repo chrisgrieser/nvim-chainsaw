@@ -78,7 +78,7 @@ require("chainsaw").assertLog()
 require("chainsaw").messageLog()
 
 -- prints the stacktrace of the current call
-require("chainsaw").stracktraceLog()
+require("chainsaw").stacktraceLog()
 
 -- Minimal log statement, with an emoji for differentiation. Intended for
 -- control flow inspection, i.e. to quickly glance whether a condition was

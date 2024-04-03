@@ -29,15 +29,15 @@ return {
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
-	stracktraceLog = { -- %s -> marker
+	stacktraceLog = { -- %s -> marker
 		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
 		nvim_lua = 'vim.notify(debug.traceback("%s"))',
 		sh = 'print "%s stacktrack: $funcfiletrace $funcstack"', -- defaulting to zsh here, since it's more common than bash
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '%s stacktrace: ' ; caller 0",
-		javascript = 'console.log("%s stracktrace: ", new Error().stack.replaceAll("\n", " "));', -- not all JS engines support console.trace()
-		typescript = 'console.trace("%s strackstrace: ");',
-		typescriptreact = 'console.trace("%s strackstrace: ");',
+		javascript = 'console.log("%s stacktrace: ", new Error().stack.replaceAll("\n", " "));', -- not all JS engines support console.trace()
+		typescript = 'console.trace("%s stacktrace: ");',
+		typescriptreact = 'console.trace("%s stacktrace: ");',
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
 		nvim_lua = 'vim.notify("%s beep %s")',
