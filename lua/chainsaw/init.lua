@@ -128,10 +128,10 @@ M.commandTable = {
   debugLog = M.debugLog,
   messageLog = M.messageLog,
   objectLog = M.objectLog,
-  removeLog = M.removeLogs,
   stackTraceLog = M.stracktraceLog,
   timeLog = M.timeLog,
   variableLog = M.variableLog,
+  removeLogs = M.removeLogs,
 }
 M.commandList = vim.tbl_keys(M.commandTable)
 
