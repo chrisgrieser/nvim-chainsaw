@@ -98,20 +98,10 @@ require("chainsaw").debugLog()
 require("chainsaw").removeLogs()
 ```
 
-These features can also be accessed by the command `:ChainSaw`.
-The available list of options are:
-- `assertLog`
-- `beepLog`
-- `debugLog`
-- `messageLog`
-- `objectLog`
-- `removeLogs`
-- `stackTraceLog`
-- `timeLog`
-- `variableLog`
+These features can also be accessed by the user command `:ChainSaw`. 
 
-Each option corresponds to the commands explained above.
-e.g. `:ChainSaw variableLog` is same as `:lua require("chainsaw").variableLog()`
+Each option corresponds to the commands above. For example, `:ChainSaw
+variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
 ### Smart Variable Identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
