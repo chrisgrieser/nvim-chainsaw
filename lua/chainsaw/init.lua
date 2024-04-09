@@ -121,4 +121,25 @@ function M.removeLogs()
 end
 
 --------------------------------------------------------------------------------
+
+M.commandTable = {
+	assertLog = M.assertLog,
+	beepLog = M.beepLog,
+	debugLog = M.debugLog,
+	messageLog = M.messageLog,
+	objectLog = M.objectLog,
+	stackTraceLog = M.stacktraceLog,
+	timeLog = M.timeLog,
+	variableLog = M.variableLog,
+	removeLogs = M.removeLogs,
+}
+M.commandList = vim.tbl_keys(M.commandTable)
+
+vim.api.nvim_create_user_command(
+	"ChainSaw",
+	function(opts) M.commandTable[opts.args]() end,
+	{ nargs = 1, complete = function(_, _, _) return M.commandList end }
+)
+
+--------------------------------------------------------------------------------
 return M
