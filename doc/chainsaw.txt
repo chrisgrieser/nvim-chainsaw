@@ -1,4 +1,4 @@
-*chainsaw.txt*            For NVIM v0.8.0           Last change: 2024 April 09
+*chainsaw.txt*            For NVIM v0.8.0           Last change: 2024 April 27
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -8,6 +8,7 @@ Table of Contents                                 *chainsaw-table-of-contents*
   - Built-in language support|chainsaw-nvim-chainsaw--built-in-language-support|
   - Usage                                      |chainsaw-nvim-chainsaw--usage|
   - Configuration                      |chainsaw-nvim-chainsaw--configuration|
+  - SimilarLua Plugins            |chainsaw-nvim-chainsaw--similarlua-plugins|
   - Credits                                  |chainsaw-nvim-chainsaw--credits|
 
 ==============================================================================
@@ -30,6 +31,7 @@ such as logs of variables, assertions, or time-measuring.
     - |chainsaw-basic-configuration|
     - |chainsaw-add-your-own-log-statements|
     - |chainsaw-have-your-formatter-ignore-the-log-statements|
+- |chainsaw-similar-lua-plugins|
 - |chainsaw-credits|
 
 
@@ -203,9 +205,20 @@ configuration to include `/* prettier-ignore */`
 <
 
 
+SIMILARLUA PLUGINS                *chainsaw-nvim-chainsaw--similarlua-plugins*
+
+- debugprint.nvim <https://github.com/andrewferrier/debugprint.nvim>
+- refactoring.nvim <https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features> (the debug commands)
+- logsitter <https://github.com/gaelph/logsitter.nvim>
+
+The other plugins are more feature-rich, while, while `nvim-chainsaw` tries to
+achieve the core functionality in a far more lightweight manner to keep
+maintenance minimal.
+
+
 CREDITS                                      *chainsaw-nvim-chainsaw--credits*
 
-Inmy day job, I am a sociologist studying the social mechanisms underlying the
+In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in
