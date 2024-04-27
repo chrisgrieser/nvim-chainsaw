@@ -20,6 +20,7 @@ such as logs of variables, assertions, or time-measuring.
 	* [Basic Configuration](#basic-configuration)
 	* [Add your own log statements](#add-your-own-log-statements)
 	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
+- [Similar Lua Plugins](#similar-lua-plugins)
 - [Credits](#credits)
 
 <!-- tocstop -->
@@ -98,7 +99,7 @@ require("chainsaw").debugLog()
 require("chainsaw").removeLogs()
 ```
 
-These features can also be accessed by the user command `:ChainSaw`. 
+These features can also be accessed by the user command `:ChainSaw`.
 
 Each option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
@@ -179,6 +180,15 @@ require("chainsaw").setup {
 	},
 }
 ```
+
+## Similar Lua Plugins
+- [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
+- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features) (the debug commands)
+- [logsitter](https://github.com/gaelph/logsitter.nvim)
+
+The other plugins are more feature-rich, while, while `nvim-chainsaw` tries to
+achieve the core functionality in a far more lightweight manner to keep
+maintenance minimal.
 
 ## Credits
 <!-- vale Google.FirstPerson = NO -->
