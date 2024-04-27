@@ -68,6 +68,7 @@ return {
 		lua = 'assert(%s, "%s %s")',
 		nvim_lua = 'assert(%s, "%s %s")',
 		python = 'assert %s, "%s %s"',
+		typescript = 'console.assert(%s, "%s %s");',
 	},
 	debugLog = { -- %s -> marker
 		javascript = "debugger; // %s",
