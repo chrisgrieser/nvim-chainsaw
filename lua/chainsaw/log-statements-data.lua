@@ -35,7 +35,7 @@ return {
 		sh = 'print "%s stacktrack: $funcfiletrace $funcstack"', -- defaulting to zsh here, since it's more common than bash
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '%s stacktrace: ' ; caller 0",
-		javascript = 'console.log("%s stacktrace: ", new Error().stack.replaceAll("\n", " "));', -- not all JS engines support console.trace()
+		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		typescript = 'console.trace("%s stacktrace: ");',
 		typescriptreact = 'console.trace("%s stacktrace: ");',
 	},
