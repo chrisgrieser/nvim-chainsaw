@@ -43,6 +43,7 @@ function M.getVar()
 	end
 
 	-- GUARD on invalid node, fall back to cword
+	---@cast node TSNode
 	local nodeText = vim.treesitter.get_node_text(node, 0)
 	if nodeText:find("[\r\n]") then return vim.fn.expand("<cword>") end
 	return nodeText

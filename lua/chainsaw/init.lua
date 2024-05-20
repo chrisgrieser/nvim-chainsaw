@@ -80,14 +80,14 @@ function M.beepLog()
 end
 
 function M.timeLog()
-	if vim.b.timeLogStart == nil then vim.b["timeLogStart"] = true end
+	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
 	local logLines = u.getTemplateStr(startOrStop, config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
 
-	vim.b["timeLogStart"] = not vim.b.timeLogStart
+	vim.b.timeLogStart = not vim.b.timeLogStart
 end
 
 function M.debugLog()
@@ -117,28 +117,18 @@ function M.removeLogs()
 	vim.notify(msg, vim.log.levels.INFO, { title = "Chainsaw" })
 
 	-- reset
-	vim.b["timelogStart"] = nil
+	vim.b.timelogStart = nil
 end
 
 --------------------------------------------------------------------------------
 
-local commandTable = {
-	assertLog = M.assertLog,
-	beepLog = M.beepLog,
-	debugLog = M.debugLog,
-	messageLog = M.messageLog,
-	objectLog = M.objectLog,
-	stacktraceLog = M.stacktraceLog,
-	timeLog = M.timeLog,
-	variableLog = M.variableLog,
-	removeLogs = M.removeLogs,
-}
-local commandList = vim.tbl_keys(commandTable)
+-- CREATE USER COMMANDS
+local commandsExceptSetup = vim.tbl_filter(function(cmd) return cmd ~= "setup" end, vim.tbl_keys(M))
 
 vim.api.nvim_create_user_command(
 	"ChainSaw",
-	function(opts) commandTable[opts.args]() end,
-	{ nargs = 1, complete = function(_, _, _) return commandList end }
+	function(opts) M[opts.args]() end,
+	{ nargs = 1, complete = function() return commandsExceptSetup end }
 )
 
 --------------------------------------------------------------------------------
