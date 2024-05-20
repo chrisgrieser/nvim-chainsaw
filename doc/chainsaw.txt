@@ -1,4 +1,4 @@
-*chainsaw.txt*             For NVIM v0.8.0            Last change: 2024 May 01
+*chainsaw.txt*             For NVIM v0.8.0            Last change: 2024 May 20
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
