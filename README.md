@@ -41,7 +41,7 @@ plugin falls back to the word under the cursor if those requirements are
 not met.
 
 ## Built-in language support
-- JavaScript / TypeScript / TypeScriptReact
+- JavaScript / TypeScript / TypeScriptReact / Vue
 - Lua
 - Python
 - Shell
@@ -119,7 +119,7 @@ myVa[r]iable.myField = "foobar"
 Filetypes currently supporting this feature:
 - Lua
 - Python
-- JavaScript / TypeScript / TypeScriptReact
+- JavaScript / TypeScript / TypeScriptReact / Vue
 
 PRs adding support for more languages are welcome. The relevant code section [can
 be found here](https://github.com/chrisgrieser/nvim-chainsaw/blob/f59f590858f2b0a2f4bf1005eb7e0472141f42f1/lua/chainsaw/variable-identification.lua#L28-L42).
