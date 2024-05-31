@@ -53,9 +53,8 @@ not met.
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
-*\* For CSS, `nvim-chainsaw` simply uses similar statements with debugging
-purposes, such as `outline: 2px solid red !important;` to quickly assess whether
-a selector is correct or not.*
+*\* For languages like CSS, `nvim-chainsaw` uses statements such as `outline: 2px 
+solid red !important;`, which are the closest thing to logging you have.*
 
 ## Usage
 The plugin offers various types of log statements. Bind keymaps for the ones you
@@ -99,7 +98,7 @@ require("chainsaw").debugLog()
 require("chainsaw").removeLogs()
 ```
 
-These features can also be accessed by the user command `:ChainSaw`.
+These features can also be accessed with the user command `:ChainSaw`.
 
 Each option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
