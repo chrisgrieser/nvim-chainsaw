@@ -1,4 +1,4 @@
-*chainsaw.txt*             For NVIM v0.8.0            Last change: 2024 May 20
+*chainsaw.txt*             For NVIM v0.8.0            Last change: 2024 May 31
 
 ==============================================================================
 Table of Contents                                 *chainsaw-table-of-contents*
@@ -53,7 +53,7 @@ met.
 
 BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript / TypeScript / TypeScriptReact
+- JavaScript / TypeScript / TypeScriptReact / Vue
 - Lua
 - Python
 - Shell
@@ -135,7 +135,7 @@ attempts to automatically select the correct field.
 <
 
 Filetypes currently supporting this feature: - Lua - Python - JavaScript /
-TypeScript / TypeScriptReact
+TypeScript / TypeScriptReact / Vue
 
 PRs adding support for more languages are welcome. The relevant code section
 can be found here
