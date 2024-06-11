@@ -16,6 +16,7 @@ return {
 		typescript = 'console.log("%s %s:", %s);',
 		typescriptreact = 'console.log("%s %s:", %s);',
 		vue = 'console.log("%s %s:", %s);',
+		svelte = 'console.log("%s %s:", %s);',
 		sh = 'echo "%s %s: $%s" >&2',
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
@@ -28,6 +29,7 @@ return {
 		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
 		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
 		vue = 'console.log("%s %s:", JSON.stringify(%s))',
+		svelte = 'console.log("%s %s:", JSON.stringify(%s))',
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
@@ -41,6 +43,7 @@ return {
 		typescript = 'console.trace("%s stacktrace: ");',
 		typescriptreact = 'console.trace("%s stacktrace: ");',
 		vue = 'console.trace("%s stacktrace: ");',
+		svelte = 'console.trace("%s stacktrace: ");',
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
 		nvim_lua = 'vim.notify("%s beep %s")',
@@ -50,6 +53,7 @@ return {
 		typescript = 'console.log("%s beep %s");',
 		typescriptreact = 'console.log("%s beep %s");',
 		vue = 'console.log("%s beep %s");',
+		svelte = 'console.log("%s beep %s");',
 		sh = 'echo "%s beep %s" >&2',
 		applescript = "beep -- %s",
 		css = "outline: 2px solid red !important; /* %s */",
@@ -64,6 +68,7 @@ return {
 		typescript = 'console.log("%s ");',
 		typescriptreact = 'console.log("%s ");',
 		vue = 'console.log("%s ");',
+		svelte = 'console.log("%s ");',
 		sh = 'echo "%s " >&2',
 		applescript = 'log "%s "',
 		rust = 'println!("{} ", "%s");',
@@ -80,6 +85,7 @@ return {
 		typescript = "debugger; // %s",
 		typescriptreact = "debugger; // %s",
 		vue = "debugger; // %s",
+		svelte = "debugger; // %s",
 		python = "breakpoint()  # %s", -- https://docs.python.org/3.11/library/functions.html?highlight=breakpoint#breakpoint
 		sh = {
 			"set -exuo pipefail # %s", -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
@@ -94,6 +100,7 @@ return {
 		typescript = 'console.time("%s");',
 		typescriptreact = 'console.time("%s");',
 		vue = 'console.time("%s");',
+		svelte = 'console.time("%s");',
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
@@ -117,6 +124,7 @@ return {
 		typescript = 'console.timeEnd("%s");',
 		typescriptreact = 'console.timeEnd("%s");',
 		vue = 'console.timeEnd("%s");',
+		svelte = 'console.timeEnd("%s");',
 		sh = {
 			"timelogEnd=$(date +%%s) && durationSecs = $((timelogEnd - timelogStart)) # %s",
 			'echo "%s ${durationSecs}s" >&2',
