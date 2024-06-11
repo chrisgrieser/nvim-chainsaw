@@ -53,7 +53,7 @@ met.
 
 BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript / TypeScript / TypeScriptReact / Vue
+- JavaScript / TypeScript / TypeScriptReact / Vue / Svelte
 - Lua
 - Python
 - Shell
@@ -134,7 +134,7 @@ attempts to automatically select the correct field.
 <
 
 Filetypes currently supporting this feature: - Lua - Python - JavaScript /
-TypeScript / TypeScriptReact / Vue
+TypeScript / TypeScriptReact / Vue / Svelte
 
 PRs adding support for more languages are welcome. The relevant code section
 can be found here
