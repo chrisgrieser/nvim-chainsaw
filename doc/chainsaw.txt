@@ -61,13 +61,15 @@ BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 - CSS / SCSS
 - Ruby
 - Rust
+- Justfiles
 
 Not every language supports every type of log statement. For details on what is
 supported, see log-statements-data.lua
 <./lua/chainsaw/log-statements-data.lua>.
 
-_For languages like CSS, nvim-chainsaw uses statements such as outline: 2px
-solid red !important;, which are the closest thing to logging you have._
+_For non-scripting languages like CSS, nvim-chainsaw uses statements such as
+outline: 2px solid red !important;, which are the closest thing to logging you
+have._
 
 
 USAGE                                          *chainsaw-nvim-chainsaw--usage*
