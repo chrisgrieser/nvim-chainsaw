@@ -41,7 +41,7 @@ plugin falls back to the word under the cursor if those requirements are
 not met.
 
 ## Built-in language support
-- JavaScript (and: TypeScript / TypeScriptReact / Vue / Svelte)
+- JavaScript (and: JavaScriptReact / TypeScript / TypeScriptReact / Vue / Svelte)
 - Python
 - Lua
 - Shell (and: zsh / bash / fish)

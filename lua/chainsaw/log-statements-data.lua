@@ -108,7 +108,7 @@ local M = {
 -- SUPERSETS
 
 -- javascript
-local jsSuperset = { "typescript", "typescriptreact", "vue", "svelte" }
+local jsSuperset = { "typescript", "typescriptreact", "javascriptreact", "vue", "svelte" }
 local simpleLogTypes = { "variableLog", "objectLog", "beepLog", "messageLog", "debugLog" }
 local complexLogTypes = { "stacktraceLog", "assertLog", "timeLogStart", "timeLogStop" }
 
