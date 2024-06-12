@@ -41,22 +41,23 @@ plugin falls back to the word under the cursor if those requirements are
 not met.
 
 ## Built-in language support
-- JavaScript / TypeScript / TypeScriptReact / Vue / Svelte
-- Lua
+- JavaScript (and: TypeScript / TypeScriptReact / Vue / Svelte)
 - Python
-- Shell
+- Lua
+- Shell (and: zsh / bash / fish)
 - AppleScript
-- CSS / SCSS\*
 - Ruby
 - Rust
+- CSS (and: SCSS)
 - Justfiles
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
-*\* For non-scripting languages like CSS, `nvim-chainsaw` uses statements such
-as `outline: 2px solid red !important;`, which are the closest thing to logging
-you have.*
+> [!NOTE]
+> For non-scripting languages like CSS, `nvim-chainsaw` uses statements such as
+> `outline: 2px solid red !important;` that are the closest thing to logging
+> you have.
 
 ## Usage
 The plugin offers various types of log statements. Bind keymaps for the ones you

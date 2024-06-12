@@ -7,16 +7,12 @@
 --------------------------------------------------------------------------------
 
 ---@type logStatementData
-return {
+local M = {
 	variableLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
 		lua = 'print("%s %s: ", %s)',
 		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
 		javascript = 'console.log("%s %s:", %s);',
-		typescript = 'console.log("%s %s:", %s);',
-		typescriptreact = 'console.log("%s %s:", %s);',
-		vue = 'console.log("%s %s:", %s);',
-		svelte = 'console.log("%s %s:", %s);',
 		sh = 'echo "%s %s: $%s" >&2',
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
@@ -27,38 +23,24 @@ return {
 	},
 	objectLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
-		typescript = 'console.log("%s %s:", JSON.stringify(%s))',
-		typescriptreact = 'console.log("%s %s:", JSON.stringify(%s))',
-		vue = 'console.log("%s %s:", JSON.stringify(%s))',
-		svelte = 'console.log("%s %s:", JSON.stringify(%s))',
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
 	stacktraceLog = { -- %s -> marker
 		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
 		nvim_lua = 'vim.notify(debug.traceback("%s"))',
-		sh = 'print "%s stacktrack: $funcfiletrace $funcstack"', -- defaulting to zsh here, since it's more common than bash
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '%s stacktrace: ' ; caller 0",
 		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		typescript = 'console.trace("%s stacktrace: ");',
-		typescriptreact = 'console.trace("%s stacktrace: ");',
-		vue = 'console.trace("%s stacktrace: ");',
-		svelte = 'console.trace("%s stacktrace: ");',
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
 		nvim_lua = 'vim.notify("%s beep %s")',
 		lua = 'print("%s beep %s")',
 		python = 'print("%s beep %s")',
 		javascript = 'console.log("%s beep %s");',
-		typescript = 'console.log("%s beep %s");',
-		typescriptreact = 'console.log("%s beep %s");',
-		vue = 'console.log("%s beep %s");',
-		svelte = 'console.log("%s beep %s");',
 		sh = 'echo "%s beep %s" >&2',
 		applescript = "beep -- %s",
-		css = "outline: 2px solid red !important; /* %s */",
-		scss = "outline: 2px solid red !important; /* %s */",
 		ruby = 'puts "%s beep %s"',
 	},
 	messageLog = { -- %s -> marker
@@ -66,10 +48,6 @@ return {
 		nvim_lua = 'vim.notify("%s ")', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print("%s ")',
 		javascript = 'console.log("%s ");',
-		typescript = 'console.log("%s ");',
-		typescriptreact = 'console.log("%s ");',
-		vue = 'console.log("%s ");',
-		svelte = 'console.log("%s ");',
 		sh = 'echo "%s " >&2',
 		applescript = 'log "%s "',
 		rust = 'println!("{} ", "%s");',
@@ -83,10 +61,6 @@ return {
 	},
 	debugLog = { -- %s -> marker
 		javascript = "debugger; // %s",
-		typescript = "debugger; // %s",
-		typescriptreact = "debugger; // %s",
-		vue = "debugger; // %s",
-		svelte = "debugger; // %s",
 		python = "breakpoint()  # %s", -- https://docs.python.org/3.11/library/functions.html?highlight=breakpoint#breakpoint
 		sh = {
 			"set -exuo pipefail # %s", -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
@@ -98,10 +72,6 @@ return {
 		lua = "local timelogStart = os.time() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = +new Date(); // %s", -- not all JS engines support console.time()
-		typescript = 'console.time("%s");',
-		typescriptreact = 'console.time("%s");',
-		vue = 'console.time("%s");',
-		svelte = 'console.time("%s");',
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
@@ -123,9 +93,6 @@ return {
 			"console.log(`%s: ${durationSecs}s`);",
 		},
 		typescript = 'console.timeEnd("%s");',
-		typescriptreact = 'console.timeEnd("%s");',
-		vue = 'console.timeEnd("%s");',
-		svelte = 'console.timeEnd("%s");',
 		sh = {
 			"timelogEnd=$(date +%%s) && durationSecs = $((timelogEnd - timelogStart)) # %s",
 			'echo "%s ${durationSecs}s" >&2',
@@ -136,3 +103,35 @@ return {
 		},
 	},
 }
+
+--------------------------------------------------------------------------------
+-- SUPERSETS
+
+-- javascript
+local jsSuperset = { "typescript", "typescriptreact", "vue", "svelte" }
+local simpleLogTypes = { "variableLog", "objectLog", "beepLog", "messageLog", "debugLog" }
+local complexLogTypes = { "stacktraceLog", "assertLog", "timeLogStart", "timeLogStop" }
+
+for _, lang in ipairs(jsSuperset) do
+	for _, logType in ipairs(simpleLogTypes) do
+		M[logType][lang] = M[logType].javascript
+	end
+	for _, logType in ipairs(complexLogTypes) do
+		M[logType][lang] = M[logType].typescript
+	end
+end
+
+-- shell
+local shellSupersets = { "bash", "zsh", "fish" }
+local allExceptStacktrace = vim.tbl_filter(
+	function(l) return l ~= "stacktraceLog" end,
+	vim.tbl_keys(M)
+)
+for _, lang in ipairs(shellSupersets) do
+	for _, logType in ipairs(allExceptStacktrace) do
+		M[logType][lang] = M[logType].javascript
+	end
+end
+
+--------------------------------------------------------------------------------
+return M
