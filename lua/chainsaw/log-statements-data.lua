@@ -23,6 +23,7 @@ return {
 		scss = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
+		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `just` variables
 	},
 	objectLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',

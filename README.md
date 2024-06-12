@@ -49,12 +49,14 @@ not met.
 - CSS / SCSS\*
 - Ruby
 - Rust
+- Justfiles
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
-*\* For languages like CSS, `nvim-chainsaw` uses statements such as `outline: 2px 
-solid red !important;`, which are the closest thing to logging you have.*
+*\* For non-scripting languages like CSS, `nvim-chainsaw` uses statements such
+as `outline: 2px solid red !important;`, which are the closest thing to logging
+you have.*
 
 ## Usage
 The plugin offers various types of log statements. Bind keymaps for the ones you
