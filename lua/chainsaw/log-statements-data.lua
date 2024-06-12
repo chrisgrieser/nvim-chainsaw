@@ -111,7 +111,6 @@ local M = {
 local jsSuperset = { "typescript", "typescriptreact", "javascriptreact", "vue", "svelte" }
 local simpleLogTypes = { "variableLog", "objectLog", "beepLog", "messageLog", "debugLog" }
 local complexLogTypes = { "stacktraceLog", "assertLog", "timeLogStart", "timeLogStop" }
-
 for _, lang in ipairs(jsSuperset) do
 	for _, logType in ipairs(simpleLogTypes) do
 		M[logType][lang] = M[logType].javascript
@@ -129,7 +128,7 @@ local allExceptStacktrace = vim.tbl_filter(
 )
 for _, lang in ipairs(shellSupersets) do
 	for _, logType in ipairs(allExceptStacktrace) do
-		M[logType][lang] = M[logType].javascript
+		M[logType][lang] = M[logType].sh
 	end
 end
 
