@@ -53,7 +53,7 @@ met.
 
 BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript (and: TypeScript / TypeScriptReact / Vue / Svelte)
+- JavaScript (and: JavaScriptReact / TypeScript / TypeScriptReact / Vue / Svelte)
 - Python
 - Lua
 - Shell (and: zsh / bash / fish)
