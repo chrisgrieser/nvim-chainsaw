@@ -1,4 +1,4 @@
-local u = require("chainsaw.utils")
+local rw = require("chainsaw.read-write-lines")
 local getVar = require("chainsaw.variable-identification").getVar
 
 local M = {}
@@ -12,9 +12,9 @@ function M.setup(newConfig) require("chainsaw.config").setup(newConfig) end
 
 function M.messageLog()
 	local config = require("chainsaw.config").config
-	local logLines = u.getTemplateStr("messageLog", config.logStatements)
+	local logLines = rw.getTemplateStr("messageLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { config.marker })
 
 	-- goto insert mode at correct location
 	normal('f";')
@@ -24,38 +24,38 @@ end
 function M.variableLog()
 	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = u.getTemplateStr("variableLog", config.logStatements)
+	local logLines = rw.getTemplateStr("variableLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker, varname, varname })
+	rw.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.objectLog()
 	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = u.getTemplateStr("objectLog", config.logStatements)
+	local logLines = rw.getTemplateStr("objectLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker, varname, varname })
+	rw.appendLines(logLines, { config.marker, varname, varname })
 end
 
 function M.stacktraceLog()
 	local config = require("chainsaw.config").config
-	local logLines = u.getTemplateStr("stacktraceLog", config.logStatements)
+	local logLines = rw.getTemplateStr("stacktraceLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { config.marker })
 end
 
 function M.assertLog()
 	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = u.getTemplateStr("assertLog", config.logStatements)
+	local logLines = rw.getTemplateStr("assertLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { varname, config.marker, varname })
+	rw.appendLines(logLines, { varname, config.marker, varname })
 	normal("f,") -- goto the comma to edit the condition
 end
 
 function M.beepLog()
 	local config = require("chainsaw.config").config
-	local logLines = u.getTemplateStr("beepLog", config.logStatements)
+	local logLines = rw.getTemplateStr("beepLog", config.logStatements)
 	if not logLines then return end
 
 	if not vim.b.beepLogIdx then vim.b["beepLogIdx"] = 0 end
@@ -63,7 +63,7 @@ function M.beepLog()
 	vim.b["beepLogIdx"] = math.fmod(vim.b.beepLogIdx, #config.beepEmojis) + 1
 	local emoji = config.beepEmojis[vim.b.beepLogIdx]
 
-	u.appendLines(logLines, { config.marker, emoji })
+	rw.appendLines(logLines, { config.marker, emoji })
 end
 
 function M.timeLog()
@@ -71,18 +71,18 @@ function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local logLines = u.getTemplateStr(startOrStop, config.logStatements)
+	local logLines = rw.getTemplateStr(startOrStop, config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { config.marker })
 
 	vim.b.timeLogStart = not vim.b.timeLogStart
 end
 
 function M.debugLog()
 	local config = require("chainsaw.config").config
-	local logLines = u.getTemplateStr("debugLog", config.logStatements)
+	local logLines = rw.getTemplateStr("debugLog", config.logStatements)
 	if not logLines then return end
-	u.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { config.marker })
 end
 
 function M.removeLogs()
