@@ -1,7 +1,7 @@
 local M = {}
 
 ---@param msg string
-local function warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "Chainsaw" }) end
+local function warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "ChainSaw" }) end
 --------------------------------------------------------------------------------
 
 ---append string below current line
