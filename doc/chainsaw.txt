@@ -77,7 +77,7 @@ USAGE                                          *chainsaw-nvim-chainsaw--usage*
 The plugin offers various types of log statements. Bind keymaps for the ones
 you want to use.
 
-All operation are dot-repeatable.
+All operations are dot-repeatable.
 
 
 LIST OF COMMANDS ~
