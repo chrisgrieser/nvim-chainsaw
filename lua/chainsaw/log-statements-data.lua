@@ -16,7 +16,6 @@ local M = {
 		sh = 'echo "%s %s: $%s" >&2',
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
-		scss = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
 		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `just` variables
@@ -106,29 +105,31 @@ local M = {
 
 --------------------------------------------------------------------------------
 -- SUPERSETS
+local logTypes = vim.tbl_keys(M)
 
--- javascript
-local jsSuperset = { "typescript", "typescriptreact", "javascriptreact", "vue", "svelte" }
-local simpleLogTypes = { "variableLog", "objectLog", "beepLog", "messageLog", "debugLog" }
-local complexLogTypes = { "stacktraceLog", "assertLog", "timeLogStart", "timeLogStop" }
-for _, lang in ipairs(jsSuperset) do
-	for _, logType in ipairs(simpleLogTypes) do
-		M[logType][lang] = M[logType].javascript
-	end
-	for _, logType in ipairs(complexLogTypes) do
+-- JS supersets inherit from `typescript`, and in turn `typescript` form
+-- `javascript`, if it set itself.
+local jsSupersets = { "typescriptreact", "javascriptreact", "vue", "svelte" }
+for _, logType in ipairs(logTypes) do
+	if not M[logType].typescript then M[logType].typescript = M[logType].javascript end
+	for _, lang in ipairs(jsSupersets) do
 		M[logType][lang] = M[logType].typescript
 	end
 end
 
--- shell
+-- shell supersets inherit from `sh`, if they have no config of their own.
 local shellSupersets = { "bash", "zsh", "fish" }
-local allExceptStacktrace = vim.tbl_filter(
-	function(l) return l ~= "stacktraceLog" end,
-	vim.tbl_keys(M)
-)
-for _, lang in ipairs(shellSupersets) do
-	for _, logType in ipairs(allExceptStacktrace) do
-		M[logType][lang] = M[logType].sh
+for _, logType in ipairs(logTypes) do
+	for _, lang in ipairs(shellSupersets) do
+		if not M[logType][lang] then M[logType][lang] = M[logType].sh end
+	end
+end
+
+-- CSS supersets inherit from `css`, if they have no config of their own.
+local cssSupersets = { "scss", "less" }
+for _, logType in ipairs(logTypes) do
+	for _, lang in ipairs(cssSupersets) do
+		if not M[logType][lang] then M[logType][lang] = M[logType].css end
 	end
 end
 

@@ -48,7 +48,7 @@ not met.
 - AppleScript
 - Ruby
 - Rust
-- CSS (and: SCSS)
+- CSS (and: SCSS / LESS)
 - Justfiles
 
 Not every language supports every type of log statement. For details on what is
