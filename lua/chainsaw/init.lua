@@ -5,31 +5,13 @@ local M = {}
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 --------------------------------------------------------------------------------
 
----@class (exact) pluginConfig
----@field marker string
----@field beepEmojis string[]
----@field logStatements logStatementData
-
----@type pluginConfig
-local defaultConfig = {
-	-- The marker should be a unique string, since `.removeLogs()` will remove
-	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
-	marker = "🪚",
-
-	-- emojis used for `.beepLog()`
-	beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
-
-	logStatements = require("chainsaw.log-statements-data"),
-}
-
-local config = defaultConfig -- in case user does not call `setup`
-
 ---@param newConfig? pluginConfig
-function M.setup(newConfig) config = vim.tbl_deep_extend("force", defaultConfig, newConfig or {}) end
+function M.setup(newConfig) require("chainsaw.config").setup(newConfig) end
 
 --------------------------------------------------------------------------------
 
 function M.messageLog()
+	local config = require("chainsaw.config").config
 	local logLines = u.getTemplateStr("messageLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
@@ -40,6 +22,7 @@ function M.messageLog()
 end
 
 function M.variableLog()
+	local config = require("chainsaw.config").config
 	local varname = getVar()
 	local logLines = u.getTemplateStr("variableLog", config.logStatements)
 	if not logLines then return end
@@ -47,6 +30,7 @@ function M.variableLog()
 end
 
 function M.objectLog()
+	local config = require("chainsaw.config").config
 	local varname = getVar()
 	local logLines = u.getTemplateStr("objectLog", config.logStatements)
 	if not logLines then return end
@@ -54,12 +38,14 @@ function M.objectLog()
 end
 
 function M.stacktraceLog()
+	local config = require("chainsaw.config").config
 	local logLines = u.getTemplateStr("stacktraceLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
 end
 
 function M.assertLog()
+	local config = require("chainsaw.config").config
 	local varname = getVar()
 	local logLines = u.getTemplateStr("assertLog", config.logStatements)
 	if not logLines then return end
@@ -68,6 +54,7 @@ function M.assertLog()
 end
 
 function M.beepLog()
+	local config = require("chainsaw.config").config
 	local logLines = u.getTemplateStr("beepLog", config.logStatements)
 	if not logLines then return end
 
@@ -80,6 +67,7 @@ function M.beepLog()
 end
 
 function M.timeLog()
+	local config = require("chainsaw.config").config
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
@@ -91,12 +79,14 @@ function M.timeLog()
 end
 
 function M.debugLog()
+	local config = require("chainsaw.config").config
 	local logLines = u.getTemplateStr("debugLog", config.logStatements)
 	if not logLines then return end
 	u.appendLines(logLines, { config.marker })
 end
 
 function M.removeLogs()
+	local config = require("chainsaw.config").config
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 
 	-- GUARD
