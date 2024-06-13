@@ -157,7 +157,7 @@ require("chainsaw").setup ({
 			javascript = 'console.log("%s %s:", %s);',
 			otherFiletype = … -- <-- add the statement for your filetype here
 		},
-		-- the same way for the other statement types
+		-- the same way for the other log statement operations
 	},
 })
 ```
@@ -185,28 +185,24 @@ require("chainsaw").setup {
 
 ## Similar Lua Plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
-- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features) (the debug commands)
+- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features)
 - [logsitter](https://github.com/gaelph/logsitter.nvim)
 
 The other plugins are more feature-rich, while, while `nvim-chainsaw` tries to
 achieve the core functionality in a far more lightweight manner to keep
 maintenance minimal.
 
-## Credits
 <!-- vale Google.FirstPerson = NO -->
+## Credits
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in touch.
 
-**Blog**  
 I also occasionally blog about vim: [Nano Tips for Vim](https://nanotipsforvim.prose.sh)
 
 **Profiles**  
-- [reddit](https://www.reddit.com/user/pseudometapseudo)
-- [Discord](https://discordapp.com/users/462774483044794368/)
 - [Academic Website](https://chris-grieser.de/)
-- [Twitter](https://twitter.com/pseudo_meta)
 - [Mastodon](https://pkm.social/@pseudometa)
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
