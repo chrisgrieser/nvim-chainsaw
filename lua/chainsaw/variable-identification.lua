@@ -1,7 +1,10 @@
 local M = {}
 --------------------------------------------------------------------------------
 
-local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
+local function leaveVisualMode()
+	local escKey = vim.api.nvim_replace_termcodes("<Esc>", false, true, true)
+	vim.api.nvim_feedkeys(escKey, "nx", false)
+end
 
 ---@return string
 ---@nodiscard
@@ -9,11 +12,12 @@ function M.getVar()
 	-- visual mode -> return selection
 	local isVisualMode = vim.fn.mode():find("[Vv]")
 	if isVisualMode then
-		local prevReg = vim.fn.getreg("z")
-		normal('"zy')
-		local varname = vim.fn.getreg("z"):gsub('"', '//"')
-		vim.fn.setreg("z", prevReg)
-		return varname
+		leaveVisualMode()
+		local startLn, startCol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+		local endLn, endCol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+		local selection = vim.api.nvim_buf_get_text(0, startLn - 1, startCol, endLn - 1, endCol + 1, {})
+		local text = table.concat(selection, "\n"):gsub('"', '//"')
+		return text
 	end
 
 	-- nvim prior to v0.9 OR no node under cursor -> return cword
