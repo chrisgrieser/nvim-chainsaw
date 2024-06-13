@@ -1,7 +1,8 @@
 local M = {}
---------------------------------------------------------------------------------
 
-local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
+---@param msg string
+local function warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "Chainsaw" }) end
+--------------------------------------------------------------------------------
 
 ---append string below current line
 ---@param logLines string|string[]
@@ -18,11 +19,8 @@ function M.appendLines(logLines, varsToInsert)
 		if quotesInVar then break end
 	end
 	if quotesInVar then
-		local replaceWith = quotesInVar == "'" and '"' or "'"
-		logLines = vim.tbl_map(
-			function(line) return line:gsub(quotesInVar, replaceWith) end,
-			logLines
-		)
+		local repl = quotesInVar == "'" and '"' or "'"
+		logLines = vim.tbl_map(function(line) return line:gsub(quotesInVar, repl) end, logLines)
 	end
 
 	-- ensure correct indentation
@@ -54,7 +52,7 @@ function M.getTemplateStr(logType, logsData)
 
 	-- GUARD unconfigured filetype
 	if not templateStr then
-		warnNotify(("There is no configuration for %s in %s."):format(logType, ft))
+		warn(("There is no configuration for %q in %q."):format(logType, ft))
 		return false
 	end
 
@@ -64,11 +62,11 @@ function M.getTemplateStr(logType, logsData)
 	for _, line in pairs(strArr) do
 		if line:find("[\r\n]") then
 			local msg = {
-				("Template for %s in %s has line breaks."):format(logType, ft),
+				("Template for %q in %q has line breaks."):format(logType, ft),
 				"The nvim-api does not accept line breaks in string when appending text.",
 				"Use a list of strings instead, each string representing one line.",
 			}
-			warnNotify(table.concat(msg, "\n"))
+			warn(table.concat(msg, "\n"))
 			return false
 		end
 	end
