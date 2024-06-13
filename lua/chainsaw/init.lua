@@ -16,10 +16,13 @@ end, { nargs = 1, complete = function() return vim.tbl_keys(require("chainsaw.lo
 -- the log-commands module. This results in the `g@` being the last command,
 -- which allows `.` to repeat the command stored in `operatorfunc`.
 -- Further explanation: https://www.vikasraj.dev/blog/vim-dot-repeat
--- 3. Operators usually expect a motion, but this plugin's does not require one.
--- Since we still need a motion to detect whether we are in the initial call or
--- second call, we require a dummy motion. For that, we use `l`, as this motion
--- prevents the cursor from moving.
+-- 3. Operators usually expect a motion, but this plugin's commands do not
+-- require one. Since we still need a motion to detect whether we are in the
+-- initial call or second call, we require a dummy motion. For that, we use `l`,
+-- as this motion prevents the cursor from moving.
+-- 4. For dot-repeatability, to work, it is furthermore necessary to not execute
+-- operators in the during the functions called, as this command would be
+-- repeated instead. Most notably, this means `normal` CANNOT be used.
 setmetatable(M, {
 	__index = function(_, key)
 		local function dotRepeatable(motion, ...)

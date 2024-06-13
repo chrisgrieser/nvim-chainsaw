@@ -63,7 +63,7 @@ supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua)
 The plugin offers various types of log statements. Bind keymaps for the ones you
 want to use.
 
-All operation are dot-repeatable.
+All operations are dot-repeatable.
 
 ### List of Commands
 
