@@ -15,7 +15,7 @@ function M.messageLog()
 
 	-- goto insert mode at correct location
 	normal('f";')
-	vim.cmd.startinsert()
+	vim.defer_fn(vim.cmd.startinsert, 1)
 end
 
 function M.variableLog()
