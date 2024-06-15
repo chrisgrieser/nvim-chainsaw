@@ -4,12 +4,38 @@ local M = {}
 local function warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "ChainSaw" }) end
 --------------------------------------------------------------------------------
 
+---most reliable way seems to be to get the indent of the line *after* the
+---cursor. If that line is a blank, we look further down. If the next line has
+---less indentation than the current line, it is the end of an indentation and
+---we return the current indentation instead.
+---@return string -- the indent as string
+local function determineIndent()
+	local function getLine(lnum) return vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] end
+	local function isBlank(lnum) return getLine(lnum):find("^%s*$") ~= nil end
+
+	local startLnum = vim.api.nvim_win_get_cursor(0)[1]
+	local lastLnumInBuf = vim.api.nvim_buf_line_count(0)
+	local currentIndent = getLine(startLnum):match("^%s*")
+
+	if startLnum == lastLnumInBuf then return currentIndent end
+	local lnum = startLnum
+	repeat
+		lnum = lnum + 1
+	until lnum >= lastLnumInBuf or not isBlank(lnum)
+
+	local nextLineIndent = getLine(lnum):match("^%s*")
+	local lineIsEndOfIndentation = #nextLineIndent < #currentIndent
+	if lineIsEndOfIndentation then return currentIndent end
+	return nextLineIndent
+end
+
+--------------------------------------------------------------------------------
+
 ---append string below current line
 ---@param logLines string|string[]
 ---@param varsToInsert string[]
 function M.appendLines(logLines, varsToInsert)
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-	local indent = vim.api.nvim_get_current_line():match("^%s*")
 	if type(logLines) == "string" then logLines = { logLines } end
 
 	-- Prevent nested quotes making logs invalid.
@@ -23,6 +49,11 @@ function M.appendLines(logLines, varsToInsert)
 		local repl = quotesInVar == "'" and '"' or "'"
 		logLines = vim.tbl_map(function(line) return line:gsub(quotesInVar, repl) end, logLines)
 	end
+
+	-- INFO we cannot use `:normal ==` to auto-indent the lines, because it using
+	-- a normal command messes up dot-repeatability. Thus, we have to determine
+	-- the indent manually ourselves.
+	local indent = determineIndent()
 
 	-- insert all lines
 	for _, line in pairs(logLines) do
