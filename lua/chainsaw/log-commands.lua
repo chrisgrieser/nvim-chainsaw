@@ -55,12 +55,16 @@ function M.beepLog()
 	local logLines = rw.getTemplateStr("beepLog", config.logStatements)
 	if not logLines then return end
 
-	if not vim.b.beepLogIdx then vim.b["beepLogIdx"] = 0 end
-	-- `math.fmod()` is lua's modulus
-	vim.b["beepLogIdx"] = math.fmod(vim.b.beepLogIdx, #config.beepEmojis) + 1
-	local emoji = config.beepEmojis[vim.b.beepLogIdx]
+	-- select the first emoji with the least number of occurrences, ensuring that
+	-- we will get as many different emojis as possible
+	local emojiToUse = { emoji = "", count = math.huge }
+	local bufferText = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+	for _, emoji in ipairs(config.beepEmojis) do
+		local _, count = bufferText:gsub(emoji, "")
+		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
+	end
 
-	rw.appendLines(logLines, { config.marker, emoji })
+	rw.appendLines(logLines, { config.marker, emojiToUse.emoji })
 end
 
 function M.timeLog()
