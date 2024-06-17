@@ -9,7 +9,7 @@ Table of Contents                                 *chainsaw-table-of-contents*
   - Usage                                      |chainsaw-nvim-chainsaw--usage|
   - Configuration                      |chainsaw-nvim-chainsaw--configuration|
   - SimilarLua Plugins            |chainsaw-nvim-chainsaw--similarlua-plugins|
-  - Credits                                  |chainsaw-nvim-chainsaw--credits|
+  - About the developer          |chainsaw-nvim-chainsaw--about-the-developer|
 
 ==============================================================================
 1. nvim-chainsaw                                     *chainsaw-nvim-chainsaw-*
@@ -214,12 +214,12 @@ SIMILARLUA PLUGINS                *chainsaw-nvim-chainsaw--similarlua-plugins*
 - refactoring.nvim <https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features>
 - logsitter <https://github.com/gaelph/logsitter.nvim>
 
-The other plugins are more feature-rich, while, while `nvim-chainsaw` tries to
-achieve the core functionality in a far more lightweight manner to keep
-maintenance minimal.
+The other plugins are more feature-rich, while `nvim-chainsaw` tries to achieve
+the core functionality in a far more lightweight manner to keep maintenance
+minimal.
 
 
-CREDITS                                      *chainsaw-nvim-chainsaw--credits*
+ABOUT THE DEVELOPER              *chainsaw-nvim-chainsaw--about-the-developer*
 
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
