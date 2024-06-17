@@ -190,12 +190,12 @@ require("chainsaw").setup {
 - [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features)
 - [logsitter](https://github.com/gaelph/logsitter.nvim)
 
-The other plugins are more feature-rich, while, while `nvim-chainsaw` tries to
+The other plugins are more feature-rich, while `nvim-chainsaw` tries to
 achieve the core functionality in a far more lightweight manner to keep
 maintenance minimal.
 
 <!-- vale Google.FirstPerson = NO -->
-## Credits
+## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
