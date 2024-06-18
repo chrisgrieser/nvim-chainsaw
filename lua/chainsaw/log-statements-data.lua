@@ -21,20 +21,18 @@ local M = {
 		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `just` variables
 	},
 	objectLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
-		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))',
+		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))', -- no built-in method in normal lua
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
 	stacktraceLog = { -- %s -> marker
 		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
-		nvim_lua = 'vim.notify(debug.traceback("%s"))',
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '%s stacktrace: ' ; caller 0",
 		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		typescript = 'console.trace("%s stacktrace: ");',
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
-		nvim_lua = 'vim.notify("%s beep %s")',
 		lua = 'print("%s beep %s")',
 		python = 'print("%s beep %s")',
 		javascript = 'console.log("%s beep %s");',
@@ -44,7 +42,6 @@ local M = {
 	},
 	messageLog = { -- %s -> marker
 		lua = 'print("%s ")',
-		nvim_lua = 'vim.notify("%s ")', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print("%s ")',
 		javascript = 'console.log("%s ");',
 		sh = 'echo "%s " >&2',
@@ -54,7 +51,6 @@ local M = {
 	},
 	assertLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
 		lua = 'assert(%s, "%s %s")',
-		nvim_lua = 'assert(%s, "%s %s")',
 		python = 'assert %s, "%s %s"',
 		typescript = 'console.assert(%s, "%s %s");',
 	},
@@ -67,7 +63,6 @@ local M = {
 		},
 	},
 	timeLogStart = { -- %s -> marker
-		nvim_lua = "local timelogStart = os.time() -- %s",
 		lua = "local timelogStart = os.time() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = +new Date(); // %s", -- not all JS engines support console.time()
@@ -75,10 +70,6 @@ local M = {
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
 	timeLogStop = { -- %s -> marker
-		nvim_lua = {
-			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
-			'print("%s:", durationSecs, "s")',
-		},
 		lua = {
 			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
 			'print("%s:", durationSecs, "s")',
@@ -131,6 +122,11 @@ for _, logType in ipairs(logTypes) do
 	for _, lang in ipairs(cssSupersets) do
 		if not M[logType][lang] then M[logType][lang] = M[logType].css end
 	end
+end
+
+-- `nvim-lua` inherit from `lua`, if it has no config of its own.
+for _, logType in ipairs(logTypes) do
+	if not M[logType].nvim_lua and M[logType].lua then M[logType].nvim_lua = M[logType].lua end
 end
 
 --------------------------------------------------------------------------------

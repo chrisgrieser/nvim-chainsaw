@@ -43,7 +43,7 @@ not met.
 ## Built-in language support
 - JavaScript (and: JavaScriptReact / TypeScript / TypeScriptReact / Vue / Svelte)
 - Python
-- Lua
+- Lua (with special considerations for `nvim_lua`)
 - Shell (and: zsh / bash / fish)
 - AppleScript
 - Ruby
@@ -203,7 +203,6 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 
 I also occasionally blog about vim: [Nano Tips for Vim](https://nanotipsforvim.prose.sh)
 
-**Profiles**  
 - [Academic Website](https://chris-grieser.de/)
 - [Mastodon](https://pkm.social/@pseudometa)
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
