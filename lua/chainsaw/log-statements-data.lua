@@ -27,6 +27,7 @@ local M = {
 	},
 	stacktraceLog = { -- %s -> marker
 		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
+		nvim_lua = 'vim.notify(debug.traceback("%s"))',
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '%s stacktrace: ' ; caller 0",
 		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
@@ -34,6 +35,7 @@ local M = {
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
 		lua = 'print("%s beep %s")',
+		nvim_lua = 'vim.notify("%s beep %s")',
 		python = 'print("%s beep %s")',
 		javascript = 'console.log("%s beep %s");',
 		sh = 'echo "%s beep %s" >&2',
@@ -42,6 +44,7 @@ local M = {
 	},
 	messageLog = { -- %s -> marker
 		lua = 'print("%s ")',
+		nvim_lua = 'vim.notify("%s ")',
 		python = 'print("%s ")',
 		javascript = 'console.log("%s ");',
 		sh = 'echo "%s " >&2',
@@ -73,6 +76,10 @@ local M = {
 		lua = {
 			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
 			'print("%s:", durationSecs, "s")',
+		},
+		nvim_lua = {
+			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
+			'vim.notify("%s:", durationSecs, "s")',
 		},
 		python = {
 			"durationSecs = round(time.perf_counter() - timelogStart, 3)  # %s",
