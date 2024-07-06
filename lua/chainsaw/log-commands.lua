@@ -99,7 +99,7 @@ function M.removeLogs()
 	-- escape for vim regex, in case `[]()` are used in the marker
 	local toRemove = config.marker:gsub("([%[%]()])", "\\%1")
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
-	vim.cmd(("silent global/%s/delete"):format(toRemove))
+	vim.cmd(("silent global/%s/delete _"):format(toRemove))
 	vim.api.nvim_win_set_cursor(0, cursorPos)
 	vim.cmd.nohlsearch()
 
