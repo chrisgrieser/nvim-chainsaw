@@ -6,12 +6,14 @@ local function leaveVisualMode()
 	vim.api.nvim_feedkeys(escKey, "nx", false)
 end
 
+-- needs to be passed, as dot-repeatability script leaves visual mode
+M.triggeredInVisualMode = false
+
 ---@return string
 ---@nodiscard
 function M.getVar()
 	-- visual mode -> return selection
-	local isVisualMode = vim.fn.mode():find("[Vv]")
-	if isVisualMode then
+	if M.triggeredInVisualMode then
 		leaveVisualMode()
 		local startLn, startCol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
 		local endLn, endCol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
