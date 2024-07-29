@@ -1,12 +1,7 @@
 local M = {}
 --------------------------------------------------------------------------------
 
-local function leaveVisualMode()
-	local escKey = vim.api.nvim_replace_termcodes("<Esc>", false, true, true)
-	vim.api.nvim_feedkeys(escKey, "nx", false)
-end
-
--- needs to be passed, as dot-repeatability script leaves visual mode
+-- passed from the dot-repeatability script
 M.triggeredInVisualMode = false
 
 ---@return string
@@ -14,7 +9,8 @@ M.triggeredInVisualMode = false
 function M.getVar()
 	-- visual mode -> return selection
 	if M.triggeredInVisualMode then
-		leaveVisualMode()
+		-- INFO no need to leave visual mode, since the dot-repeatability snippet
+		-- also does so
 		local startLn, startCol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
 		local endLn, endCol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
 		local selection =
