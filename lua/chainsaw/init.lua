@@ -30,7 +30,7 @@ setmetatable(M, {
 	__index = function(_, key)
 		local function dotRepeatable(motion, ...)
 			if not motion then
-				require("chainsaw.variable-identification").triggeredInVisualMode = vim.fn.mode():find("[Vv]")
+				require("chainsaw.var-detect").triggeredInVisualMode = vim.fn.mode():find("[Vv]")
 				vim.o.operatorfunc = "v:lua.require'chainsaw.log-commands'." .. key
 				vim.cmd.normal { "g@l", bang = true }
 			else

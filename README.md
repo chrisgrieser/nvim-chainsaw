@@ -125,8 +125,7 @@ Filetypes currently supporting this feature:
 - Python
 - JavaScript / TypeScript / TypeScriptReact / Vue / Svelte
 
-PRs adding support for more languages are welcome. The relevant code section [can
-be found here](https://github.com/chrisgrieser/nvim-chainsaw/blob/f59f590858f2b0a2f4bf1005eb7e0472141f42f1/lua/chainsaw/variable-identification.lua#L28-L42).
+*PRs adding support for more languages are welcome.*
 
 ## Configuration
 

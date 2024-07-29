@@ -1,7 +1,7 @@
 local M = {}
 
 local rw = require("chainsaw.read-write-lines")
-local getVar = require("chainsaw.variable-identification").getVar
+local getVar = require("chainsaw.var-detect").getVar
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
