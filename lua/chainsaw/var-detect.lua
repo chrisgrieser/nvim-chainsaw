@@ -1,16 +1,13 @@
 local M = {}
 --------------------------------------------------------------------------------
 
--- passed from the dot-repeatability script
-M.triggeredInVisualMode = false
-
 ---@return string
 ---@nodiscard
 function M.getVar()
 	-- visual mode -> return selection
-	if M.triggeredInVisualMode then
-		-- INFO no need to leave visual mode, since the dot-repeatability snippet
-		-- also does so
+	local mode = vim.fn.mode()
+	if mode:find("[Vv]") then
+		vim.cmd.normal { mode, bang = true } -- leave visual mode so `<`> mark sare set
 		local startLn, startCol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
 		local endLn, endCol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
 		local selection =

@@ -23,14 +23,14 @@ end, { nargs = 1, complete = function() return vim.tbl_keys(require("chainsaw.lo
 -- 4. For dot-repeatability, to work, it is furthermore necessary to not execute
 -- operators in the during the functions called, as this command would be
 -- repeated instead. Most notably, this means `normal` CANNOT be used.
--- 5. Since the dot-repeatability snippet triggers `:normal`, we leave visual
--- mode, so determining whether a command was triggered in visual mode or not
--- must be saves before.
+-- 5. The dot-repeatability lines are only triggered in normal mode, since
+-- visual mode in vim knows no dot-repeatability. Also, the use of `:normal`
+-- would result in vim leaving visual mode, breaking visual-mode detection
+-- later.
 setmetatable(M, {
 	__index = function(_, key)
 		local function dotRepeatable(motion, ...)
-			if not motion then
-				require("chainsaw.var-detect").triggeredInVisualMode = vim.fn.mode():find("[Vv]")
+			if not motion and vim.fn.mode() == "n" then
 				vim.o.operatorfunc = "v:lua.require'chainsaw.log-commands'." .. key
 				vim.cmd.normal { "g@l", bang = true }
 			else
