@@ -69,7 +69,6 @@ All operations are dot-repeatable.
 
 ```lua
 -- log the name and value of the a variable
--- normal mode: treesitter node or word under cursor, visual mode: selection
 require("chainsaw").variableLog()
 
 -- like variableLog, but with syntax specific to inspect an object, such as
@@ -103,10 +102,13 @@ require("chainsaw").debugLog()
 require("chainsaw").removeLogs()
 ```
 
-These features can also be accessed with the user command `:ChainSaw`.
-
-Each option corresponds to the commands above. For example, `:ChainSaw
+These features can also be accessed with the user command `:ChainSaw`. Each
+option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
+
+When using lua functions, `variableLog`, `objectLog`, and `assertLog` can also be 
+used in visual mode to use the visual selection instead of the word under the
+cursor.
 
 ### Smart Variable Identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
