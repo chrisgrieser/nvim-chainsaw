@@ -1,11 +1,11 @@
 local M = {}
 --------------------------------------------------------------------------------
 
----@param newConfig? pluginConfig
-function M.setup(newConfig) require("chainsaw.config").setup(newConfig) end
+---@param userConfig? pluginConfig
+function M.setup(userConfig) require("chainsaw.config").setup(userConfig) end
 
 vim.api.nvim_create_user_command("ChainSaw", function(ctx)
-	-- INFO needs to index this file, to make commands dot-repeatable
+	-- INFO needs to index this file to make commands dot-repeatable
 	M[ctx.args]()
 end, { nargs = 1, complete = function() return vim.tbl_keys(require("chainsaw.log-commands")) end })
 
@@ -20,13 +20,12 @@ end, { nargs = 1, complete = function() return vim.tbl_keys(require("chainsaw.lo
 -- require one. Since we still need a motion to detect whether we are in the
 -- initial call or second call, we require a dummy motion. For that, we use `l`,
 -- as this motion prevents the cursor from moving.
--- 4. For dot-repeatability, to work, it is furthermore necessary to not execute
+-- 4. For dot-repeatability to work, it is furthermore necessary to not execute
 -- operators in the during the functions called, as this command would be
--- repeated instead. Most notably, this means `normal` CANNOT be used.
+-- repeated instead. Most notably, this means `vim.cmd.normal` CANNOT be used.
 -- 5. The dot-repeatability lines are only triggered in normal mode, since
--- visual mode in vim knows no dot-repeatability. Also, the use of `:normal`
--- would result in vim leaving visual mode, breaking visual-mode detection
--- later.
+-- visual mode in vim has no dot-repeatability. Also, the use of `:normal`
+-- would result in vim leaving visual mode, breaking mode detection later on.
 setmetatable(M, {
 	__index = function(_, key)
 		local function dotRepeatable(motion, ...)

@@ -68,10 +68,10 @@ All operations are dot-repeatable.
 ### List of Commands
 
 ```lua
--- log the name and value of the a variable
+-- log the name and value of the variable under the cursor
 require("chainsaw").variableLog()
 
--- like variableLog, but with syntax specific to inspect an object, such as
+-- like variableLog, but with syntax specific to inspect an object such as
 -- `console.log(JSON.stringify(foobar))` in javascript
 require("chainsaw").objectLog()
 
@@ -107,7 +107,7 @@ option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, and `assertLog` can also be 
-used in visual mode to use the visual selection instead of the word under the
+used in **visual mode** to use the visual selection instead of the word under the
 cursor.
 
 ### Smart Variable Identification
@@ -136,11 +136,11 @@ Filetypes currently supporting this feature:
 ```lua
 -- default settings
 require("chainsaw").setup {
-	-- The marker should be a unique string, since `.removeLogs()` will remove
+	-- The marker should be a unique string, since `removeLogs` will remove
 	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
-	-- emojis used for `.beepLog()`
+	-- emojis used for `beepLog`
 	beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 }
 ```
