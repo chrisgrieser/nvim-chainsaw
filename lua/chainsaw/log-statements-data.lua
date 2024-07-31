@@ -9,7 +9,7 @@
 ---@type logStatementData
 local M = {
 	variableLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
-		lua = 'print("%s %s: ", %s)',
+		lua = 'print("%s %s: " .. tostring(%s))',
 		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
 		javascript = 'console.log("%s %s:", %s);',
