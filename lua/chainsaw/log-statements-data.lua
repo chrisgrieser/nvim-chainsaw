@@ -66,7 +66,7 @@ local M = {
 		},
 	},
 	timeLogStart = { -- %s -> marker
-		lua = "local timelogStart = os.time() -- %s",
+		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = +new Date(); // %s", -- not all JS engines support console.time()
 		sh = "timelogStart=$(date +%%s) # %s",
@@ -74,12 +74,12 @@ local M = {
 	},
 	timeLogStop = { -- %s -> marker
 		lua = {
-			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
-			'print("%s:", durationSecs, "s")',
+			"local durationSecs = os.clock() - timelogStart -- %s",
+			'print(("%s: %%.3fs"):format(durationSecs))',
 		},
 		nvim_lua = {
-			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
-			'vim.notify("%s: " .. durationSecs .. "s")',
+			"local durationSecs = os.clock() - timelogStart -- %s",
+			'vim.notify(("%s: %%.3fs"):format(durationSecs))',
 		},
 		python = {
 			"durationSecs = round(time.perf_counter() - timelogStart, 3)  # %s",
