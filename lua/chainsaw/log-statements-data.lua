@@ -91,7 +91,7 @@ local M = {
 		},
 		typescript = 'console.timeEnd("%s");',
 		sh = {
-			"timelogEnd=$(date +%%s) && durationSecs = $((timelogEnd - timelogStart)) # %s",
+			"durationSecs=$(($(date +%%s) - timelogStart))",
 			'echo "%s ${durationSecs}s" >&2',
 		},
 		ruby = {
