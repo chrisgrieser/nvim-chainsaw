@@ -79,7 +79,7 @@ local M = {
 		},
 		nvim_lua = {
 			"local durationSecs = os.difftime(os.time(), timelogStart) -- %s",
-			'vim.notify("%s:", durationSecs, "s")',
+			'vim.notify("%s: " .. durationSecs .. "s")',
 		},
 		python = {
 			"durationSecs = round(time.perf_counter() - timelogStart, 3)  # %s",
