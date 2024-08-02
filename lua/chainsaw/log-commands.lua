@@ -3,15 +3,18 @@ local M = {}
 local rw = require("chainsaw.read-write-lines")
 local getVar = require("chainsaw.var-detect").getVar
 
+---@param cmdStr string
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
+
+---@return string
+local function getMarker() return require("chainsaw.config").config.marker end
 
 --------------------------------------------------------------------------------
 
 function M.messageLog()
-	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("messageLog", config.logStatements)
+	local logLines = rw.getTemplateStr("messageLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { getMarker() })
 
 	-- goto insert mode at correct location
 	normal('f";')
@@ -19,40 +22,36 @@ function M.messageLog()
 end
 
 function M.variableLog()
-	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("variableLog", config.logStatements)
+	local logLines = rw.getTemplateStr("variableLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker, varname, varname })
+	rw.appendLines(logLines, { getMarker(), varname, varname })
 end
 
 function M.objectLog()
-	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("objectLog", config.logStatements)
+	local logLines = rw.getTemplateStr("objectLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker, varname, varname })
+	rw.appendLines(logLines, { getMarker(), varname, varname })
 end
 
 function M.stacktraceLog()
-	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("stacktraceLog", config.logStatements)
+	local logLines = rw.getTemplateStr("stacktraceLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { getMarker() })
 end
 
 function M.assertLog()
-	local config = require("chainsaw.config").config
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("assertLog", config.logStatements)
+	local logLines = rw.getTemplateStr("assertLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { varname, config.marker, varname })
+	rw.appendLines(logLines, { varname, getMarker(), varname })
 	normal("f,") -- goto the comma to edit the condition
 end
 
 function M.beepLog()
 	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("beepLog", config.logStatements)
+	local logLines = rw.getTemplateStr("beepLog")
 	if not logLines then return end
 
 	-- select the first emoji with the least number of occurrences, ensuring that
@@ -64,49 +63,47 @@ function M.beepLog()
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
 
-	rw.appendLines(logLines, { config.marker, emojiToUse.emoji })
+	rw.appendLines(logLines, { getMarker(), emojiToUse.emoji })
 end
 
 function M.timeLog()
-	local config = require("chainsaw.config").config
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local logLines = rw.getTemplateStr(startOrStop, config.logStatements)
+	local logLines = rw.getTemplateStr(startOrStop)
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { getMarker() })
 
 	vim.b.timeLogStart = not vim.b.timeLogStart
 end
 
 function M.debugLog()
-	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("debugLog", config.logStatements)
+	local logLines = rw.getTemplateStr("debugLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { getMarker() })
 end
 
 --------------------------------------------------------------------------------
 
 function M.clearLog()
-	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("clearLog", config.logStatements)
+	local logLines = rw.getTemplateStr("clearLog")
 	if not logLines then return end
-	rw.appendLines(logLines, { config.marker })
+	rw.appendLines(logLines, { getMarker() })
 end
 
 function M.removeLogs()
-	local config = require("chainsaw.config").config
+	local marker = getMarker()
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
+	local notify = require("chainsaw.utils").notify
 
 	-- GUARD
-	if config.marker == "" then
-		vim.notify("No marker set.", vim.log.levels.ERROR, { title = "Chainsaw" })
+	if marker == "" then
+		notify("No marker set.", "error")
 		return
 	end
 
 	-- escape for vim regex, in case `[]()` are used in the marker
-	local toRemove = config.marker:gsub("([%[%]()])", "\\%1")
+	local toRemove = marker:gsub("([%[%]()])", "\\%1")
 	local cursorPos = vim.api.nvim_win_get_cursor(0)
 	vim.cmd(("silent global/%s/delete _"):format(toRemove))
 	vim.api.nvim_win_set_cursor(0, cursorPos)
@@ -116,7 +113,7 @@ function M.removeLogs()
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
 	local msg = ("Removed %s lines."):format(linesRemoved)
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
-	vim.notify(msg, vim.log.levels.INFO, { title = "Chainsaw" })
+	notify(msg)
 
 	-- reset
 	vim.b.timelogStart = nil

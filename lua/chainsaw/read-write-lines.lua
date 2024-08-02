@@ -1,10 +1,7 @@
 local M = {}
-
----@param msg string
-local function warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "ChainSaw" }) end
 --------------------------------------------------------------------------------
 
----most reliable way seems to be to get the indent of the line *after* the
+---Most reliable way seems to be to get the indent of the line *after* the
 ---cursor. If that line is a blank, we look further down. If the next line has
 ---less indentation than the current line, it is the end of an indentation and
 ---we return the current indentation instead.
@@ -31,12 +28,10 @@ end
 
 --------------------------------------------------------------------------------
 
----append string below current line
----@param logLines string|string[]
+---@param logLines string[]
 ---@param varsToInsert string[]
 function M.appendLines(logLines, varsToInsert)
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-	if type(logLines) == "string" then logLines = { logLines } end
 
 	-- Prevent nested quotes making logs invalid.
 	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
@@ -67,33 +62,34 @@ function M.appendLines(logLines, varsToInsert)
 end
 
 ---@param logType string
----@param logsData logStatementData
----@return string|string[]|false returns false if not configured or invalid
+---@return string[]|false -- returns false if not configured or invalid
 ---@nodiscard
-function M.getTemplateStr(logType, logsData)
+function M.getTemplateStr(logType)
+	local notify = require("chainsaw.utils").notify
+
 	local ft = vim.bo.filetype
 	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
-	local templateStr = logsData[logType][ft]
+
+	local logStatements = require("chainsaw.config").config.logStatements
+	local templateStr = logStatements[logType][ft]
+	if type(templateStr) == "string" then templateStr = { templateStr } end
 
 	-- GUARD unconfigured filetype
 	if not templateStr then
-		warn(("There is no configuration for %q in %q."):format(logType, ft))
+		notify(("There is no configuration for %q in %q."):format(logType, ft), "warn")
 		return false
 	end
 
-	-- GUARD template has line breaks, which are not accepted by nvim-api
-	local strArr = type(templateStr) == "string" and { templateStr } or templateStr
-	---@cast strArr string[]
-	for _, line in pairs(strArr) do
-		if line:find("[\r\n]") then
-			local msg = {
-				("Template for %q in %q has line breaks."):format(logType, ft),
-				"The nvim-api does not accept line breaks in string when appending text.",
-				"Use a list of strings instead, each string representing one line.",
-			}
-			warn(table.concat(msg, "\n"))
-			return false
-		end
+	-- GUARD statement has line breaks
+	local hasLineBreaks = vim.iter(templateStr):any(function(line) return line:find("[\r\n]") end)
+	if hasLineBreaks then
+		local msg = table.concat({
+			("%q for %q has line breaks."):format(logType, ft),
+			"The nvim-api does not accept line breaks in string when appending text.",
+			"Use a list of strings instead, each string representing one line.",
+		}, "\n")
+		notify(msg, "warn")
+		return false
 	end
 
 	return templateStr
