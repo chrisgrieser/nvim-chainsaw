@@ -26,45 +26,10 @@ local function determineIndent()
 	return nextLineIndent
 end
 
---------------------------------------------------------------------------------
-
----@param logLines string[]
----@param varsToInsert string[]
-function M.appendLines(logLines, varsToInsert)
-	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-
-	-- Prevent nested quotes making logs invalid.
-	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
-	local quotesInVar
-	for _, var in pairs(varsToInsert) do
-		quotesInVar = var:match("'") or var:match('"')
-		if quotesInVar then break end
-	end
-	if quotesInVar then
-		local repl = quotesInVar == "'" and '"' or "'"
-		logLines = vim.tbl_map(function(line) return line:gsub(quotesInVar, repl) end, logLines)
-	end
-
-	-- INFO we cannot use `:normal ==` to auto-indent the lines, because it using
-	-- a normal command messes up dot-repeatability. Thus, we have to determine
-	-- the indent manually ourselves.
-	local indent = determineIndent()
-
-	-- insert all lines
-	for _, line in pairs(logLines) do
-		local toInsert = indent .. line:format(unpack(varsToInsert))
-		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
-		ln = ln + 1
-	end
-
-	-- move cursor down to last inserted line
-	vim.api.nvim_win_set_cursor(0, { ln, col })
-end
-
 ---@param logType string
 ---@return string[]|false -- returns false if not configured or invalid
 ---@nodiscard
-function M.getTemplateStr(logType)
+local function getTemplateStr(logType)
 	local notify = require("chainsaw.utils").notify
 
 	local ft = vim.bo.filetype
@@ -93,6 +58,47 @@ function M.getTemplateStr(logType)
 	end
 
 	return templateStr
+end
+
+--------------------------------------------------------------------------------
+
+---@param logType string
+---@param varsToInsert string[]
+---@return boolean success
+function M.appendLines(logType, varsToInsert)
+	local logLines = getTemplateStr(logType)
+	if not logLines then return false end
+
+	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+	-- Prevent nested quotes making logs invalid.
+	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
+	local quotesInVar
+	for _, var in pairs(varsToInsert) do
+		quotesInVar = var:match("'") or var:match('"')
+		if quotesInVar then break end
+	end
+	if quotesInVar then
+		local repl = quotesInVar == "'" and '"' or "'"
+		logLines = vim.tbl_map(function(line) return line:gsub(quotesInVar, repl) end, logLines)
+	end
+
+	-- INFO we cannot use `:normal ==` to auto-indent the lines, because it using
+	-- a normal command messes up dot-repeatability. Thus, we have to determine
+	-- the indent manually ourselves.
+	local indent = determineIndent()
+
+	-- insert all lines
+	for _, line in pairs(logLines) do
+		local toInsert = indent .. line:format(unpack(varsToInsert))
+		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
+		ln = ln + 1
+	end
+
+	-- move cursor down to last inserted line
+	vim.api.nvim_win_set_cursor(0, { ln, col })
+
+	return true
 end
 
 --------------------------------------------------------------------------------

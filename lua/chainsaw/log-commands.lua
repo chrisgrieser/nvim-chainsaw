@@ -12,47 +12,34 @@ local function getMarker() return require("chainsaw.config").config.marker end
 --------------------------------------------------------------------------------
 
 function M.messageLog()
-	local logLines = rw.getTemplateStr("messageLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker() })
-
-	-- goto insert mode at correct location
-	normal('f";')
-	vim.defer_fn(vim.cmd.startinsert, 1)
+	local success = rw.appendLines("messageLog", { getMarker() })
+	if success then
+		-- goto insert mode at correct location
+		normal('f";')
+		vim.defer_fn(vim.cmd.startinsert, 1)
+	end
 end
 
 function M.variableLog()
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("variableLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker(), varname, varname })
+	rw.appendLines("variableLog", { getMarker(), varname, varname })
 end
 
 function M.objectLog()
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("objectLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker(), varname, varname })
+	rw.appendLines("objectLog", { getMarker(), varname, varname })
 end
 
-function M.stacktraceLog()
-	local logLines = rw.getTemplateStr("stacktraceLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker() })
-end
+function M.stacktraceLog() rw.appendLines("stacktraceLog", { getMarker() }) end
 
 function M.assertLog()
 	local varname = getVar()
-	local logLines = rw.getTemplateStr("assertLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { varname, getMarker(), varname })
-	normal("f,") -- goto the comma to edit the condition
+	local success = rw.appendLines("assertLog", { varname, getMarker(), varname })
+	if success then normal("f,") end -- goto the comma to edit the condition
 end
 
 function M.beepLog()
 	local config = require("chainsaw.config").config
-	local logLines = rw.getTemplateStr("beepLog")
-	if not logLines then return end
 
 	-- select the first emoji with the least number of occurrences, ensuring that
 	-- we will get as many different emojis as possible
@@ -63,33 +50,27 @@ function M.beepLog()
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
 
-	rw.appendLines(logLines, { getMarker(), emojiToUse.emoji })
+	rw.appendLines("beepLog", { getMarker(), emojiToUse.emoji })
 end
 
 function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local logLines = rw.getTemplateStr(startOrStop)
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker() })
+	local success = rw.appendLines(startOrStop, { getMarker() })
 
-	vim.b.timeLogStart = not vim.b.timeLogStart
+	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
 
 function M.debugLog()
-	local logLines = rw.getTemplateStr("debugLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker() })
+	rw.appendLines("debugLog", { getMarker() })
+end
+
+function M.clearLog()
+	rw.appendLines("clearLog", { getMarker() })
 end
 
 --------------------------------------------------------------------------------
-
-function M.clearLog()
-	local logLines = rw.getTemplateStr("clearLog")
-	if not logLines then return end
-	rw.appendLines(logLines, { getMarker() })
-end
 
 function M.removeLogs()
 	local marker = getMarker()
