@@ -86,6 +86,15 @@ function M.debugLog()
 	rw.appendLines(logLines, { config.marker })
 end
 
+--------------------------------------------------------------------------------
+
+function M.clearLog()
+	local config = require("chainsaw.config").config
+	local logLines = rw.getTemplateStr("clearLog", config.logStatements)
+	if not logLines then return end
+	rw.appendLines(logLines, { config.marker })
+end
+
 function M.removeLogs()
 	local config = require("chainsaw.config").config
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)

@@ -65,6 +65,11 @@ local M = {
 			"set +exuo pipefail # %s", -- re-enable, so it does not disturb stuff from interactive shell
 		},
 	},
+	clearLog = { -- %s -> marker
+		javascript = "console.clear(); // %s",
+		python = "clear()  # %s",
+		sh = "clear # %s",
+	},
 	timeLogStart = { -- %s -> marker
 		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",

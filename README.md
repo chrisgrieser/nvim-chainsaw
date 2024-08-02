@@ -96,6 +96,9 @@ require("chainsaw").timeLog()
 -- debug statements like `debugger` in javascript or `breakpoint()` in python
 require("chainsaw").debugLog()
 
+-- clearing statement, such as `console.clear()`
+require("chainsaw").clearLog()
+
 ---------------------------------------------------
 
 -- remove all log statements created by chainsaw
