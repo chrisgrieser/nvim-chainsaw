@@ -1,6 +1,6 @@
 local M = {}
 
-local rw = require("chainsaw.read-write-lines")
+local append = require("chainsaw.append-lines").append
 local getVar = require("chainsaw.var-detect").getVar
 
 ---@param cmdStr string
@@ -12,7 +12,7 @@ local function getMarker() return require("chainsaw.config").config.marker end
 --------------------------------------------------------------------------------
 
 function M.messageLog()
-	local success = rw.appendLines("messageLog", { getMarker() })
+	local success = append("messageLog", { getMarker() })
 	if success then
 		-- goto insert mode at correct location
 		normal('f";')
@@ -22,19 +22,19 @@ end
 
 function M.variableLog()
 	local varname = getVar()
-	rw.appendLines("variableLog", { getMarker(), varname, varname })
+	append("variableLog", { getMarker(), varname, varname })
 end
 
 function M.objectLog()
 	local varname = getVar()
-	rw.appendLines("objectLog", { getMarker(), varname, varname })
+	append("objectLog", { getMarker(), varname, varname })
 end
 
-function M.stacktraceLog() rw.appendLines("stacktraceLog", { getMarker() }) end
+function M.stacktraceLog() append("stacktraceLog", { getMarker() }) end
 
 function M.assertLog()
 	local varname = getVar()
-	local success = rw.appendLines("assertLog", { varname, getMarker(), varname })
+	local success = append("assertLog", { varname, getMarker(), varname })
 	if success then normal("f,") end -- goto the comma to edit the condition
 end
 
@@ -50,25 +50,21 @@ function M.beepLog()
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
 
-	rw.appendLines("beepLog", { getMarker(), emojiToUse.emoji })
+	append("beepLog", { getMarker(), emojiToUse.emoji })
 end
 
 function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local success = rw.appendLines(startOrStop, { getMarker() })
+	local success = append(startOrStop, { getMarker() })
 
 	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
 
-function M.debugLog()
-	rw.appendLines("debugLog", { getMarker() })
-end
+function M.debugLog() append("debugLog", { getMarker() }) end
 
-function M.clearLog()
-	rw.appendLines("clearLog", { getMarker() })
-end
+function M.clearLog() append("clearLog", { getMarker() }) end
 
 --------------------------------------------------------------------------------
 

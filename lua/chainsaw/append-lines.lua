@@ -65,7 +65,7 @@ end
 ---@param logType string
 ---@param varsToInsert string[]
 ---@return boolean success
-function M.appendLines(logType, varsToInsert)
+function M.append(logType, varsToInsert)
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
