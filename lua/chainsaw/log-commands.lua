@@ -11,15 +11,6 @@ local function getMarker() return require("chainsaw.config").config.marker end
 
 --------------------------------------------------------------------------------
 
-function M.messageLog()
-	local success = append("messageLog", { getMarker() })
-	if success then
-		-- goto insert mode at correct location
-		normal('f";')
-		vim.defer_fn(vim.cmd.startinsert, 1)
-	end
-end
-
 function M.variableLog()
 	local varname = getVar()
 	append("variableLog", { getMarker(), varname, varname })
@@ -29,8 +20,6 @@ function M.objectLog()
 	local varname = getVar()
 	append("objectLog", { getMarker(), varname, varname })
 end
-
-function M.stacktraceLog() append("stacktraceLog", { getMarker() }) end
 
 function M.assertLog()
 	local varname = getVar()
@@ -53,6 +42,15 @@ function M.beepLog()
 	append("beepLog", { getMarker(), emojiToUse.emoji })
 end
 
+function M.messageLog()
+	local success = append("messageLog", { getMarker() })
+	if success then
+		-- goto insert mode at correct location
+		normal('f";')
+		vim.defer_fn(vim.cmd.startinsert, 1)
+	end
+end
+
 function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
@@ -61,6 +59,8 @@ function M.timeLog()
 
 	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
+
+function M.stacktraceLog() append("stacktraceLog", { getMarker() }) end
 
 function M.debugLog() append("debugLog", { getMarker() }) end
 

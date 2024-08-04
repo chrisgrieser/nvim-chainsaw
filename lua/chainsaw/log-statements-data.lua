@@ -25,13 +25,10 @@ local M = {
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
-	stacktraceLog = { -- %s -> marker
-		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
-		nvim_lua = 'vim.notify(debug.traceback("%s"))',
-		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
-		bash = "print '%s stacktrace: ' ; caller 0",
-		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
-		typescript = 'console.trace("%s stacktrace: ");',
+	assertLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
+		lua = 'assert(%s, "%s %s")',
+		python = 'assert %s, "%s %s"',
+		typescript = 'console.assert(%s, "%s %s");',
 	},
 	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
 		lua = 'print("%s beep %s")',
@@ -52,10 +49,13 @@ local M = {
 		rust = 'println!("{} ", "%s");',
 		ruby = 'puts "%s "',
 	},
-	assertLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
-		lua = 'assert(%s, "%s %s")',
-		python = 'assert %s, "%s %s"',
-		typescript = 'console.assert(%s, "%s %s");',
+	stacktraceLog = { -- %s -> marker
+		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
+		nvim_lua = 'vim.notify(debug.traceback("%s"))',
+		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
+		bash = "print '%s stacktrace: ' ; caller 0",
+		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
+		typescript = 'console.trace("%s stacktrace: ");',
 	},
 	debugLog = { -- %s -> marker
 		javascript = "debugger; // %s",
