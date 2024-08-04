@@ -1,7 +1,6 @@
 local M = {}
 
-local append = require("chainsaw.append-lines").append
-local getVar = require("chainsaw.var-detect").getVar
+local appendLines = require("chainsaw.append-lines").append
 
 ---@param cmdStr string
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
@@ -11,19 +10,12 @@ local function getMarker() return require("chainsaw.config").config.marker end
 
 --------------------------------------------------------------------------------
 
-function M.variableLog()
-	local varname = getVar()
-	append("variableLog", { getMarker(), varname, varname })
-end
+function M.variableLog() appendLines() end
 
-function M.objectLog()
-	local varname = getVar()
-	append("objectLog", { getMarker(), varname, varname })
-end
+function M.objectLog() appendLines() end
 
 function M.assertLog()
-	local varname = getVar()
-	local success = append("assertLog", { varname, getMarker(), varname })
+	local success = appendLines()
 	if success then normal("f,") end -- goto the comma to edit the condition
 end
 
@@ -38,12 +30,11 @@ function M.beepLog()
 		local _, count = bufferText:gsub(emoji, "")
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
-
-	append("beepLog", { getMarker(), emojiToUse.emoji })
+	appendLines(nil, emojiToUse.emoji)
 end
 
 function M.messageLog()
-	local success = append("messageLog", { getMarker() })
+	local success = appendLines(nil)
 	if success then
 		-- goto insert mode at correct location
 		normal('f";')
@@ -55,16 +46,16 @@ function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local success = append(startOrStop, { getMarker() })
+	local success = appendLines(startOrStop)
 
 	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
 
-function M.stacktraceLog() append("stacktraceLog", { getMarker() }) end
+function M.stacktraceLog() appendLines() end
 
-function M.debugLog() append("debugLog", { getMarker() }) end
+function M.debugLog() appendLines() end
 
-function M.clearLog() append("clearLog", { getMarker() }) end
+function M.clearLog() appendLines() end
 
 --------------------------------------------------------------------------------
 

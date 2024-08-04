@@ -30,9 +30,10 @@ setmetatable(M, {
 	__index = function(_, key)
 		local function dotRepeatable(motion, ...)
 			if not motion and vim.fn.mode() == "n" then
-				vim.o.operatorfunc = "v:lua.require'chainsaw.log-commands'." .. key
+				vim.o.operatorfunc = "v:lua.require'chainsaw'." .. key
 				vim.cmd.normal { "g@l", bang = true }
 			else
+				vim.b.chainsawLastLogtype = key
 				require("chainsaw.log-commands")[key](...)
 			end
 		end

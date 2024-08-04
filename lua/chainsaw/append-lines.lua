@@ -62,19 +62,32 @@ end
 
 --------------------------------------------------------------------------------
 
----@param logType string
----@param varsToInsert string[]
+---@param logType? string
+---@param specialPlaceholder? string
 ---@return boolean success
-function M.append(logType, varsToInsert)
+function M.append(logType, specialPlaceholder)
+	if not logType then logType = vim.b.chainsawLastLogtype end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
+	local config = require("chainsaw.config").config
+
+	local logtypePlaceholders = config.logStatements[logType]._placeholders
+	local placeholders = vim.iter(logtypePlaceholders)
+		:map(function(p)
+			if p == "marker" then return config.marker end
+			if p == "var" then return require("chainsaw.var-detect").getVar() end
+			if p == "special" then return specialPlaceholder end
+			assert(false, "Unknown placeholder: " .. p)
+		end)
+		:totable()
+
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 
-	-- Prevent nested quotes making logs invalid.
+	-- Prevent nested quotes from making statements invalid.
 	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
 	local quotesInVar
-	for _, var in pairs(varsToInsert) do
+	for _, var in pairs(placeholders) do
 		quotesInVar = var:match("'") or var:match('"')
 		if quotesInVar then break end
 	end
@@ -90,7 +103,7 @@ function M.append(logType, varsToInsert)
 
 	-- insert all lines
 	for _, line in pairs(logLines) do
-		local toInsert = indent .. line:format(unpack(varsToInsert))
+		local toInsert = indent .. line:format(unpack(placeholders))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
 		ln = ln + 1
 	end

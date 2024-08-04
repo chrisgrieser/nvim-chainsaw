@@ -2,13 +2,15 @@
 
 --------------------------------------------------------------------------------
 -- INFO
--- the strings may not include linebreaks. If you want to use multi-line log
+-- 1. the strings may not include linebreaks. If you want to use multi-line log
 -- statements, use a list of strings instead, each string representing one line.
+-- 2. All `%s` are replaced with the respective `_placeholders`
 --------------------------------------------------------------------------------
 
 ---@type logStatementData
 local M = {
-	variableLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
+	variableLog = {
+		_placeholders = { "marker", "var", "var" },
 		lua = 'print("%s %s: " .. tostring(%s))',
 		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
@@ -18,19 +20,22 @@ local M = {
 		css = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
-		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `just` variables
+		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `Justfile` variables
 	},
-	objectLog = { -- %s -> 1st: marker, 2nd: variable, 3rd: variable
+	objectLog = {
+		_placeholders = { "marker", "var", "var" },
 		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))', -- no built-in method in normal lua
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
 	},
-	assertLog = { -- %s -> 1st: variable, 2nd: marker, 3rd: variable
+	assertLog = {
+		_placeholders = { "var", "marker", "var" },
 		lua = 'assert(%s, "%s %s")',
 		python = 'assert %s, "%s %s"',
 		typescript = 'console.assert(%s, "%s %s");',
 	},
-	beepLog = { -- %s -> 1st: marker, 2nd: beepEmoji
+	beepLog = {
+		_placeholders = { "marker", "special" }, -- special = beepEmoji
 		lua = 'print("%s beep %s")',
 		nvim_lua = 'vim.notify("%s beep %s")',
 		python = 'print("%s beep %s")',
@@ -39,7 +44,8 @@ local M = {
 		applescript = "beep -- %s",
 		ruby = 'puts "%s beep %s"',
 	},
-	messageLog = { -- %s -> marker
+	messageLog = {
+		_placeholders = { "marker" },
 		lua = 'print("%s ")',
 		nvim_lua = 'vim.notify("%s ")',
 		python = 'print("%s ")',
@@ -49,7 +55,8 @@ local M = {
 		rust = 'println!("{} ", "%s");',
 		ruby = 'puts "%s "',
 	},
-	stacktraceLog = { -- %s -> marker
+	stacktraceLog = {
+		_placeholders = { "marker" },
 		lua = 'print(debug.traceback("%s"))', -- `debug.traceback` already prepends "stacktrace"
 		nvim_lua = 'vim.notify(debug.traceback("%s"))',
 		zsh = 'print "%s stacktrack: $funcfiletrace $funcstack"',
@@ -57,7 +64,8 @@ local M = {
 		javascript = 'console.log("%s stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		typescript = 'console.trace("%s stacktrace: ");',
 	},
-	debugLog = { -- %s -> marker
+	debugLog = {
+		_placeholders = { "marker" },
 		javascript = "debugger; // %s",
 		python = "breakpoint()  # %s", -- https://docs.python.org/3.11/library/functions.html?highlight=breakpoint#breakpoint
 		sh = {
@@ -65,19 +73,22 @@ local M = {
 			"set +exuo pipefail # %s", -- re-enable, so it does not disturb stuff from interactive shell
 		},
 	},
-	clearLog = { -- %s -> marker
+	clearLog = {
+		_placeholders = { "marker" },
 		javascript = "console.clear(); // %s",
 		python = "clear()  # %s",
 		sh = "clear # %s",
 	},
-	timeLogStart = { -- %s -> marker
+	timeLogStart = {
+		_placeholders = { "marker" },
 		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time()
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
-	timeLogStop = { -- %s -> marker
+	timeLogStop = {
+		_placeholders = { "marker" },
 		lua = {
 			"local durationSecs = os.clock() - timelogStart -- %s",
 			'print(("%s: %%.3fs"):format(durationSecs))',
