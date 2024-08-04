@@ -6,6 +6,7 @@ local M = {}
 ---less indentation than the current line, it is the end of an indentation and
 ---we return the current indentation instead.
 ---@return string -- the indent as string
+---@nodiscard
 local function determineIndent()
 	local function getLine(lnum) return vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] end
 	local function isBlank(lnum) return getLine(lnum):find("^%s*$") ~= nil end
@@ -64,6 +65,8 @@ end
 ---example: `var["field"]` would make `console.log("…")` invalid when inserted.
 ---@param var string
 ---@param templateLines string[]
+---@return string var
+---@nodiscard
 local function ensureValidQuotesInVar(var, templateLines)
 	local template = table.concat(templateLines)
 	local quoteInTemplate = template:match("'") or template:match("'")

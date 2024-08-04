@@ -20,7 +20,7 @@ local M = {
 		css = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
-		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- indented for `Justfile` variables
+		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- `Justfile` variables
 	},
 	objectLog = {
 		_placeholders = { "marker", "var", "var" },
@@ -74,7 +74,7 @@ local M = {
 	debugLog = {
 		_placeholders = { "marker" },
 		javascript = "debugger; // %s",
-		python = "breakpoint()  # %s", -- https://docs.python.org/3.11/library/functions.html?highlight=breakpoint#breakpoint
+		python = "breakpoint()  # %s",
 		sh = {
 			"set -exuo pipefail # %s", -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 			"set +exuo pipefail # %s", -- re-enable, so it does not disturb stuff from interactive shell
@@ -90,7 +90,7 @@ local M = {
 		_placeholders = { "marker" },
 		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
-		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time()
+		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
@@ -154,7 +154,7 @@ for _, logType in ipairs(logTypes) do
 	end
 end
 
--- `nvim-lua` inherit from `lua`, if it has no config of its own.
+-- `nvim-lua` inherits from `lua`, if it has no config of its own.
 for _, logType in ipairs(logTypes) do
 	if not M[logType].nvim_lua and M[logType].lua then M[logType].nvim_lua = M[logType].lua end
 end
