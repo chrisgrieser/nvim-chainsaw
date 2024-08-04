@@ -22,6 +22,8 @@ function M.variableLog() appendLines() end
 
 function M.objectLog() appendLines() end
 
+function M.typeLog() appendLines() end
+
 function M.assertLog()
 	local success = appendLines()
 	if not success then return end

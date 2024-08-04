@@ -76,6 +76,9 @@ require("chainsaw").variableLog()
 -- `console.log(JSON.stringify(foobar))` in javascript
 require("chainsaw").objectLog()
 
+-- inspect the type of the variable under cursor, such as `typeof foo` in js
+require("chainsaw").typeLog()
+
 -- assertion statement for variable under cursor
 require("chainsaw").assertLog()
 
@@ -110,9 +113,9 @@ These features can also be accessed with the user command `:ChainSaw`. Each
 option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
-When using lua functions, `variableLog`, `objectLog`, and `assertLog` can also be
-used in **visual mode** to use the visual selection instead of the word under the
-cursor.
+When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
+can also be used in **visual mode** to use the visual selection instead of the
+word under the cursor.
 
 ### Smart Variable Identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts

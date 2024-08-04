@@ -34,6 +34,12 @@ local M = {
 		python = 'assert %s, "%s %s"',
 		typescript = 'console.assert(%s, "%s %s");',
 	},
+	typeLog = {
+		_placeholders = { "marker", "var", "var" },
+		lua = 'print("%s %s: type is " .. type(%s))',
+		nvim_lua = 'vim.notify("%s %s: type is " .. type(%s))',
+		javascript = 'console.log("%s %s: type is " + typeof %s)',
+	},
 	beepLog = {
 		_placeholders = { "marker", "special" }, -- special = beepEmoji
 		lua = 'print("%s beep %s")',
