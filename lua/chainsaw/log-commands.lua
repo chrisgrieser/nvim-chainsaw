@@ -1,13 +1,13 @@
 local M = {}
 
-local appendLines = require("chainsaw.append-lines").append
+local insertStatements = require("chainsaw.insert-statements").insert
 
 ---@param pattern string
 ---@param where "start"|"end"
 ---@return boolean success
-local function gotoNextOccurrence(pattern, where)
-	local lnum, col = unpack(vim.api.nvim_win_get_cursor(0))
-	local start, _end = vim.api.nvim_get_current_line():find(pattern, col)
+local function moveCursorToPattern(pattern, where)
+	local lnum = vim.api.nvim_win_get_cursor(0)[1]
+	local start, _end = vim.api.nvim_get_current_line():find(pattern)
 	local location = where == "end" and _end or start
 	if location then
 		vim.api.nvim_win_set_cursor(0, { lnum, location - 1 })
@@ -18,17 +18,16 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.variableLog() appendLines() end
+function M.variableLog() insertStatements() end
 
-function M.objectLog() appendLines() end
+function M.objectLog() insertStatements() end
 
-function M.typeLog() appendLines() end
+function M.typeLog() insertStatements() end
 
 function M.assertLog()
-	local success = appendLines()
+	local success = insertStatements()
 	if not success then return end
-	-- move cursor to next comma to edit the condition
-	gotoNextOccurrence(".,", "start")
+	moveCursorToPattern(".,", "start") -- easier to edit the assertion condition
 end
 
 function M.beepLog()
@@ -42,15 +41,15 @@ function M.beepLog()
 		local _, count = bufferText:gsub(emoji, "")
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
-	appendLines(nil, emojiToUse.emoji)
+	insertStatements(nil, emojiToUse.emoji)
 end
 
 function M.messageLog()
-	local success = appendLines()
+	local success = insertStatements()
 	if not success then return end
 
 	-- goto insert mode at correct location to enter message
-	success = gotoNextOccurrence('".*"', "end") or gotoNextOccurrence("'.*'", "end")
+	success = moveCursorToPattern('".*"', "end") or moveCursorToPattern("'.*'", "end")
 	if success then vim.defer_fn(vim.cmd.startinsert, 1) end
 end
 
@@ -58,16 +57,16 @@ function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local success = appendLines(startOrStop)
+	local success = insertStatements(startOrStop)
 
 	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
 
-function M.stacktraceLog() appendLines() end
+function M.stacktraceLog() insertStatements() end
 
-function M.debugLog() appendLines() end
+function M.debugLog() insertStatements() end
 
-function M.clearLog() appendLines() end
+function M.clearLog() insertStatements() end
 
 --------------------------------------------------------------------------------
 

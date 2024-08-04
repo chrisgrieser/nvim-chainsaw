@@ -83,7 +83,7 @@ end
 ---@param logType? string
 ---@param specialPlaceholder? string
 ---@return boolean success
-function M.append(logType, specialPlaceholder)
+function M.insert(logType, specialPlaceholder)
 	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
@@ -106,18 +106,16 @@ function M.append(logType, specialPlaceholder)
 		:totable()
 
 	-- insert lines
-	local ln = vim.api.nvim_win_get_cursor(0)[1]
-	local toInsert
-	local indent = determineIndent() -- cant use `:normal ==` as it would break dot-repeatability
+	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local indent = determineIndent() -- `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
-		toInsert = indent .. line:format(unpack(placeholders))
+		local toInsert = indent .. line:format(unpack(placeholders))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
 		ln = ln + 1
 	end
 
-	-- move cursor to first non-whitespace character of the last inserted line
-	local col = toInsert:find("%S")
-	vim.api.nvim_win_set_cursor(0, { ln, col - 1 })
+	-- move cursor to last inserted line
+	vim.api.nvim_win_set_cursor(0, { ln, col })
 
 	return true
 end
