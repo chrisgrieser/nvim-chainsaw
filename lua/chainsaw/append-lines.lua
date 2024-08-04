@@ -69,9 +69,9 @@ end
 ---@nodiscard
 local function ensureValidQuotesInVar(var, templateLines)
 	local template = table.concat(templateLines)
-	local quoteInTemplate = template:match("'") or template:match("'")
+	local quoteInTemplate = template:match('"') or template:match("'")
 	local quotesInVar = var:match('"') or var:match("'")
-	if quotesInVar and quoteInTemplate and quotesInVar ~= quoteInTemplate then
+	if quotesInVar and quoteInTemplate and quotesInVar == quoteInTemplate then
 		local otherQuote = quotesInVar == "'" and '"' or "'"
 		var = var:gsub(quotesInVar, otherQuote)
 	end
