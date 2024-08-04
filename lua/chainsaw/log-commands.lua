@@ -2,11 +2,19 @@ local M = {}
 
 local appendLines = require("chainsaw.append-lines").append
 
----@param cmdStr string
-local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
-
----@return string
-local function getMarker() return require("chainsaw.config").config.marker end
+---@param pattern string
+---@param where "start"|"end"
+---@return boolean success
+local function gotoNextOccurrence(pattern, where)
+	local lnum, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local start, _end = vim.api.nvim_get_current_line():find(pattern, col)
+	local location = where == "end" and _end or start
+	if location then
+		vim.api.nvim_win_set_cursor(0, { lnum, location - 1 })
+		return true
+	end
+	return false
+end
 
 --------------------------------------------------------------------------------
 
@@ -16,7 +24,9 @@ function M.objectLog() appendLines() end
 
 function M.assertLog()
 	local success = appendLines()
-	if success then normal("f,") end -- goto the comma to edit the condition
+	if not success then return end
+	-- move cursor to next comma to edit the condition
+	gotoNextOccurrence(".,", "start")
 end
 
 function M.beepLog()
@@ -35,11 +45,12 @@ end
 
 function M.messageLog()
 	local success = appendLines(nil)
-	if success then
-		-- goto insert mode at correct location
-		normal('f";')
-		vim.defer_fn(vim.cmd.startinsert, 1)
-	end
+	if not success then return end
+
+	-- goto insert mode at correct location to enter message
+	success = gotoNextOccurrence('".*"', "end")
+	if not success then success = gotoNextOccurrence("'.*'", "end") end
+	if success then vim.defer_fn(vim.cmd.startinsert, 1) end
 end
 
 function M.timeLog()
@@ -60,7 +71,7 @@ function M.clearLog() appendLines() end
 --------------------------------------------------------------------------------
 
 function M.removeLogs()
-	local marker = getMarker()
+	local marker = require("chainsaw.config").config.marker
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 	local notify = require("chainsaw.utils").notify
 

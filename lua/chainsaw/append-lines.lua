@@ -82,7 +82,7 @@ function M.append(logType, specialPlaceholder)
 		end)
 		:totable()
 
-	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local ln = vim.api.nvim_win_get_cursor(0)[1]
 
 	-- Prevent nested quotes from making statements invalid.
 	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
@@ -102,14 +102,16 @@ function M.append(logType, specialPlaceholder)
 	local indent = determineIndent()
 
 	-- insert all lines
+	local toInsert
 	for _, line in pairs(logLines) do
-		local toInsert = indent .. line:format(unpack(placeholders))
+		toInsert = indent .. line:format(unpack(placeholders))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
 		ln = ln + 1
 	end
 
-	-- move cursor down to last inserted line
-	vim.api.nvim_win_set_cursor(0, { ln, col })
+	-- move cursor to first non-whitespace character of the last inserted line
+	local col = toInsert:find("%S")
+	vim.api.nvim_win_set_cursor(0, { ln, col - 1 })
 
 	return true
 end
