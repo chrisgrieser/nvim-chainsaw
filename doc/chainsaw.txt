@@ -32,10 +32,12 @@ such as logs of variables, assertions, or time-measuring.
     - |chainsaw-add-your-own-log-statements|
     - |chainsaw-have-your-formatter-ignore-the-log-statements|
 - |chainsaw-similar-lua-plugins|
-- |chainsaw-credits|
+- |chainsaw-about-the-developer|
 
 
 INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
+
+`nvim-chainsaw` requires at least nvim 0.10.
 
 >lua
     -- lazy.nvim
