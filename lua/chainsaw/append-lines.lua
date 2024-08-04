@@ -60,6 +60,21 @@ local function getTemplateStr(logType)
 	return templateStr
 end
 
+---Prevent nested quotes from making statements invalid.
+---example: `var["field"]` would make `console.log("…")` invalid when inserted.
+---@param var string
+---@param templateLines string[]
+local function ensureValidQuotesInVar(var, templateLines)
+	local template = table.concat(templateLines)
+	local quoteInTemplate = template:match("'") or template:match("'")
+	local quotesInVar = var:match('"') or var:match("'")
+	if quotesInVar and quoteInTemplate and quotesInVar ~= quoteInTemplate then
+		local otherQuote = quotesInVar == "'" and '"' or "'"
+		var = var:gsub(quotesInVar, otherQuote)
+	end
+	return var
+end
+
 --------------------------------------------------------------------------------
 
 ---@param logType? string
@@ -72,37 +87,24 @@ function M.append(logType, specialPlaceholder)
 
 	local config = require("chainsaw.config").config
 
+	-- determine placeholders
 	local logtypePlaceholders = config.logStatements[logType]._placeholders
 	local placeholders = vim.iter(logtypePlaceholders)
 		:map(function(p)
 			if p == "marker" then return config.marker end
-			if p == "var" then return require("chainsaw.var-detect").getVar() end
 			if p == "special" then return specialPlaceholder end
+			if p == "var" then
+				local var = require("chainsaw.var-detect").getVar()
+				return ensureValidQuotesInVar(var, logLines)
+			end
 			assert(false, "Unknown placeholder: " .. p)
 		end)
 		:totable()
 
+	-- insert lines
 	local ln = vim.api.nvim_win_get_cursor(0)[1]
-
-	-- Prevent nested quotes from making statements invalid.
-	-- example: `var["field"]` would make `console.log("…")` invalid when inserted.
-	local quotesInVar
-	for _, var in pairs(placeholders) do
-		quotesInVar = var:match("'") or var:match('"')
-		if quotesInVar then break end
-	end
-	if quotesInVar then
-		local repl = quotesInVar == "'" and '"' or "'"
-		logLines = vim.tbl_map(function(line) return line:gsub(quotesInVar, repl) end, logLines)
-	end
-
-	-- INFO we cannot use `:normal ==` to auto-indent the lines, because it using
-	-- a normal command messes up dot-repeatability. Thus, we have to determine
-	-- the indent manually ourselves.
-	local indent = determineIndent()
-
-	-- insert all lines
 	local toInsert
+	local indent = determineIndent() -- cant use `:normal ==` as it would break dot-repeatability
 	for _, line in pairs(logLines) do
 		toInsert = indent .. line:format(unpack(placeholders))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
