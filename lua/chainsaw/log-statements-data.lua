@@ -2,9 +2,9 @@
 
 --------------------------------------------------------------------------------
 -- INFO
--- 1. the strings may not include linebreaks. If you want to use multi-line log
+-- 1. The strings may not include linebreaks. If you want to use multi-line log
 -- statements, use a list of strings instead, each string representing one line.
--- 2. All `%s` are replaced with the respective `_placeholders`
+-- 2. All `%s` are replaced with the respective `_placeholders`.
 --------------------------------------------------------------------------------
 
 ---@type logStatementData
@@ -39,6 +39,7 @@ local M = {
 		lua = 'print("%s %s: type is " .. type(%s))',
 		nvim_lua = 'vim.notify("%s %s: type is " .. type(%s))',
 		javascript = 'console.log("%s %s: type is " + typeof %s)',
+		python = 'print(f"%s %s: {type(%s)}")',
 	},
 	beepLog = {
 		_placeholders = { "marker", "special" }, -- special = beepEmoji
