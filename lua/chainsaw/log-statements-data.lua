@@ -73,7 +73,7 @@ local M = {
 	timeLogStart = { -- %s -> marker
 		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
-		javascript = "const timelogStart = +new Date(); // %s", -- not all JS engines support console.time()
+		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time()
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
@@ -91,7 +91,7 @@ local M = {
 			'print(f"%s: {durationSecs}s")',
 		},
 		javascript = {
-			"const durationSecs = (+new Date() - timelogStart) / 1000; // %s",
+			"const durationSecs = (Date.now() - timelogStart) / 1000; // %s",
 			"console.log(`%s: ${durationSecs}s`);",
 		},
 		typescript = 'console.timeEnd("%s");',
