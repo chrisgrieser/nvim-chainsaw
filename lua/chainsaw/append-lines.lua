@@ -88,7 +88,8 @@ function M.append(logType, specialPlaceholder)
 	local config = require("chainsaw.config").config
 
 	-- determine placeholders
-	local logtypePlaceholders = config.logStatements[logType]._placeholders
+	local logtypePlaceholders =
+		assert(config.logStatements[logType]._placeholders, "Missing placeholders for " .. logType)
 	local placeholders = vim.iter(logtypePlaceholders)
 		:map(function(p)
 			if p == "marker" then return config.marker end
