@@ -21,11 +21,12 @@ such as logs of variables, assertions, or time-measuring.
 	* [Add your own log statements](#add-your-own-log-statements)
 	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
 - [Similar Lua Plugins](#similar-lua-plugins)
-- [Credits](#credits)
+- [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
 ## Installation
+`nvim-chainsaw` requires at least nvim 0.10.
 
 ```lua
 -- lazy.nvim
@@ -109,7 +110,7 @@ These features can also be accessed with the user command `:ChainSaw`. Each
 option corresponds to the commands above. For example, `:ChainSaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
-When using lua functions, `variableLog`, `objectLog`, and `assertLog` can also be 
+When using lua functions, `variableLog`, `objectLog`, and `assertLog` can also be
 used in **visual mode** to use the visual selection instead of the word under the
 cursor.
 

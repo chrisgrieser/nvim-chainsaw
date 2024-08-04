@@ -1,3 +1,12 @@
+local version = vim.version()
+if version.major == 0 and version.minor < 10 then
+	vim.notify(
+		'"nvim-chainsaw" requires at least nvim 0.10. Last commit supporting nvim 0.9 is 6e285fc.',
+		vim.log.levels.WARN
+	)
+	return
+end
+
 local M = {}
 --------------------------------------------------------------------------------
 
