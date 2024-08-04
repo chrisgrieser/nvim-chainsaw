@@ -42,7 +42,7 @@ setmetatable(M, {
 				vim.o.operatorfunc = "v:lua.require'chainsaw'." .. key
 				vim.cmd.normal { "g@l", bang = true }
 			else
-				vim.b.chainsawLastLogtype = key
+				vim.b.chainsawLogType = key
 				require("chainsaw.log-commands")[key](...)
 			end
 		end

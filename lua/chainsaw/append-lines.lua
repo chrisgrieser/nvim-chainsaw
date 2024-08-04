@@ -84,7 +84,7 @@ end
 ---@param specialPlaceholder? string
 ---@return boolean success
 function M.append(logType, specialPlaceholder)
-	if not logType then logType = vim.b.chainsawLastLogtype end
+	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
@@ -101,7 +101,7 @@ function M.append(logType, specialPlaceholder)
 				local var = require("chainsaw.var-detect").getVar()
 				return ensureValidQuotesInVar(var, logLines)
 			end
-			assert(false, "Unknown placeholder: " .. p)
+			error("Unknown placeholder: " .. p)
 		end)
 		:totable()
 

@@ -46,12 +46,11 @@ function M.beepLog()
 end
 
 function M.messageLog()
-	local success = appendLines(nil)
+	local success = appendLines()
 	if not success then return end
 
 	-- goto insert mode at correct location to enter message
-	success = gotoNextOccurrence('".*"', "end")
-	if not success then success = gotoNextOccurrence("'.*'", "end") end
+	success = gotoNextOccurrence('".*"', "end") or gotoNextOccurrence("'.*'", "end")
 	if success then vim.defer_fn(vim.cmd.startinsert, 1) end
 end
 
