@@ -1,6 +1,7 @@
 local M = {}
 
 local insertStatements = require("chainsaw.insert-statements").insert
+local notify = require("chainsaw.utils").notify
 
 ---@param pattern string
 ---@param where "start"|"end"
@@ -31,13 +32,17 @@ function M.assertLog()
 end
 
 function M.beepLog()
-	local config = require("chainsaw.config").config
+	local emojis = require("chainsaw.config").config.beepEmojis
+	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
+		notify("`beepEmojis` is not set.", "error")
+		return
+	end
 
 	-- select the first emoji with the least number of occurrences, ensuring that
 	-- we will get as many different emojis as possible
 	local emojiToUse = { emoji = "", count = math.huge }
 	local bufferText = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-	for _, emoji in ipairs(config.beepEmojis) do
+	for _, emoji in ipairs(emojis) do
 		local _, count = bufferText:gsub(emoji, "")
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
@@ -73,7 +78,6 @@ function M.clearLog() insertStatements() end
 function M.removeLogs()
 	local marker = require("chainsaw.config").config.marker
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
-	local notify = require("chainsaw.utils").notify
 
 	-- GUARD
 	if marker == "" then
