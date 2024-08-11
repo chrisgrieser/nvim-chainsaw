@@ -26,7 +26,10 @@ such as logs of variables, assertions, or time-measuring.
 <!-- tocstop -->
 
 ## Installation
-`nvim-chainsaw` requires at least nvim 0.10.
+**Requirements**
+- nvim 0.10 or higher.
+- Optional for [smart variable identification](#smart-variable-identification):
+  Treesitter parser for the respective languages.
 
 ```lua
 -- lazy.nvim
@@ -35,11 +38,6 @@ such as logs of variables, assertions, or time-measuring.
 -- packer
 use { "chrisgrieser/nvim-chainsaw" }
 ```
-
-It is recommended to use **nvim 0.9+** and install the **Treesitter parsers**
-for the respective languages, as this improves variable identification. The
-plugin falls back to the word under the cursor if those requirements are
-not met.
 
 ## Built-in language support
 - JavaScript (and: JavaScriptReact / TypeScript / TypeScriptReact / Vue / Svelte)
@@ -119,7 +117,8 @@ word under the cursor.
 
 ### Smart variable identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
-to automatically select the correct field.
+to automatically select the correct field. Note that this feature requires the
+Treesitter parser of the respective language to be installed.
 
 ```lua
 myVariable.myF[i]eld = "foobar"
