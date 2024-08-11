@@ -37,7 +37,9 @@ such as logs of variables, assertions, or time-measuring.
 
 INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
 
-`nvim-chainsaw` requires at least nvim 0.10.
+**Requirements** - nvim 0.10 or higher. - Optional for
+|chainsaw-smart-variable-identification| Treesitterparser for the respective
+languages.
 
 >lua
     -- lazy.nvim
@@ -46,11 +48,6 @@ INSTALLATION                            *chainsaw-nvim-chainsaw--installation*
     -- packer
     use { "chrisgrieser/nvim-chainsaw" }
 <
-
-It is recommended to use **nvim 0.9+** and install the **Treesitter parsers**
-for the respective languages, as this improves variable identification. The
-plugin falls back to the word under the cursor if those requirements are not
-met.
 
 
 BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
@@ -137,7 +134,8 @@ instead of the word under the cursor.
 SMART VARIABLE IDENTIFICATION ~
 
 When the variable under the cursor is an object with fields, `chainsaw`
-attempts to automatically select the correct field.
+attempts to automatically select the correct field. Note that this feature
+requires the Treesitter parser of the respective language to be installed.
 
 >lua
     myVariable.myF[i]eld = "foobar"
@@ -167,6 +165,12 @@ BASIC CONFIGURATION ~
     
         -- emojis used for `beepLog`
         beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+    
+        -- Highlight lines with the marker.
+        -- lazy.nvim users:, you need to add `event = VeryLazy` to the plugin spec to
+        -- have existing log statements highlighted as well.
+        ---@type string|false false to disable
+        logHighlightGroup = "Visual",
     }
 <
 
