@@ -111,6 +111,7 @@ function M.insert(logType, specialPlaceholder)
 	for _, line in pairs(logLines) do
 		local toInsert = indent .. line:format(unpack(placeholders))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
+		require("chainsaw.highlight").addHighlightToLine(ln)
 		ln = ln + 1
 	end
 
