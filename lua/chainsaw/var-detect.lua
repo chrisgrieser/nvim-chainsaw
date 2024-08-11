@@ -27,7 +27,8 @@ function M.getVar()
 	local ft = vim.bo.filetype
 	if ft == "lua" then
 		local cursorOnDot = node:type() == "dot_index_expression"
-		local cursorOnField = node:parent():type() == "dot_index_expression"
+		local cursorOnField = node:parent()
+			and node:parent():type() == "dot_index_expression"
 			and node:prev_named_sibling()
 		if cursorOnDot then
 			node = node:parent()
@@ -38,12 +39,13 @@ function M.getVar()
 		local cursorOnField = node:type() == "property_identifier"
 		if cursorOnField then node = node:parent() end
 	elseif ft == "python" then
-		local cursorOnField = node:type():find("^string_")
+		local cursorOnField = node:type():find("^string_") and node:parent()
 		if cursorOnField then node = node:parent():parent() end
 	end
 
-	-- GUARD on invalid node, fall back to cword
-	---@cast node TSNode
+	-- GUARD the node has no parent
+	if not node then return vim.fn.expand("<cword>") end
+
 	local nodeText = vim.treesitter.get_node_text(node, 0)
 	if nodeText:find("[\r\n]") then return vim.fn.expand("<cword>") end
 	return nodeText
