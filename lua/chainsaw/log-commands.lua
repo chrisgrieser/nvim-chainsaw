@@ -85,12 +85,14 @@ function M.removeLogs()
 		return
 	end
 
-	-- escape for vim regex, in case `[]()` are used in the marker
-	local toRemove = marker:gsub("([%[%]()])", "\\%1")
-	local cursorPos = vim.api.nvim_win_get_cursor(0)
-	vim.cmd(("silent global/%s/delete _"):format(toRemove))
-	vim.api.nvim_win_set_cursor(0, cursorPos)
-	vim.cmd.nohlsearch()
+	-- Remove lines. Deleting individual lines instead of rewriting the whole
+	-- buffer to preserve marks, folds, and undos.
+	local bufLines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	for i = #bufLines, 1, -1 do
+		if bufLines[i]:find(marker, nil, true) then
+			vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
+		end
+	end
 
 	-- notify on number of lines removed
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
