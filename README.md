@@ -14,8 +14,8 @@ such as logs of variables, assertions, or time-measuring.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-	* [List of Commands](#list-of-commands)
-	* [Smart Variable Identification](#smart-variable-identification)
+	* [List of commands](#list-of-commands)
+	* [Smart variable identification](#smart-variable-identification)
 - [Configuration](#configuration)
 	* [Basic Configuration](#basic-configuration)
 	* [Add your own log statements](#add-your-own-log-statements)
@@ -66,7 +66,7 @@ want to use.
 
 All operations are dot-repeatable.
 
-### List of Commands
+### List of commands
 
 ```lua
 -- log the name and value of the variable under the cursor
@@ -117,7 +117,7 @@ When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
 word under the cursor.
 
-### Smart Variable Identification
+### Smart variable identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
 to automatically select the correct field.
 
