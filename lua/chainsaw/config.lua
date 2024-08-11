@@ -1,12 +1,7 @@
 local M = {}
 --------------------------------------------------------------------------------
 
----@class (exact) pluginConfig
----@field marker string
----@field beepEmojis string[]
----@field logStatements logStatementData
-
----@type pluginConfig
+---@class pluginConfig
 local defaultConfig = {
 	-- The marker should be a unique string, since `removeLogs` will remove
 	-- any line with it. Emojis or strings like "[Chainsaw]" are recommended.
