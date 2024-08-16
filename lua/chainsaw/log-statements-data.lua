@@ -20,7 +20,6 @@ local M = {
 		css = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
 		ruby = 'puts "%s %s: #{%s}"',
-		just = { "", "log_variable: # %s", '\techo "%s {{ %s }}"' }, -- `Justfile` variables
 	},
 	objectLog = {
 		_placeholders = { "marker", "var", "var" },

@@ -48,7 +48,6 @@ use { "chrisgrieser/nvim-chainsaw" }
 - Ruby
 - Rust
 - CSS (and: SCSS / LESS)
-- Justfiles
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
