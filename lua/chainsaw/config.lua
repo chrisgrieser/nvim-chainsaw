@@ -11,7 +11,7 @@ local defaultConfig = {
 	-- Highlight lines with the marker.
 	-- lazy.nvim users:, you need to add `event = VeryLazy` to the plugin spec to
 	-- have existing log statements highlighted as well.
-	---@type string|false false to disable
+	---@type string|false -- false to disable
 	logHighlightGroup = "Visual",
 
 	-- emojis used for `beepLog`

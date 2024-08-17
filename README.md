@@ -40,14 +40,14 @@ use { "chrisgrieser/nvim-chainsaw" }
 ```
 
 ## Built-in language support
-- JavaScript (and: JavaScriptReact / TypeScript / TypeScriptReact / Vue / Svelte)
+- JavaScript (and supersets)
 - Python
 - Lua (with special considerations for `nvim_lua`)
-- Shell (and: zsh / bash / fish)
+- Shell (and supersets)
 - AppleScript
 - Ruby
 - Rust
-- CSS (and: SCSS / LESS)
+- CSS (and supersets)
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
@@ -66,7 +66,7 @@ All operations are dot-repeatable.
 ### List of commands
 
 ```lua
--- log the name and value of the variable under the cursor
+-- log the name & value of the variable under the cursor
 require("chainsaw").variableLog()
 
 -- like variableLog, but with syntax specific to inspect an object such as
@@ -130,7 +130,7 @@ myVa[r]iable.myField = "foobar"
 Filetypes currently supporting this feature:
 - Lua
 - Python
-- JavaScript / TypeScript / TypeScriptReact / Vue / Svelte
+- JavaScript (and supersets)
 
 *PRs adding support for more languages are welcome.*
 
@@ -149,7 +149,7 @@ require("chainsaw").setup {
 	-- Highlight lines with the marker.
 	-- lazy.nvim users:, you need to add `event = VeryLazy` to the plugin spec to
 	-- have existing log statements highlighted as well.
-	---@type string|false false to disable
+	---@type string|false -- false to disable
 	logHighlightGroup = "Visual",
 
 	-- emojis used for `beepLog`
