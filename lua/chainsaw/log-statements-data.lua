@@ -138,7 +138,7 @@ for _, logType in ipairs(logTypes) do
 end
 
 -- shell supersets inherit from `sh`, if they have no config of their own.
-local shellSupersets = { "bash", "zsh", "fish" }
+local shellSupersets = { "bash", "zsh", "fish", "nu" }
 for _, logType in ipairs(logTypes) do
 	for _, lang in ipairs(shellSupersets) do
 		if not M[logType][lang] then M[logType][lang] = M[logType].sh end
