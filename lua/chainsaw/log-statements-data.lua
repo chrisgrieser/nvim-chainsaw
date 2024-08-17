@@ -146,7 +146,7 @@ for _, logType in ipairs(logTypes) do
 end
 
 -- CSS supersets inherit from `css`, if they have no config of their own.
-local cssSupersets = { "scss", "less" }
+local cssSupersets = { "scss", "less", "sass" }
 for _, logType in ipairs(logTypes) do
 	for _, lang in ipairs(cssSupersets) do
 		if not M[logType][lang] then M[logType][lang] = M[logType].css end
