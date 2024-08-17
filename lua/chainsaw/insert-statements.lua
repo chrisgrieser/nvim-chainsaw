@@ -93,12 +93,15 @@ function M.insert(logType, specialPlaceholder)
 	-- determine placeholders
 	local logtypePlaceholders =
 		assert(config.logStatements[logType]._placeholders, "Missing placeholders for " .. logType)
+	local var
 	local placeholders = vim.iter(logtypePlaceholders)
 		:map(function(p)
 			if p == "marker" then return config.marker end
 			if p == "special" then return specialPlaceholder end
 			if p == "var" then
-				local var = require("chainsaw.var-detect").getVar()
+				-- run `getVar` only once, since it leaves visual mode, resulting in
+				-- a different result on second call
+				var = var or require("chainsaw.var-detect").getVar()
 				return ensureValidQuotesInVar(var, logLines)
 			end
 			error("Unknown placeholder: " .. p)
