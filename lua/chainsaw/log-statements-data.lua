@@ -90,6 +90,7 @@ local M = {
 		lua = "local timelogStart = os.clock() -- %s",
 		python = "local timelogStart = time.perf_counter()  # %s",
 		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time
+		typescript = 'console.time("%s");',
 		sh = "timelogStart=$(date +%%s) # %s",
 		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
