@@ -1,6 +1,0 @@
-# DOCS https://github.com/crate-ci/typos/blob/master/docs/reference.md
-#───────────────────────────────────────────────────────────────────────────────
-
-# ignore these words
-[default.extend-words]
-noice = "noice" # plugin name

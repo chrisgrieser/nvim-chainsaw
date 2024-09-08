@@ -12,7 +12,7 @@ local M = {
 	variableLog = {
 		_placeholders = { "marker", "var", "var" },
 		lua = 'print("%s %s: " .. tostring(%s))',
-		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to noice.nvim https://github.com/folke/noice.nvim/issues/556
+		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
 		javascript = 'console.log("%s %s:", %s);',
 		sh = 'echo "%s %s: $%s" >&2',
