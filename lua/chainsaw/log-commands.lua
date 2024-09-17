@@ -1,5 +1,3 @@
-local M = {}
-
 local insertStatements = require("chainsaw.insert-statements").insert
 local notify = require("chainsaw.utils").notify
 
@@ -19,11 +17,16 @@ end
 
 --------------------------------------------------------------------------------
 
-function M.variableLog() insertStatements() end
-
-function M.objectLog() insertStatements() end
-
-function M.typeLog() insertStatements() end
+-- not using metatable-__index, as the logtype-names are needed for suggestions 
+-- for the `:ChainSaw` command
+local M = {
+	variableLog = insertStatements,
+	objectLog = insertStatements,
+	typeLog = insertStatements,
+	stacktraceLog = insertStatements,
+	debugLog = insertStatements,
+	clearLog = insertStatements,
+}
 
 function M.assertLog()
 	local success = insertStatements()
@@ -66,12 +69,6 @@ function M.timeLog()
 
 	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
 end
-
-function M.stacktraceLog() insertStatements() end
-
-function M.debugLog() insertStatements() end
-
-function M.clearLog() insertStatements() end
 
 --------------------------------------------------------------------------------
 
