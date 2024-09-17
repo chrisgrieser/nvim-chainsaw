@@ -41,7 +41,7 @@ local M = {
 		python = 'print(f"%s %s: {type(%s)}")',
 	},
 	beepLog = {
-		_placeholders = { "marker", "special" }, -- special = beepEmoji
+		_placeholders = { "marker", "beepEmoji" },
 		lua = 'print("%s beep %s")',
 		nvim_lua = 'vim.notify("%s beep %s")',
 		python = 'print("%s beep %s")',

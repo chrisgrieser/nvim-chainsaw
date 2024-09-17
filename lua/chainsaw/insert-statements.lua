@@ -81,9 +81,9 @@ end
 --------------------------------------------------------------------------------
 
 ---@param logType? string
----@param specialPlaceholder? string
+---@param beepEmoji? string
 ---@return boolean success
-function M.insert(logType, specialPlaceholder)
+function M.insert(logType, beepEmoji)
 	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
@@ -97,7 +97,7 @@ function M.insert(logType, specialPlaceholder)
 	local placeholders = vim.iter(logtypePlaceholders)
 		:map(function(p)
 			if p == "marker" then return config.marker end
-			if p == "special" then return specialPlaceholder end
+			if p == "beepEmoji" then return beepEmoji end
 			if p == "var" then
 				-- run `getVar` only once, since it leaves visual mode, resulting in
 				-- a different result on second call
