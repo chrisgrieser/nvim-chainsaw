@@ -26,6 +26,7 @@ local M = {
 	stacktraceLog = insertStatements,
 	debugLog = insertStatements,
 	clearLog = insertStatements,
+	sound = insertStatements,
 }
 
 function M.assertLog()

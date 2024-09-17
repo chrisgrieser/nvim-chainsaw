@@ -80,9 +80,15 @@ require("chainsaw").typeLog()
 require("chainsaw").assertLog()
 
 -- Minimal log statement, with an emoji for differentiation. Intended for
--- control flow inspection, i.e. to quickly glance whether a condition was
--- triggered or not. (Inspired by AppleScript's `beep` command.)
+-- control flow inspection, that is to quickly glance whether a condition was
+-- triggered or not.
 require("chainsaw").beepLog()
+
+-- Sound-playing statement for audible debugging.
+-- Depending on the type of log statement, the program may need
+-- to run in a terminal that supports the system bell command. 
+-- Inspired by https://news.ycombinator.com/item?id=41519046
+require("chainsaw").sound()
 
 -- create log statement, and position the cursor to enter a message
 require("chainsaw").messageLog()

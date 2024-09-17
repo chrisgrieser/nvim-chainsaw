@@ -47,8 +47,16 @@ local M = {
 		python = 'print("%s beep %s")',
 		javascript = 'console.log("%s beep %s");',
 		sh = 'echo "%s beep %s" >&2',
-		applescript = "beep -- %s",
+		applescript = 'log "%s beep %s"',
 		ruby = 'puts "%s beep %s"',
+	},
+	sound = { -- NOTE system bell commands requires program to run in a terminal supporting it
+		_placeholders = { "marker" },
+		sh = 'printf "\\a" # %s', -- system bell
+		python = 'print("\\a")  # %s', -- system bell
+		applescript = "beep -- %s",
+		-- javascript = 'console.log("\\u0007"); // %s', -- system bell
+		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play()',
 	},
 	messageLog = {
 		_placeholders = { "marker" },
