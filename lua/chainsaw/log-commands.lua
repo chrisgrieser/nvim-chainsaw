@@ -36,9 +36,7 @@ function M.assertLog()
 end
 
 -- DEPRECATION
-function M.beepLog()
-	notify("`beepLog` is deprecated. Use `emojiLog` or `sound` instead.", "warn")
-end
+function M.beepLog() notify("`beepLog` is deprecated. Use `emojiLog` or `sound` instead.", "warn") end
 
 function M.emojiLog()
 	local emojis = require("chainsaw.config").config.logEmojis
