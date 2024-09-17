@@ -82,7 +82,7 @@ require("chainsaw").assertLog()
 -- Minimal log statement, with an emoji for differentiation. Intended for
 -- control flow inspection, that is to quickly glance whether a condition was
 -- triggered or not.
-require("chainsaw").beepLog()
+require("chainsaw").emojiLog()
 
 -- Sound-playing statement for audible debugging.
 -- Depending on the type of log statement, the program may need
@@ -158,8 +158,8 @@ require("chainsaw").setup {
 	---@type string|false -- false to disable
 	logHighlightGroup = "Visual",
 
-	-- emojis used for `beepLog`
-	beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+	-- emojis used for `emojiLog`
+	logEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 }
 ```
 

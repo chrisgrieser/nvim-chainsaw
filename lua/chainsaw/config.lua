@@ -14,8 +14,8 @@ local defaultConfig = {
 	---@type string|false -- false to disable
 	logHighlightGroup = "Visual",
 
-	-- emojis used for `beepLog`
-	beepEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+	-- emojis used for `emojiLog`
+	logEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 
 	logStatements = require("chainsaw.log-statements-data"),
 }
@@ -33,6 +33,13 @@ function M.setup(userConfig)
 			return
 		end
 		require("chainsaw.highlight").highlightExistingLogs()
+	end
+
+	-- DEPRECATION
+	if M.config.beepEmojis then ---@diagnostic disable-line: undefined-field
+		local msg = "Config `beepEmojis` is deprecated. Use `logEmojis` instead."
+		require("chainsaw.utils").notify(msg, "warn")
+		M.config.logEmojis = M.config.beepEmojis ---@diagnostic disable-line: undefined-field
 	end
 end
 
