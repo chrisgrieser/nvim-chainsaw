@@ -17,7 +17,7 @@ end
 
 --------------------------------------------------------------------------------
 
--- not using metatable-__index, as the logtype-names are needed for suggestions 
+-- not using metatable-__index, as the logtype-names are needed for suggestions
 -- for the `:ChainSaw` command
 local M = {
 	variableLog = insertStatements,
