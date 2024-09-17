@@ -5,7 +5,7 @@
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
 Speed up log creation. Create various kinds of language-specific log statements,
-such as logs of variables, assertions, or time-measuring.
+such as logs of variables, assertions, or stacktraces, timings, and more.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
@@ -17,10 +17,10 @@ such as logs of variables, assertions, or time-measuring.
 	* [List of commands](#list-of-commands)
 	* [Smart variable identification](#smart-variable-identification)
 - [Configuration](#configuration)
-	* [Basic Configuration](#basic-configuration)
+	* [Basic configuration](#basic-configuration)
 	* [Add your own log statements](#add-your-own-log-statements)
 	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
-- [Similar Lua Plugins](#similar-lua-plugins)
+- [Similar lua plugins](#similar-lua-plugins)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -136,7 +136,7 @@ Filetypes currently supporting this feature:
 
 ## Configuration
 
-### Basic Configuration
+### Basic configuration
 
 ```lua
 -- default settings
@@ -198,7 +198,7 @@ require("chainsaw").setup {
 }
 ```
 
-## Similar Lua Plugins
+## Similar lua plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
 - [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features)
 - [logsitter](https://github.com/gaelph/logsitter.nvim)
