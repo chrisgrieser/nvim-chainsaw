@@ -67,11 +67,18 @@ end
 
 function M.timeLog()
 	if vim.b.timeLogStart == nil then vim.b.timeLogStart = true end
+	if vim.b.timeLogIndex == nil then vim.b.timeLogIndex = 1 end
 
 	local startOrStop = vim.b.timeLogStart and "timeLogStart" or "timeLogStop"
-	local success = insertStatements(startOrStop)
+	local success = insertStatements(startOrStop, vim.b.timeLogIndex)
+	if not success then return end
 
-	if success then vim.b.timeLogStart = not vim.b.timeLogStart end
+	if vim.b.timeLogStart then
+		vim.b.timeLogStart = false
+	else
+		vim.b.timeLogIndex = vim.b.timeLogIndex + 1
+		vim.b.timeLogStart = true
+	end
 end
 
 --------------------------------------------------------------------------------

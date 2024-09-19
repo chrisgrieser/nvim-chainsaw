@@ -41,7 +41,7 @@ local M = {
 		python = 'print(f"%s %s: {type(%s)}")',
 	},
 	emojiLog = {
-		_placeholders = { "marker", "emoji" },
+		_placeholders = { "marker", "special" }, -- special = emoji
 		lua = 'print("%s %s")',
 		nvim_lua = 'vim.notify("%s %s")',
 		python = 'print("%s %s")',
@@ -94,41 +94,23 @@ local M = {
 		sh = "clear # %s",
 	},
 	timeLogStart = {
-		_placeholders = { "marker" },
-		lua = "local timelogStart = os.clock() -- %s",
-		python = "local timelogStart = time.perf_counter()  # %s",
-		javascript = "const timelogStart = Date.now(); // %s", -- not all JS engines support console.time
-		typescript = 'console.time("%s");',
-		sh = "timelogStart=$(date +%%s) # %s",
-		ruby = "timelog_start = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
+		_placeholders = { "special", "marker" }, -- special = index
+		lua = "local timelogStart%s = os.clock() -- %s",
+		python = "local timelog_start_%s = time.perf_counter()  # %s",
+		javascript = "const timelogStart%s = Date.now(); // %s", -- not all JS engines support console.time
+		typescript = 'console.time("#%s %s");', -- string needs to be identical to `console.timeEnd`
+		sh = "timelog_start_%s=$(date +%%s) # %s",
+		ruby = "timelog_start_%s = Process.clock_gettime(Process::CLOCK_MONOTONIC) # %s",
 	},
 	timeLogStop = {
-		_placeholders = { "marker" },
-		lua = {
-			"local durationSecs = os.clock() - timelogStart -- %s",
-			'print(("%s: %%.3fs"):format(durationSecs))',
-		},
-		nvim_lua = {
-			"local durationSecs = os.clock() - timelogStart -- %s",
-			'vim.notify(("%s: %%.3fs"):format(durationSecs))',
-		},
-		python = {
-			"durationSecs = round(time.perf_counter() - timelogStart, 3)  # %s",
-			'print(f"%s: {durationSecs}s")',
-		},
-		javascript = {
-			"const durationSecs = (Date.now() - timelogStart) / 1000; // %s",
-			"console.log(`%s: ${durationSecs}s`);",
-		},
-		typescript = 'console.timeEnd("%s");',
-		sh = {
-			"durationSecs=$(($(date +%%s) - timelogStart))",
-			'echo "%s ${durationSecs}s" >&2',
-		},
-		ruby = {
-			"duration_secs = Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start # %s",
-			'puts "%s: #{duration_secs}s"',
-		},
+		_placeholders = { "special", "marker", "special" }, -- special = index
+		lua = 'print(("#%s %s: %%.3fs"):format(os.clock() - timelogStart%s))',
+		nvim_lua = 'vim.notify(("#%s %s: %%.3fs"):format(os.clock() - timelogStart%s))',
+		python = 'print(f"#%s %s: {round(time.perf_counter() - timelog_start_%s, 3)}s")',
+		javascript = "console.log(`#%s %s: ${(Date.now() - timelogStart%s) / 1000}s`);",
+		typescript = 'console.timeEnd("#%s %s");',
+		sh = 'echo "#%s %s $(($(date +%%s) - timelog_start_%s))s" >&2',
+		ruby = 'puts "#%s %s: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_%s}s"',
 	},
 }
 
