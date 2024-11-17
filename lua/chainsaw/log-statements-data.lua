@@ -23,9 +23,12 @@ local M = {
 	},
 	objectLog = {
 		_placeholders = { "marker", "var", "var" },
-		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s))', -- no built-in method in normal lua
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
+		-- no built-in method in normal `lua`
+
+		-- `ft = "lua"` activates highlighting when using `snacks.nvim`
+		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s), nil, { ft = "lua" })',
 	},
 	assertLog = {
 		_placeholders = { "var", "marker", "var" },
