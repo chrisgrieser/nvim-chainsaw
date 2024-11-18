@@ -5,6 +5,8 @@
 -- 1. The strings may not include linebreaks. If you want to use multi-line log
 -- statements, use a list of strings instead, each string representing one line.
 -- 2. All `%s` are replaced with the respective `_placeholders`.
+-- 3. see `config.lua` for superset-languages inheritance (e.g, `scss`
+-- inheriting log statemetns from `css`.)
 --------------------------------------------------------------------------------
 
 ---@type logStatementData
@@ -114,41 +116,6 @@ local M = {
 		ruby = 'puts "#%s %s: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_%s}s"',
 	},
 }
-
---------------------------------------------------------------------------------
--- SUPERSETS
-local logTypes = vim.tbl_keys(M)
-
--- JS supersets inherit from `typescript`, and in turn `typescript` form
--- `javascript`, if it set itself.
-local jsSupersets = { "typescriptreact", "javascriptreact", "vue", "svelte" }
-for _, logType in ipairs(logTypes) do
-	if not M[logType].typescript then M[logType].typescript = M[logType].javascript end
-	for _, lang in ipairs(jsSupersets) do
-		M[logType][lang] = M[logType].typescript
-	end
-end
-
--- shell supersets inherit from `sh`, if they have no config of their own.
-local shellSupersets = { "bash", "zsh", "fish", "nu" }
-for _, logType in ipairs(logTypes) do
-	for _, lang in ipairs(shellSupersets) do
-		if not M[logType][lang] then M[logType][lang] = M[logType].sh end
-	end
-end
-
--- CSS supersets inherit from `css`, if they have no config of their own.
-local cssSupersets = { "scss", "less", "sass" }
-for _, logType in ipairs(logTypes) do
-	for _, lang in ipairs(cssSupersets) do
-		if not M[logType][lang] then M[logType][lang] = M[logType].css end
-	end
-end
-
--- `nvim-lua` inherits from `lua`, if it has no config of its own.
-for _, logType in ipairs(logTypes) do
-	if not M[logType].nvim_lua then M[logType].nvim_lua = M[logType].lua end
-end
 
 --------------------------------------------------------------------------------
 return M
