@@ -34,9 +34,6 @@ function M.assertLog()
 	moveCursorToQuotes() -- easier to edit assertion msg
 end
 
--- DEPRECATION
-function M.beepLog() notify("`beepLog` is deprecated. Use `emojiLog` or `sound` instead.", "warn") end
-
 function M.emojiLog()
 	local emojis = require("chainsaw.config").config.logEmojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then

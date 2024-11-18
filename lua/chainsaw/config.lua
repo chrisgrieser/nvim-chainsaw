@@ -76,13 +76,6 @@ function M.setup(userConfig)
 		end
 		require("chainsaw.highlight").highlightExistingLogs()
 	end
-
-	-- DEPRECATION
-	if M.config.beepEmojis then ---@diagnostic disable-line: undefined-field
-		local msg = "Config `beepEmojis` is deprecated. Use `logEmojis` instead."
-		require("chainsaw.utils").notify(msg, "warn")
-		M.config.logEmojis = M.config.beepEmojis ---@diagnostic disable-line: undefined-field
-	end
 end
 
 --------------------------------------------------------------------------------
