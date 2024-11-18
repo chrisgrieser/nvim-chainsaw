@@ -1,18 +1,17 @@
 local insertStatements = require("chainsaw.insert-statements").insert
 local notify = require("chainsaw.utils").notify
 
----@param pattern string
----@param where "start"|"end"
 ---@return boolean success
-local function moveCursorToPattern(pattern, where)
+local function moveCursorToQuotes()
 	local lnum = vim.api.nvim_win_get_cursor(0)[1]
-	local start, _end = vim.api.nvim_get_current_line():find(pattern)
-	local location = where == "end" and _end or start
-	if location then
-		vim.api.nvim_win_set_cursor(0, { lnum, location - 1 })
-		return true
+	local curLine = vim.api.nvim_get_current_line()
+	local _, _end = curLine:find([[".*"]])
+	if not _end then
+		_, _end = curLine:find([['.*']])
 	end
-	return false
+	if not _end then return false end
+	vim.api.nvim_win_set_cursor(0, { lnum, _end - 1 })
+	return true
 end
 
 --------------------------------------------------------------------------------
@@ -32,7 +31,7 @@ local M = {
 function M.assertLog()
 	local success = insertStatements()
 	if not success then return end
-	moveCursorToPattern(".,", "start") -- easier to edit the assertion condition
+	moveCursorToQuotes() -- easier to edit assertion msg
 end
 
 -- DEPRECATION
@@ -61,7 +60,7 @@ function M.messageLog()
 	if not success then return end
 
 	-- goto insert mode at correct location to enter message
-	success = moveCursorToPattern('".*"', "end") or moveCursorToPattern("'.*'", "end")
+	success = moveCursorToQuotes()
 	if success then vim.defer_fn(vim.cmd.startinsert, 1) end
 end
 
