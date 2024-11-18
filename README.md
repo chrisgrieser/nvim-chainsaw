@@ -190,9 +190,9 @@ require("chainsaw").setup ({
 ```
 
 ### Have your formatter ignore the log statements
-A common problem is that formatters like `prettier` break up the log
-statements, making them hard to read and also breaking `removeLogs()`, which
-relies on each line containing the marker emoji.
+A common problem is that formatters like `prettier` break up the log statements,
+making them hard to read and breaking `removeLogs()`, which relies on each line
+containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in
 your configuration to include `/* prettier-ignore */`:
