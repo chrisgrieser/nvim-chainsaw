@@ -123,7 +123,7 @@ LIST OF COMMANDS ~
     
     ---------------------------------------------------
     
-    -- remove all log statements created by chainsaw
+    -- remove all log statements created by nvim-chainsaw
     require("chainsaw").removeLogs()
 <
 
@@ -135,6 +135,11 @@ When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
 `assertLog` can also be used in **visual mode** to use the visual selection
 instead of the word under the cursor.
 
+
+  [!TIP] `variableLog` for `nvim_lua` uses a log statement that inspects objects
+  and is designed to work with various notification plugins like `nvim-notify`,
+  `snacks.nvim`, or `noice.nvim`. If using `snacks.nvim`, lua syntax highlighting
+  is added.
 
 SMART VARIABLE IDENTIFICATION ~
 
@@ -206,8 +211,8 @@ PRs adding log statements for more languages are welcome.
 HAVE YOUR FORMATTER IGNORE THE LOG STATEMENTS ~
 
 A common problem is that formatters like `prettier` break up the log
-statements, making them hard to read and also breaking `removeLogs()`, which
-relies on each line containing the marker emoji.
+statements, making them hard to read and breaking `removeLogs()`, which relies
+on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
 configuration to include `/* prettier-ignore */`
