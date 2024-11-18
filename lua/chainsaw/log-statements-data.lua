@@ -11,11 +11,13 @@
 local M = {
 	variableLog = {
 		_placeholders = { "marker", "var", "var" },
+		-- 1. not using `print` due `noice.nvim` https://github.com/folke/noice.nvim/issues/556
+		-- 2. using `ft = "lua"` activates highlighting for `snacks.nvim`
+		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s), nil, { ft = "lua" })',
 		lua = 'print("%s %s: " .. tostring(%s))',
-		nvim_lua = 'vim.notify("%s %s: " .. tostring(%s))', -- not using `print` due to https://github.com/folke/noice.nvim/issues/556
 		python = 'print(f"%s {%s = }")',
 		javascript = 'console.log("%s %s:", %s);',
-		sh = 'echo "%s %s: $%s" >&2',
+		sh = 'echo "%s %s: $%s" >&2', -- `>&2` sends to stderr only
 		applescript = 'log "%s %s:" & %s',
 		css = "outline: 2px solid red !important; /* %s */",
 		rust = 'println!("{} {}: {:?}", "%s", "%s", %s);',
@@ -25,10 +27,6 @@ local M = {
 		_placeholders = { "marker", "var", "var" },
 		javascript = 'console.log("%s %s:", JSON.stringify(%s))',
 		ruby = 'puts "%s %s: #{%s.inspect}"',
-		-- no built-in method in normal `lua`
-
-		-- `ft = "lua"` activates highlighting when using `snacks.nvim`
-		nvim_lua = 'vim.notify("%s %s: " .. vim.inspect(%s), nil, { ft = "lua" })',
 	},
 	assertLog = {
 		_placeholders = { "var", "marker", "var" },
@@ -149,7 +147,7 @@ end
 
 -- `nvim-lua` inherits from `lua`, if it has no config of its own.
 for _, logType in ipairs(logTypes) do
-	if not M[logType].nvim_lua and M[logType].lua then M[logType].nvim_lua = M[logType].lua end
+	if not M[logType].nvim_lua then M[logType].nvim_lua = M[logType].lua end
 end
 
 --------------------------------------------------------------------------------

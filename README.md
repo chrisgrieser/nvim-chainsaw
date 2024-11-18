@@ -108,7 +108,7 @@ require("chainsaw").clearLog()
 
 ---------------------------------------------------
 
--- remove all log statements created by chainsaw
+-- remove all log statements created by nvim-chainsaw
 require("chainsaw").removeLogs()
 ```
 
@@ -119,6 +119,12 @@ variableLog` is same as `:lua require("chainsaw").variableLog()`.
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
 word under the cursor.
+
+> [!TIP]
+> `variableLog` for `nvim_lua` uses a log statement that inspects objects and is
+> designed to work with various notification plugins like `nvim-notify`,
+> `snacks.nvim`, or `noice.nvim`. If using `snacks.nvim`, lua syntax
+> highlighting is added.
 
 ### Smart variable identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
