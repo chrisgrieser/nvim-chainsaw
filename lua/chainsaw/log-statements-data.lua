@@ -1,4 +1,4 @@
----@alias logStatementData table<string, table<string, string|string[]>>
+---@alias logStatementData table<string, table<string, string|string[]?>>
 
 --------------------------------------------------------------------------------
 -- INFO
@@ -53,13 +53,20 @@ local M = {
 		applescript = 'log "%s %s"',
 		ruby = 'puts "%s %s"',
 	},
-	sound = { -- NOTE system bell commands requires program to run in a terminal supporting it
+	sound = { -- NOTE terminal bell commands requires program to run in a terminal supporting it
 		_placeholders = { "marker" },
-		sh = 'printf "\\a" # %s', -- system bell
-		python = 'print("\\a")  # %s', -- system bell
-		applescript = "beep -- %s",
-		-- javascript = 'console.log("\\u0007"); // %s', -- system bell
+		sh = 'printf "\\a" # %s', -- terminal bell
+		python = 'print("\\a")  # %s', -- terminal bell
+		applescript = "beep -- %s", -- system sound
+
+		-- system sound
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play()',
+		-- terminal bell
+		-- javascript = 'console.log("\\u0007"); // %s',
+
+		-- system sound (macOS only)
+		lua = jit.os == "OSX" and [[os.execute("osascript -e 'beep'") -- %s]] or nil,
+		nvim_lua = jit.os == "OSX" and 'vim.system({"osascript", "-e", "beep"}) -- %s' or nil,
 	},
 	messageLog = {
 		_placeholders = { "marker" },
