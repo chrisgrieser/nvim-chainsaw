@@ -1,7 +1,7 @@
 local M = {}
 --------------------------------------------------------------------------------
 
----@class pluginConfig
+---@class Chainsaw.config
 local defaultConfig = {
 	-- The marker should be a unique string, since lines with it are highlighted
 	-- and since `removeLogs` will remove any line with it. Thus, emojis or
@@ -9,9 +9,9 @@ local defaultConfig = {
 	marker = "🪚",
 
 	-- Highlight lines with the marker.
-	-- lazy.nvim users:, you need to add `event = VeryLazy` to the plugin spec to
+	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin spec to
 	-- have existing log statements highlighted as well.
-	---@type string|false -- false to disable
+	---@type string|false
 	logHighlightGroup = "Visual",
 
 	-- emojis used for `emojiLog`
@@ -63,7 +63,7 @@ end
 
 --------------------------------------------------------------------------------
 
----@param userConfig? pluginConfig
+---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 	M.config.logStatements = supersetLogInheritance(M.config.logStatements)

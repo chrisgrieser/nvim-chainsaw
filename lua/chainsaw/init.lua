@@ -10,7 +10,7 @@ end
 local M = {}
 --------------------------------------------------------------------------------
 
----@param userConfig? pluginConfig
+---@param userConfig? Chainsaw.config
 function M.setup(userConfig) require("chainsaw.config").setup(userConfig) end
 
 vim.api.nvim_create_user_command("ChainSaw", function(ctx)

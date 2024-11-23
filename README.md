@@ -159,9 +159,9 @@ require("chainsaw").setup {
 	marker = "🪚",
 
 	-- Highlight lines with the marker.
-	-- lazy.nvim users:, you need to add `event = VeryLazy` to the plugin spec to
+	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin spec to
 	-- have existing log statements highlighted as well.
-	---@type string|false -- false to disable
+	---@type string|false
 	logHighlightGroup = "Visual",
 
 	-- emojis used for `emojiLog`
