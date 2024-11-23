@@ -84,42 +84,42 @@ end
 ---@param logtypeSpecific? string
 ---@return boolean success
 function M.insert(logType, logtypeSpecific)
+	local config = require("chainsaw.config").config
+
+	-- GET LINES
 	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
-	local config = require("chainsaw.config").config
+	-- REPLACE PLACEHOLDERS
+	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
+	local var = require("chainsaw.var-detect").getVar()
+	for i = 1, #logLines do
+		-- DEPRECATION
+		if not logLines[i]:find("{{%w-}}") and logLines[i]:find("%%s") then
+			local msg =
+				"The `%s` placeholder is has been replaced with `{{placeholders}}`. See the readme."
+			require("chainsaw.utils").notify(msg, "warn")
+			return false
+		end
 
-	-- determine placeholders
-	local logtypePlaceholders =
-		assert(config.logStatements[logType]._placeholders, "Missing placeholders for " .. logType)
-	local var
-	local placeholders = vim.iter(logtypePlaceholders)
-		:map(function(p)
-			if p == "marker" then return config.marker end
-			if p == "special" then return logtypeSpecific end
-			if p == "var" then
-				-- run `getVar` only once, since it leaves visual mode, resulting in
-				-- a different result on second call
-				var = var or require("chainsaw.var-detect").getVar()
-				return ensureValidQuotesInVar(var, logLines)
-			end
-			error("Unknown placeholder: " .. p)
+		logLines[i] = logLines[i]:gsub("{{%w-}}", function(placeholder)
+			if placeholder == "{{marker}}" then return config.marker end
+			if placeholder == "{{var}}" then return ensureValidQuotesInVar(var, logLines) end
+			if placeholder == "{{index}}" or placeholder == "{{emoji}}" then return logtypeSpecific end
+			error("Unknown placeholder: " .. placeholder)
 		end)
-		:totable()
+	end
 
-	-- insert lines
+	-- INSERT LINES
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-	local indent = determineIndent() -- `:normal ==` would break dot-repeatability
+	local indent = determineIndent() -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
-		local toInsert = indent .. line:format(unpack(placeholders))
-		vim.api.nvim_buf_set_lines(0, ln, ln, true, { toInsert })
+		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
 		require("chainsaw.highlight").addHighlightToLine(ln)
 		ln = ln + 1
 	end
-
-	-- move cursor to last inserted line
-	vim.api.nvim_win_set_cursor(0, { ln, col })
+	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line
 
 	return true
 end

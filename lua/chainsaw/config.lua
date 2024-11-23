@@ -9,8 +9,8 @@ local defaultConfig = {
 	marker = "🪚",
 
 	-- Highlight lines with the marker.
-	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin spec to
-	-- have existing log statements highlighted as well.
+	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+	-- spec to have existing log statements highlighted as well.
 	---@type string|false
 	logHighlightGroup = "Visual",
 

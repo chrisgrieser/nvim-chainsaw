@@ -14,12 +14,12 @@ such as logs of variables, assertions, or stacktraces, timings, and more.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-	* [List of commands](#list-of-commands)
-	* [Smart variable identification](#smart-variable-identification)
+  * [List of commands](#list-of-commands)
+  * [Smart variable identification](#smart-variable-identification)
 - [Configuration](#configuration)
-	* [Basic configuration](#basic-configuration)
-	* [Add your own log statements](#add-your-own-log-statements)
-	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
+  * [Basic configuration](#basic-configuration)
+  * [Custom log statements](#custom-log-statements)
+  * [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
 - [Similar lua plugins](#similar-lua-plugins)
 - [About the developer](#about-the-developer)
 
@@ -129,7 +129,7 @@ word under the cursor.
 ### Smart variable identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
 to automatically select the correct field. Note that this feature requires the
-Treesitter parser of the respective language to be installed.
+Treesitter parser of the respective language.
 
 ```lua
 myVariable.myF[i]eld = "foobar"
@@ -144,7 +144,7 @@ Filetypes currently supporting this feature:
 - Python
 - JavaScript (and supersets)
 
-*PRs adding support for more languages are welcome.*
+PRs adding support for more languages are welcome.
 
 ## Configuration
 
@@ -159,8 +159,8 @@ require("chainsaw").setup {
 	marker = "🪚",
 
 	-- Highlight lines with the marker.
-	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin spec to
-	-- have existing log statements highlighted as well.
+	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+	-- spec to have existing log statements highlighted as well.
 	---@type string|false
 	logHighlightGroup = "Visual",
 
@@ -169,19 +169,24 @@ require("chainsaw").setup {
 }
 ```
 
-### Add your own log statements
-Custom log statements are added in the `setup()` call. The values are formatted
-lua strings, meaning `%s` is a placeholder that is dynamically replaced
-with the actual value. See
-[log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for examples.
+### Custom log statements
+Custom log statements can be added in the `setup()` call. There are various
+placeholders that are dynamically replaced:
+- `{{marker}}` inserts the value from `config.marker`. Each log statement should
+  have one, so that the line can be removed via `.removeLogs()`.
+- `{{var}}` inserts the variable as described further above.
+- `.emojiLog()` only: `{{emoji}}` inserts the emoji.
+- `.timeLog()` only: `{{index}}` inserts a running index starting from 1.
 
-PRs adding log statements for more languages are welcome.
+See [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for
+the built-in log statements. PRs adding log statements for more languages are
+welcome.
 
 ```lua
 require("chainsaw").setup ({
 	logStatements = {
 		variableLog = {
-			javascript = 'console.log("%s %s:", %s);',
+			javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
 			otherFiletype = … -- <-- add the statement for your filetype here
 		},
 		-- the same way for the other log statement operations
@@ -189,26 +194,39 @@ require("chainsaw").setup ({
 })
 ```
 
+> [!NOTE]
+> 1. The strings may not include line breaks. If you want to use multi-line log
+>    statements, use a list of strings instead, each string representing one
+>    line.
+> 2. See [config.lua](./lua/chainsaw/config.lua)
+>    for how language supersets (such as `typescript` inheriting from
+>    `javascript`) is handled.
+
 ### Have your formatter ignore the log statements
-A common problem is that formatters like `prettier` break up the log statements,
-making them hard to read and breaking `removeLogs()`, which relies on each line
-containing the marker emoji.
+A common problem is that formatters like `prettier` split up the log statements
+into multiple lines, making them hard to read and breaking `removeLogs()`, which
+relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in
-your configuration to include `/* prettier-ignore */`:
+your configuration to include an ignore-comment: `/* prettier-ignore */`.
 
 ```lua
 require("chainsaw").setup {
 	logStatements = {
 		variableLog = {
 			javascript = {
-				"/* prettier-ignore */ // %s", -- adding this line
-				'console.log("%s %s:", %s);',
+				"/* prettier-ignore */ // {{marker}}", -- adding this
+				'console.log("{{marker}} {{var}}:", {{var}});',
 			},
 		},
 	},
 }
 ```
+
+> [!TIP]
+> The log statement now needs to be a list of strings as line breaks are not
+> supported, and the ignore-comment should include the marker for removal via
+> `.removeLogs`.
 
 ## Similar lua plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
@@ -219,7 +237,6 @@ The other plugins are more feature-rich, while `nvim-chainsaw` tries to
 achieve the core functionality in a far more lightweight manner to keep
 maintenance minimal.
 
-<!-- vale Google.FirstPerson = NO -->
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app
@@ -228,7 +245,7 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 
 I also occasionally blog about vim: [Nano Tips for Vim](https://nanotipsforvim.prose.sh)
 
-- [Academic Website](https://chris-grieser.de/)
+- [Website](https://chris-grieser.de/)
 - [Mastodon](https://pkm.social/@pseudometa)
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
