@@ -112,8 +112,8 @@ require("chainsaw").clearLog()
 require("chainsaw").removeLogs()
 ```
 
-These features can also be accessed with the user command `:ChainSaw`. Each
-option corresponds to the commands above. For example, `:ChainSaw
+These features can also be accessed with the user command `:Chainsaw`. Each
+option corresponds to the commands above. For example, `:Chainsaw
 variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
