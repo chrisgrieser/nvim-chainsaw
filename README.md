@@ -198,7 +198,7 @@ require("chainsaw").setup ({
 > 1. The strings may not include line breaks. If you want to use multi-line log
 >    statements, use a list of strings instead, each string representing one
 >    line.
-> 2. See [config.lua](./lua/chainsaw/config.lua)
+> 2. See [superset-inheritance.lua](./lua/chainsaw/superset-inheritance.lua)
 >    for how language supersets (such as `typescript` inheriting from
 >    `javascript`) is handled.
 
