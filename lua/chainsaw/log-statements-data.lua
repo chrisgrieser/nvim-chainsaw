@@ -5,7 +5,7 @@
 -- 1. The strings may not include linebreaks. If you want to use multi-line log
 -- statements, use a list of strings instead, each string representing one line.
 -- 2. Use `{{placerholder}}` to insert vars, marker, etc.
--- 3. see `config.lua` for superset-languages inheritance 
+-- 3. see `config.lua` for superset-languages inheritance
 -- (e.g, `typescript` inheriting log statements from `javascript`.)
 --------------------------------------------------------------------------------
 
