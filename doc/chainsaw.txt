@@ -8,7 +8,7 @@ Table of Contents                                 *chainsaw-table-of-contents*
   - Built-in language support|chainsaw-nvim-chainsaw--built-in-language-support|
   - Usage                                      |chainsaw-nvim-chainsaw--usage|
   - Configuration                      |chainsaw-nvim-chainsaw--configuration|
-  - Similarlua plugins            |chainsaw-nvim-chainsaw--similarlua-plugins|
+  - Similar lua plugins          |chainsaw-nvim-chainsaw--similar-lua-plugins|
   - About the developer          |chainsaw-nvim-chainsaw--about-the-developer|
 
 ==============================================================================
@@ -29,7 +29,7 @@ such as logs of variables, assertions, or stacktraces, timings, and more.
     - |chainsaw-smart-variable-identification|
 - |chainsaw-configuration|
     - |chainsaw-basic-configuration|
-    - |chainsaw-add-your-own-log-statements|
+    - |chainsaw-custom-log-statements|
     - |chainsaw-have-your-formatter-ignore-the-log-statements|
 - |chainsaw-similar-lua-plugins|
 - |chainsaw-about-the-developer|
@@ -127,8 +127,8 @@ LIST OF COMMANDS ~
     require("chainsaw").removeLogs()
 <
 
-These features can also be accessed with the user command `:ChainSaw`. Each
-option corresponds to the commands above. For example, `:ChainSaw variableLog`
+These features can also be accessed with the user command `:Chainsaw`. Each
+option corresponds to the commands above. For example, `:Chainsaw variableLog`
 is same as `:lua require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
@@ -145,7 +145,7 @@ SMART VARIABLE IDENTIFICATION ~
 
 When the variable under the cursor is an object with fields, `chainsaw`
 attempts to automatically select the correct field. Note that this feature
-requires the Treesitter parser of the respective language to be installed.
+requires the Treesitter parser of the respective language.
 
 >lua
     myVariable.myF[i]eld = "foobar"
@@ -158,7 +158,7 @@ requires the Treesitter parser of the respective language to be installed.
 Filetypes currently supporting this feature: - Lua - Python - JavaScript (and
 supersets)
 
-_PRs adding support for more languages are welcome._
+PRs adding support for more languages are welcome.
 
 
 CONFIGURATION                          *chainsaw-nvim-chainsaw--configuration*
@@ -175,8 +175,8 @@ BASIC CONFIGURATION ~
         marker = "🪚",
     
         -- Highlight lines with the marker.
-        -- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin spec to
-        -- have existing log statements highlighted as well.
+        -- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+        -- spec to have existing log statements highlighted as well.
         ---@type string|false
         logHighlightGroup = "Visual",
     
@@ -186,20 +186,24 @@ BASIC CONFIGURATION ~
 <
 
 
-ADD YOUR OWN LOG STATEMENTS ~
+CUSTOM LOG STATEMENTS ~
 
-Custom log statements are added in the `setup()` call. The values are formatted
-lua strings, meaning `%s` is a placeholder that is dynamically replaced with
-the actual value. See log-statements-data.lua
-<./lua/chainsaw/log-statements-data.lua> for examples.
+Custom log statements can be added in the `setup()` call. There are various
+placeholders that are dynamically replaced: - `{{marker}}` inserts the value
+from `config.marker`. Each log statement should have one, so that the line can
+be removed via `.removeLogs()`. - `{{var}}` inserts the variable as described
+further above. - `.emojiLog()` only: `{{emoji}}` inserts the emoji. -
+`.timeLog()` only: `{{index}}` inserts a running index starting from 1.
 
-PRs adding log statements for more languages are welcome.
+See log-statements-data.lua <./lua/chainsaw/log-statements-data.lua> for the
+built-in log statements. PRs adding log statements for more languages are
+welcome.
 
 >lua
     require("chainsaw").setup ({
         logStatements = {
             variableLog = {
-                javascript = 'console.log("%s %s:", %s);',
+                javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
                 otherFiletype = … -- <-- add the statement for your filetype here
             },
             -- the same way for the other log statement operations
@@ -208,22 +212,28 @@ PRs adding log statements for more languages are welcome.
 <
 
 
+  [!NOTE] 1. The strings may not include line breaks. If you want to use
+  multi-line log statements, use a list of strings instead, each string
+  representing one line. 2. See superset-inheritance.lua
+  <./lua/chainsaw/superset-inheritance.lua> for how language supersets (such as
+  `typescript` inheriting from `javascript`) is handled.
+
 HAVE YOUR FORMATTER IGNORE THE LOG STATEMENTS ~
 
-A common problem is that formatters like `prettier` break up the log
-statements, making them hard to read and breaking `removeLogs()`, which relies
-on each line containing the marker emoji.
+A common problem is that formatters like `prettier` split up the log statements
+into multiple lines, making them hard to read and breaking `removeLogs()`,
+which relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
-configuration to include `/* prettier-ignore */`
+configuration to include an ignore-comment: `/* prettier-ignore */`.
 
 >lua
     require("chainsaw").setup {
         logStatements = {
             variableLog = {
                 javascript = {
-                    "/* prettier-ignore */ // %s", -- adding this line
-                    'console.log("%s %s:", %s);',
+                    "/* prettier-ignore */ // {{marker}}", -- adding this
+                    'console.log("{{marker}} {{var}}:", {{var}});',
                 },
             },
         },
@@ -231,7 +241,11 @@ configuration to include `/* prettier-ignore */`
 <
 
 
-SIMILARLUA PLUGINS                *chainsaw-nvim-chainsaw--similarlua-plugins*
+  [!TIP] The log statement now needs to be a list of strings as line breaks are
+  not supported, and the ignore-comment should include the marker for removal via
+  `.removeLogs`.
+
+SIMILAR LUA PLUGINS              *chainsaw-nvim-chainsaw--similar-lua-plugins*
 
 - debugprint.nvim <https://github.com/andrewferrier/debugprint.nvim>
 - refactoring.nvim <https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features>
@@ -253,7 +267,7 @@ touch.
 I also occasionally blog about vim: Nano Tips for Vim
 <https://nanotipsforvim.prose.sh>
 
-- Academic Website <https://chris-grieser.de/>
+- Website <https://chris-grieser.de/>
 - Mastodon <https://pkm.social/@pseudometa>
 - ResearchGate <https://www.researchgate.net/profile/Christopher-Grieser>
 - LinkedIn <https://www.linkedin.com/in/christopher-grieser-ba693b17a/>
