@@ -54,7 +54,7 @@ local M = {
 		sh = 'printf "\\a" # {{marker}}', -- terminal bell
 		python = 'print("\\a") # {{marker}}', -- terminal bell
 		applescript = "beep -- {{marker}}", -- system sound
-		go = 'fmt.Println("\\a") # {{marker}}', -- terminal bell
+		go = 'fmt.Println("\\a") // {{marker}}', -- terminal bell
 
 		-- system sound
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
@@ -104,7 +104,7 @@ local M = {
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 		sh = "timelog_start_{{index}}=$(date +%%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
-		go = "var timelog_start_{{index}} = time.Now() # {{marker}}",
+		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 	},
 	timeLogStop = { -- index = index
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
@@ -114,7 +114,7 @@ local M = {
 		typescript = 'console.timeEnd("#%s %s");',
 		sh = 'echo "#{{index}} %s $(($(date +%{{marker}}) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
-		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) # {{marker}}',
+		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 	},
 }
 
