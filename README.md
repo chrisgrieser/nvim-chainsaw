@@ -4,8 +4,7 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
-Speed up log creation. Create various kinds of language-specific log statements,
-such as logs of variables, assertions, or stacktraces, timings, and more.
+Quick and feature-rich insertion of various kinds of log statements.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
@@ -18,10 +17,10 @@ such as logs of variables, assertions, or stacktraces, timings, and more.
   * [List of commands](#list-of-commands)
   * [Smart variable identification](#smart-variable-identification)
 - [Configuration](#configuration)
-  * [Basic configuration](#basic-configuration)
+  * [Base configuration](#base-configuration)
   * [Custom log statements](#custom-log-statements)
   * [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
-- [Similar lua plugins](#similar-lua-plugins)
+- [Similar plugins](#similar-plugins)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -55,24 +54,27 @@ use { "chrisgrieser/nvim-chainsaw" }
 ```
 
 ## Built-in language support
-- JavaScript (and supersets)
+- JavaScript/TypeScript (and supersets)
 - Python
-- Lua (with special considerations for `nvim_lua`)
+- Lua (with special considerations for `nvim-lua`[^1])
 - Shell (and supersets)
 - AppleScript
 - Ruby
 - Rust
-- CSS (and supersets)
-- Go
+- CSS[^2] (and supersets)
+- Go[^3]
 
-Not every language supports every type of log statement. For details on what is
-supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
-For languages like go, packages fmt and time are to be imported manually by the plugin user.
+Not every language supports every type of log statement. For the concrete
+statements used, see
+[log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
 
-> [!NOTE]
-> For non-scripting languages like CSS, `nvim-chainsaw` uses statements such as
-> `outline: 2px solid red !important;` that are the closest thing to logging
-> you have.
+[^1]: `variableLog` for `nvim_lua` uses a log statement that inspects objects
+	and is designed to work with various notification plugins like
+	`nvim-notify`, `snacks.nvim`, or `noice.nvim`. If using `snacks.nvim`, lua
+	syntax highlighting is added as well.
+[^2]: Uses statements such as `outline: 2px solid red !important;` that are the
+	somewhat similar logging.
+[^3]: The packages `fmt` and `time` need to be imported manually.
 
 ## Usage
 The plugin offers various types of log statements. Bind keymaps for the ones you
@@ -137,12 +139,6 @@ When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
 word under the cursor.
 
-> [!TIP]
-> `variableLog` for `nvim_lua` uses a log statement that inspects objects and is
-> designed to work with various notification plugins like `nvim-notify`,
-> `snacks.nvim`, or `noice.nvim`. If using `snacks.nvim`, lua syntax
-> highlighting is added.
-
 ### Smart variable identification
 When the variable under the cursor is an object with fields, `chainsaw` attempts
 to automatically select the correct field. Note that this feature requires the
@@ -171,8 +167,8 @@ PRs adding support for more languages are welcome.
 -- default settings
 require("chainsaw").setup {
 	-- The marker should be a unique string, since lines with it are highlighted
-	-- and since `removeLogs` will remove any line with it. Thus, emojis or
-	-- strings like "[Chainsaw]" are recommended.
+	-- and since `.removeLogs()` will remove any line with it. Thus, emojis or
+	-- unique strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
 	-- Highlight lines with the marker.
@@ -226,7 +222,7 @@ require("chainsaw").setup ({
 
 ### Have your formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
-into multiple lines, making them hard to read and breaking `removeLogs()`, which
+into multiple lines, making them hard to read and breaking `.removeLogs()`, which
 relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in
@@ -245,19 +241,11 @@ require("chainsaw").setup {
 }
 ```
 
-> [!TIP]
-> The log statement now needs to be a list of strings as line breaks are not
-> supported, and the ignore-comment should include the marker for removal via
-> `.removeLogs`.
-
-## Similar lua plugins
+## Similar plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
 - [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features)
 - [logsitter](https://github.com/gaelph/logsitter.nvim)
-
-The other plugins are more feature-rich, while `nvim-chainsaw` tries to
-achieve the core functionality in a far more lightweight manner to keep
-maintenance minimal.
+- [timber-.nvim](https://github.com/Goose97/timber.nvim)
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
