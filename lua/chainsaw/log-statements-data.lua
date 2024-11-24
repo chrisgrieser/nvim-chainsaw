@@ -50,18 +50,13 @@ local M = {
 		ruby = 'puts "{{marker}} {{emoji}}"',
 		go = 'fmt.Println("{{marker}} {{emoji}}")',
 	},
-	sound = { -- NOTE terminal bell commands requires program to run in a terminal supporting it
-		sh = 'printf "\\a" # {{marker}}', -- terminal bell
-		python = 'print("\\a")  # {{marker}}', -- terminal bell
-		applescript = "beep -- {{marker}}", -- system sound
-		go = 'fmt.Println("\\a") // {{marker}}', -- terminal bell
-
-		-- system sound
+	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
+		sh = 'printf "\\a" # {{marker}}',
+		python = 'print("\\a")  # {{marker}}', -- python formatters expect 2 spaces before `#`
+		applescript = "beep -- {{marker}}",
+		go = 'fmt.Println("\\a") // {{marker}}',
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
-		-- terminal bell
-		-- javascript = 'console.log("\\u0007"); // {{marker}}',
-
-		-- system sound (macOS only)
+		-- macOS only, since relying on `osascript`
 		lua = jit.os == "OSX" and [[os.execute("osascript -e 'beep'") -- {{marker}}]] or nil,
 		nvim_lua = jit.os == "OSX" and 'vim.system({"osascript", "-e", "beep"}) -- {{marker}}' or nil,
 	},
@@ -94,10 +89,10 @@ local M = {
 	},
 	clearLog = {
 		javascript = "console.clear(); // {{marker}}",
-		python = "clear()  # {{marker}}",
+		python = "clear()  # {{marker}}", -- python formatters expect 2 spaces before `#`
 		sh = "clear # {{marker}}",
 	},
-	timeLogStart = { -- special = index
+	timeLogStart = {
 		lua = "local timelogStart{{index}} = os.clock() -- {{marker}}",
 		python = "local timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
 		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
@@ -106,7 +101,7 @@ local M = {
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 	},
-	timeLogStop = { -- index = index
+	timeLogStop = {
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
 		nvim_lua = 'vim.notify(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
 		python = 'print(f"#{{index}} {{marker}}: {round(time.perf_counter() - timelog_start_{{index}}, 3)}s")',
