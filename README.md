@@ -150,7 +150,7 @@ PRs adding support for more languages are welcome.
 
 ## Configuration
 
-### Basic configuration
+### Base configuration
 
 ```lua
 -- default settings
@@ -176,9 +176,14 @@ Custom log statements can be added in the `setup()` call. There are various
 placeholders that are dynamically replaced:
 - `{{marker}}` inserts the value from `config.marker`. Each log statement should
   have one, so that the line can be removed via `.removeLogs()`.
-- `{{var}}` inserts the variable as described further above.
-- `.emojiLog()` only: `{{emoji}}` inserts the emoji.
-- `.timeLog()` only: `{{index}}` inserts a running index starting from 1.
+- `{{var}}`: variable as described further above.
+- `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision,
+  use `.timeLog()` instead)
+- `{{file}}`: basename of the current file
+- `{{lnum}}`: current line number
+- *`.emojiLog()` only*: `{{emoji}}` inserts the emoji
+- *`.timeLog()` only*: `{{index}}` inserts a running index (needed to
+  differentiate between variables when inserting `timeLog` multiple times).
 
 See [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for
 the built-in log statements. PRs adding log statements for more languages are

@@ -89,6 +89,9 @@ local function insertPlaceholders(line, var, logtypeSpecific)
 	line = line:gsub("{{%w-}}", function(placeholder)
 		if placeholder == "{{marker}}" then return config.marker end
 		if placeholder == "{{var}}" then return var end
+		if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
+		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
+		if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
 		if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
 			return assert(logtypeSpecific, "log-type specific parameter is missing.")
 		end
