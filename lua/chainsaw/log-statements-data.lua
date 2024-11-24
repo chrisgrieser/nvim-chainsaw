@@ -21,10 +21,12 @@ local M = {
 		css = "outline: 2px solid red !important; /* {{marker}} */",
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}}"',
+		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 	},
 	objectLog = {
 		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}))',
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
+		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 	},
 	assertLog = {
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
@@ -35,7 +37,8 @@ local M = {
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
 		nvim_lua = 'vim.notify("{{marker}} {{var}}: type is " .. type({{var}}))',
 		javascript = 'console.log("{{marker}} {{var}}: type is " + typeof {{var}})',
-		python = 'print(f"{{marker}} {{var}}: {type({{var}})}")',
+		python = 'print(f"{{marker}} {{var}}: type is {type({{var}})}")',
+		go = 'fmt.Println("{{marker}} {{var}}: type is", fmt.Sprintf("%T", {{var}}))',
 	},
 	emojiLog = {
 		lua = 'print("{{marker}} {{emoji}}")',
@@ -45,11 +48,13 @@ local M = {
 		sh = 'echo "{{marker}} {{emoji}}" >&2',
 		applescript = 'log "{{marker}} {{emoji}}"',
 		ruby = 'puts "{{marker}} {{emoji}}"',
+		go = 'fmt.Println("{{marker}} {{emoji}}")',
 	},
 	sound = { -- NOTE terminal bell commands requires program to run in a terminal supporting it
 		sh = 'printf "\\a" # {{marker}}', -- terminal bell
 		python = 'print("\\a")  # {{marker}}', -- terminal bell
 		applescript = "beep -- {{marker}}", -- system sound
+		go = 'fmt.Println("\\a") // {{marker}}', -- terminal bell
 
 		-- system sound
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
@@ -69,6 +74,7 @@ local M = {
 		applescript = 'log "{{marker}} "',
 		rust = 'println!("{} ", "{{marker}}");',
 		ruby = 'puts "{{marker}} "',
+		go = 'fmt.Println("{{marker}} ")',
 	},
 	stacktraceLog = {
 		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"
@@ -98,6 +104,7 @@ local M = {
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 		sh = "timelog_start_{{index}}=$(date +%%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
+		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 	},
 	timeLogStop = { -- index = index
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
@@ -107,6 +114,7 @@ local M = {
 		typescript = 'console.timeEnd("#%s %s");',
 		sh = 'echo "#{{index}} %s $(($(date +%{{marker}}) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
+		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 	},
 }
 

@@ -48,9 +48,11 @@ use { "chrisgrieser/nvim-chainsaw" }
 - Ruby
 - Rust
 - CSS (and supersets)
+- Go
 
 Not every language supports every type of log statement. For details on what is
 supported, see [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
+For languages like go, packages fmt and time are to be imported manually by the plugin user.
 
 > [!NOTE]
 > For non-scripting languages like CSS, `nvim-chainsaw` uses statements such as
