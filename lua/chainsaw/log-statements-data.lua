@@ -52,7 +52,7 @@ local M = {
 	},
 	sound = { -- NOTE terminal bell commands requires program to run in a terminal supporting it
 		sh = 'printf "\\a" # {{marker}}', -- terminal bell
-		python = 'print("\\a") # {{marker}}', -- terminal bell
+		python = 'print("\\a")  # {{marker}}', -- terminal bell
 		applescript = "beep -- {{marker}}", -- system sound
 		go = 'fmt.Println("\\a") // {{marker}}', -- terminal bell
 
@@ -99,7 +99,7 @@ local M = {
 	},
 	timeLogStart = { -- special = index
 		lua = "local timelogStart{{index}} = os.clock() -- {{marker}}",
-		python = "local timelog_start_{{index}} = time.perf_counter() # {{marker}}",
+		python = "local timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
 		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 		sh = "timelog_start_{{index}}=$(date +%%s) # {{marker}}",
