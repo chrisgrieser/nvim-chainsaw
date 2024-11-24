@@ -78,43 +78,63 @@ local function ensureValidQuotesInVar(var, templateLines)
 	return var
 end
 
+---@param line string
+---@param var string
+---@param logtypeSpecific? string
+---@return string
+---@nodiscard
+local function insertPlaceholders(line, var, logtypeSpecific)
+	local config = require("chainsaw.config").config
+
+	line = line:gsub("{{%w-}}", function(placeholder)
+		if placeholder == "{{marker}}" then return config.marker end
+		if placeholder == "{{var}}" then return var end
+		if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
+			return assert(logtypeSpecific, "log-type specific parameter is missing.")
+		end
+		error("Unknown placeholder: " .. placeholder)
+	end)
+	return line
+end
+
+-- DEPRECATION warning
+---@param logLines string[]
+---@return boolean
+---@nodiscard
+local function isDeprecatedTemplate(logLines)
+	local allLines = table.concat(logLines)
+	if allLines:find("%%s") and not allLines:find("{{%w-}}") then
+		local msg =
+			"The `%s` placeholder is has been replaced with `{{placeholders}}`. See the readme."
+		require("chainsaw.utils").notify(msg, "warn")
+		return true
+	end
+	return false
+end
+
 --------------------------------------------------------------------------------
 
 ---@param logType? string
 ---@param logtypeSpecific? string
 ---@return boolean success
 function M.insert(logType, logtypeSpecific)
-	local config = require("chainsaw.config").config
-
 	-- GET LINES
 	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
-	-- REPLACE PLACEHOLDERS
+	-- DEPRECATION
+	if isDeprecatedTemplate(logLines) then return false end
+
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
 	local var = require("chainsaw.var-detect").getVar()
-	for i = 1, #logLines do
-		-- DEPRECATION
-		if not logLines[i]:find("{{%w-}}") and logLines[i]:find("%%s") then
-			local msg =
-				"The `%s` placeholder is has been replaced with `{{placeholders}}`. See the readme."
-			require("chainsaw.utils").notify(msg, "warn")
-			return false
-		end
-
-		logLines[i] = logLines[i]:gsub("{{%w-}}", function(placeholder)
-			if placeholder == "{{marker}}" then return config.marker end
-			if placeholder == "{{var}}" then return ensureValidQuotesInVar(var, logLines) end
-			if placeholder == "{{index}}" or placeholder == "{{emoji}}" then return logtypeSpecific end
-			error("Unknown placeholder: " .. placeholder)
-		end)
-	end
+	var = ensureValidQuotesInVar(var, logLines)
 
 	-- INSERT LINES
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 	local indent = determineIndent() -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
+		line = insertPlaceholders(line, var, logtypeSpecific)
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
 		require("chainsaw.highlight").addHighlightToLine(ln)
 		ln = ln + 1
