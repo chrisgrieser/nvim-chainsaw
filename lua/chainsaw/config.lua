@@ -31,24 +31,31 @@ M.config = defaultConfig
 
 ---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
+	local warn = require("chainsaw.utils").warn
+
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 	M.config.logStatements = require("chainsaw.superset-inheritance").insert(M.config.logStatements)
 
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logEmojis` is deprecated. Use `logtypes.emojiLog.emojis` instead."
-		require("chainsaw.utils").warn(msg)
+		warn(msg)
 	end
 
 	-- DEPRECATION
 	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logHighlightGroup` is deprecated. Use `loglines.lineHlgroup` instead."
-		require("chainsaw.utils").warn(msg)
+		warn(msg)
 	end
 
+	-- VALIDATE
+	local emojis = M.config.logtypes.emojiLog.emojis
+	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
+		M.config.logtypes.emojiLog.emojis = nil
+		warn("Config `logtypes.emojiLog.emojis` is not a list of strings.")
+	end
 	if not M.config.marker or M.config.marker == "" then
-		require("chainsaw.utils").warn("Config `marker` must not be empty.")
-		return
+		warn("Config `marker` must not be empty.")
 	end
 	require("chainsaw.styling").styleExistingLogs()
 end

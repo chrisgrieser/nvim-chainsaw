@@ -1,5 +1,4 @@
 local insertStatements = require("chainsaw.insert-statements").insert
-local warn = require("chainsaw.utils").warn
 
 ---@return boolean success
 local function moveCursorToQuotes()
@@ -36,10 +35,7 @@ end
 
 function M.emojiLog()
 	local emojis = require("chainsaw.config").config.logtypes.emojiLog.emojis
-	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
-		warn("Config `logtypes.emojiLog.emojis` is not a list of strings.")
-		return
-	end
+	assert(emojis, "Config `logtypes.emojiLog.emojis` is not a list of strings.")
 
 	-- select the first emoji with the least number of occurrences, ensuring that
 	-- we will get as many different emojis as possible

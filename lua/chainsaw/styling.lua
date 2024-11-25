@@ -21,9 +21,10 @@ end
 --------------------------------------------------------------------------------
 
 function M.styleExistingLogs()
-	local function setStylingInBuffer(bufnr) ---@param bufnr number
-		local marker = require("chainsaw.config").config.marker
+	local marker = require("chainsaw.config").config.marker
+	if marker == "" then return end
 
+	local function setStylingInBuffer(bufnr) ---@param bufnr number
 		vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 		local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 		for ln, line in ipairs(lines) do
