@@ -187,14 +187,20 @@ BASE CONFIGURATION ~
         -- unique strings like "[Chainsaw]" are recommended.
         marker = "🪚",
     
-        -- Highlight lines with the marker.
-        -- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
-        -- spec to have existing log statements highlighted as well.
-        ---@type string|false
-        logHighlightGroup = "Visual",
+        loglines = {
+            -- Appearance of lines with the marker. Leave empty to disable any of them.
+            -- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+            -- spec to have existing log statements styled as well.)
+            lineHlgroup = "Visual",
+            sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
+            signHlgroup = "CursorLineNr",
+        },
     
-        -- emojis used for `emojiLog`
-        logEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+        logtypes = {
+            emojiLog = {
+                emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+            },
+        },
     }
 <
 
