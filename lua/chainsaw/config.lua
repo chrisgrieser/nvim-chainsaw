@@ -37,17 +37,17 @@ function M.setup(userConfig)
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logEmojis` is deprecated. Use `logtypes.emojiLog.emojis` instead."
-		require("chainsaw.utils").notify(msg, "warn")
+		require("chainsaw.utils").warn(msg)
 	end
 
 	-- DEPRECATION
 	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logHighlightGroup` is deprecated. Use `loglines.lineHlgroup` instead."
-		require("chainsaw.utils").notify(msg, "warn")
+		require("chainsaw.utils").warn(msg)
 	end
 
 	if not M.config.marker or M.config.marker == "" then
-		require("chainsaw.utils").notify("Config `marker` must not be empty.", "warn")
+		require("chainsaw.utils").warn("Config `marker` must not be empty.")
 		return
 	end
 	require("chainsaw.styling").styleExistingLogs()

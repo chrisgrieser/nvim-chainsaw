@@ -1,5 +1,5 @@
 local insertStatements = require("chainsaw.insert-statements").insert
-local notify = require("chainsaw.utils").notify
+local warn = require("chainsaw.utils").warn
 
 ---@return boolean success
 local function moveCursorToQuotes()
@@ -37,7 +37,7 @@ end
 function M.emojiLog()
 	local emojis = require("chainsaw.config").config.logtypes.emojiLog.emojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
-		notify("Config `logtypes.emojiLog.emojis` is not a list of strings.", "error")
+		warn("Config `logtypes.emojiLog.emojis` is not a list of strings.")
 		return
 	end
 
@@ -95,9 +95,9 @@ function M.removeLogs()
 
 	-- notify on number of lines removed
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
-	local msg = ("Removed %s lines."):format(linesRemoved)
+	local msg = ("Removed %d lines."):format(linesRemoved)
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
-	notify(msg)
+	require("chainsaw.utils").info(msg)
 
 	-- reset
 	vim.b.timelogStart = nil

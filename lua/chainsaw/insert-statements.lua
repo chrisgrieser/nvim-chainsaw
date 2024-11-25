@@ -31,7 +31,7 @@ end
 ---@return string[]|false -- returns false if not configured or invalid
 ---@nodiscard
 local function getTemplateStr(logType)
-	local notify = require("chainsaw.utils").notify
+	local warn = require("chainsaw.utils").warn
 
 	local ft = vim.bo.filetype
 	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
@@ -42,7 +42,8 @@ local function getTemplateStr(logType)
 
 	-- GUARD unconfigured filetype
 	if not templateStr then
-		notify(("There is no configuration for %q in %q."):format(logType, ft), "warn")
+		local msg = ("There is no configuration for %q in %q."):format(logType, ft)
+		warn(msg)
 		return false
 	end
 
@@ -54,7 +55,7 @@ local function getTemplateStr(logType)
 			"The nvim-api does not accept line breaks in string when appending text.",
 			"Use a list of strings instead, each string representing one line.",
 		}, "\n")
-		notify(msg, "warn")
+		warn(msg)
 		return false
 	end
 
@@ -109,7 +110,7 @@ local function isDeprecatedTemplate(logLines)
 	if allLines:find("%%s") and not allLines:find("{{%w-}}") then
 		local msg =
 			"The `%s` placeholder is has been replaced with `{{placeholders}}`. See the readme."
-		require("chainsaw.utils").notify(msg, "warn")
+		require("chainsaw.utils").warn(msg)
 		return true
 	end
 	return false

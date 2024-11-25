@@ -2,10 +2,12 @@ local M = {}
 --------------------------------------------------------------------------------
 
 ---@param msg string
----@param level? "info"|"warn"|"error"|"debug"|"trace"
-function M.notify(msg, level)
-	if not level then level = "info" end
-	vim.notify(msg, vim.log.levels[level:upper()], { title = "Chainsaw" })
+function M.warn(msg) vim.notify(msg, vim.log.levels.WARN, { title = "chainsaw" }) end
+
+function M.info(msg)
+	local marker = require("chainsaw.config").config.marker
+	local icon = vim.api.nvim_strwidth(marker) < 2 and marker or nil
+	vim.notify(msg, vim.log.levels.INFO, { title = "chainsaw", icon = icon })
 end
 
 --------------------------------------------------------------------------------
