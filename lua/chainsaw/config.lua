@@ -8,11 +8,13 @@ local defaultConfig = {
 	-- unique strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
-	-- Highlight lines with the marker.
-	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
-	-- spec to have existing log statements highlighted as well.
-	---@type string|false
-	logHighlightGroup = "Visual",
+	loglines = {
+		-- Appearance of lines with the marker
+		-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+		-- spec to have existing log statements styled as well.
+		-- leave empty to disable
+		lineHlgroup = "Visual",
+	},
 
 	logtypes = {
 		emojiLog = {
@@ -34,6 +36,12 @@ function M.setup(userConfig)
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logEmojis` is deprecated. Use `logtypes.emojiLog.emojis` instead."
+		require("chainsaw.utils").notify(msg, "warn")
+	end
+
+	-- DEPRECATION
+	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
+		local msg = "Config `logHighlightGroup` is deprecated. Use `loglines.lineHlgroup` instead."
 		require("chainsaw.utils").notify(msg, "warn")
 	end
 

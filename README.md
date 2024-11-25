@@ -173,11 +173,13 @@ require("chainsaw").setup {
 	-- unique strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
-	-- Highlight lines with the marker.
-	-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
-	-- spec to have existing log statements highlighted as well.
-	---@type string|false
-	logHighlightGroup = "Visual",
+	loglines = {
+		-- Appearance of lines with the marker
+		-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+		-- spec to have existing log statements styled as well.
+		-- leave empty to disable
+		lineHlgroup = "Visual",
+	},
 
 	logtypes = {
 		emojiLog = {

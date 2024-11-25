@@ -4,11 +4,11 @@ local ns = vim.api.nvim_create_namespace("chainsaw.highlight")
 
 ---@param ln number
 function M.addHighlightToLine(ln)
-	local hlGroup = require("chainsaw.config").config.logHighlightGroup
-	if not hlGroup then return end
+	local c = require("chainsaw.config").config.loglines
+	local lineHlgroup = (c.lineHlgroup == "" or c.lineHlgroup == false) and nil or c.lineHlgroup
 
 	vim.api.nvim_buf_set_extmark(0, ns, ln, 1, {
-		line_hl_group = hlGroup,
+		line_hl_group = lineHlgroup,
 		invalidate = true, -- deletes the extmark if the line is deleted
 		undo_restore = true, -- makes undo restore those
 	})
