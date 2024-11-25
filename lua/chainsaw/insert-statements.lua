@@ -100,7 +100,7 @@ local function insertPlaceholders(line, var, logtypeSpecific)
 	return line
 end
 
--- DEPRECATION warning
+-- DEPRECATION (2024-11-23)
 ---@param logLines string[]
 ---@return boolean
 ---@nodiscard
@@ -126,7 +126,7 @@ function M.insert(logType, logtypeSpecific)
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
 
-	-- DEPRECATION
+	-- DEPRECATION (2024-11-23)
 	if isDeprecatedTemplate(logLines) then return false end
 
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
