@@ -14,8 +14,11 @@ local defaultConfig = {
 	---@type string|false
 	logHighlightGroup = "Visual",
 
-	-- emojis used for `emojiLog`
-	logEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+	logtypes = {
+		emojiLog = {
+			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+		},
+	},
 
 	logStatements = require("chainsaw.log-statements-data"),
 }
@@ -28,9 +31,14 @@ function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 	M.config.logStatements = require("chainsaw.superset-inheritance").insert(M.config.logStatements)
 
-	if not M.config.marker or M.config.marker == "" then
-		local msg = "`marker` must not be empty."
+	-- DEPRECATION
+	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
+		local msg = "Config `logEmojis` is deprecated. Use `logtypes.emojiLog.emojis` instead."
 		require("chainsaw.utils").notify(msg, "warn")
+	end
+
+	if not M.config.marker or M.config.marker == "" then
+		require("chainsaw.utils").notify("Config `marker` must not be empty.", "warn")
 		return
 	end
 	require("chainsaw.highlight").highlightExistingLogs()

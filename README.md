@@ -179,8 +179,11 @@ require("chainsaw").setup {
 	---@type string|false
 	logHighlightGroup = "Visual",
 
-	-- emojis used for `emojiLog`
-	logEmojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+	logtypes = {
+		emojiLog = {
+			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
+		},
+	},
 }
 ```
 

@@ -35,9 +35,9 @@ function M.assertLog()
 end
 
 function M.emojiLog()
-	local emojis = require("chainsaw.config").config.logEmojis
+	local emojis = require("chainsaw.config").config.logtypes.emojiLog.emojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
-		notify("`logEmojis` is not set.", "error")
+		notify("Config `logtypes.emojiLog.emojis` is not a list of strings.", "error")
 		return
 	end
 
