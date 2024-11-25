@@ -50,7 +50,7 @@ function M.setup(userConfig)
 		require("chainsaw.utils").notify("Config `marker` must not be empty.", "warn")
 		return
 	end
-	require("chainsaw.highlight").highlightExistingLogs()
+	require("chainsaw.styling").styleExistingLogs()
 end
 
 --------------------------------------------------------------------------------

@@ -139,7 +139,7 @@ function M.insert(logType, logtypeSpecific)
 	for _, line in pairs(logLines) do
 		line = insertPlaceholders(line, var, logtypeSpecific)
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
-		require("chainsaw.highlight").addHighlightToLine(ln)
+		require("chainsaw.styling").addStylingToLine(ln)
 		ln = ln + 1
 	end
 	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line
