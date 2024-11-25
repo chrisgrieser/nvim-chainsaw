@@ -174,11 +174,12 @@ require("chainsaw").setup {
 	marker = "🪚",
 
 	loglines = {
-		-- Appearance of lines with the marker
-		-- When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
-		-- spec to have existing log statements styled as well.
-		-- leave empty to disable
+		-- Appearance of lines with the marker. Leave empty to disable any of them.
+		-- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
+		-- spec to have existing log statements styled as well.)
 		lineHlgroup = "Visual",
+		sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
+		signHlgroup = "CursorLineNr",
 	},
 
 	logtypes = {
