@@ -81,13 +81,8 @@ end
 
 function M.removeLogs()
 	local marker = require("chainsaw.config").config.marker
+	assert(marker ~= "", "Marker may not be empty.")
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
-
-	-- GUARD
-	if marker == "" then
-		notify("No marker set.", "error")
-		return
-	end
 
 	-- Remove lines. Deleting individual lines instead of rewriting the whole
 	-- buffer to preserve marks, folds, and undos.
