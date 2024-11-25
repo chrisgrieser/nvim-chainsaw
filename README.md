@@ -8,6 +8,8 @@ Quick and feature-rich insertion of various kinds of log statements.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
+## Table of Contents
+
 <!-- toc -->
 
 - [Features](#features)
@@ -29,14 +31,14 @@ Quick and feature-rich insertion of various kinds of log statements.
 - Quick insertion of log statements for the variable under the cursor
   (normal mode) or the selection (visual mode).
 - Support for a dozen different log statement types, such as assert statements,
-  stacktraces, audible "logs", and more.
+  stacktraces, or acoustic logging. 
 - Builtin support for ~20 common languages, with dedicated support for
   `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or
-  clear the console.
+  to clear the console.
 - Smart detection of the variable under the cursor via Treesitter.
-- Flexible templating options for customizing the log statements inserted,
-  including support for multi-line templates.
+- Flexible templating options for customizing log statements, including 
+  support for multi-line templates.
 - All commands are dot-repeatable.
 
 ## Installation
