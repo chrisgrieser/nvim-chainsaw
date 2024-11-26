@@ -15,6 +15,7 @@ local defaultConfig = {
 		lineHlgroup = "Visual",
 		sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
 		signHlgroup = "CursorLineNr",
+		statuslineIcon = "🪚", -- solely used in nvim
 	},
 
 	logtypes = {

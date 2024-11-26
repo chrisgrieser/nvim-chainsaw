@@ -22,6 +22,7 @@ Quick and feature-rich insertion of various kinds of log statements.
   * [Base configuration](#base-configuration)
   * [Custom log statements](#custom-log-statements)
   * [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
+- [Statusline](#statusline)
 - [Similar plugins](#similar-plugins)
 - [About the developer](#about-the-developer)
 
@@ -31,13 +32,13 @@ Quick and feature-rich insertion of various kinds of log statements.
 - Quick insertion of log statements for the variable under the cursor
   (normal mode) or the selection (visual mode).
 - Support for a dozen different log statement types, such as assert statements,
-  stacktraces, or acoustic logging. 
+  stacktraces, or acoustic logging.
 - Builtin support for ~20 common languages, with dedicated support for
   `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or
   to clear the console.
 - Smart detection of the variable under the cursor via Treesitter.
-- Flexible templating options for customizing log statements, including 
+- Flexible templating options for customizing log statements, including
   support for multi-line templates.
 - All commands are dot-repeatable.
 
@@ -180,6 +181,7 @@ require("chainsaw").setup {
 		lineHlgroup = "Visual",
 		sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
 		signHlgroup = "CursorLineNr",
+		statuslineIcon = "🪚", -- solely used in nvim
 	},
 
 	logtypes = {
@@ -247,6 +249,14 @@ require("chainsaw").setup {
 		},
 	},
 }
+```
+
+## Statusline
+This function returns number of log statements *by nvim-chainsaw* in the current
+buffer.
+
+```lua
+require("chainsaw.visuals.statusline").countInBuffer()
 ```
 
 ## Similar plugins
