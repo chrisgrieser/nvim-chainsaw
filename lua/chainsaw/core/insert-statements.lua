@@ -36,7 +36,7 @@ local function getTemplateStr(logType)
 	local ft = vim.bo.filetype
 	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
 
-	local logStatements = require("chainsaw.config").config.logStatements
+	local logStatements = require("chainsaw.config.config").config.logStatements
 	local templateStr = logStatements[logType][ft]
 	if type(templateStr) == "string" then templateStr = { templateStr } end
 
@@ -85,10 +85,10 @@ end
 ---@return string
 ---@nodiscard
 local function insertPlaceholders(line, var, logtypeSpecific)
-	local config = require("chainsaw.config").config
+	local marker = require("chainsaw.config.config").config.marker
 
 	line = line:gsub("{{%w-}}", function(placeholder)
-		if placeholder == "{{marker}}" then return config.marker end
+		if placeholder == "{{marker}}" then return marker end
 		if placeholder == "{{var}}" then return var end
 		if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
 		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
@@ -131,7 +131,7 @@ function M.insert(logType, logtypeSpecific)
 	if isDeprecatedTemplate(logLines) then return false end
 
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
-	local var = require("chainsaw.var-detect").getVar()
+	local var = require("chainsaw.core.var-detect").getVar()
 	var = ensureValidQuotesInVar(var, logLines)
 
 	-- INSERT LINES
@@ -140,7 +140,7 @@ function M.insert(logType, logtypeSpecific)
 	for _, line in pairs(logLines) do
 		line = insertPlaceholders(line, var, logtypeSpecific)
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
-		require("chainsaw.styling").addStylingToLine(ln)
+		require("chainsaw.visuals.styling").addStylingToLine(ln)
 		ln = ln + 1
 	end
 	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line

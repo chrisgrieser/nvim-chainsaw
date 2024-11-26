@@ -68,7 +68,7 @@ use { "chrisgrieser/nvim-chainsaw" }
 
 Not every language supports every type of log statement. For the concrete
 statements used, see
-[log-statements-data.lua](./lua/chainsaw/log-statements-data.lua).
+[log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
 [^1]: `variableLog` for `nvim_lua` uses a log statement that inspects objects
 	and is designed to work with various notification plugins like
@@ -204,7 +204,7 @@ placeholders that are dynamically replaced:
 - *`.timeLog()` only*: `{{index}}` inserts a running index (needed to
   differentiate between variables when inserting `timeLog` multiple times).
 
-See [log-statements-data.lua](./lua/chainsaw/log-statements-data.lua) for
+See [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua) for
 the built-in log statements. PRs adding log statements for more languages are
 welcome.
 

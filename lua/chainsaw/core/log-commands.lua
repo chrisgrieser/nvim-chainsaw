@@ -1,4 +1,4 @@
-local insertStatements = require("chainsaw.insert-statements").insert
+local insertStatements = require("chainsaw.core.insert-statements").insert
 
 ---@return boolean success
 local function moveCursorToQuotes()
@@ -34,7 +34,7 @@ function M.assertLog()
 end
 
 function M.emojiLog()
-	local emojis = require("chainsaw.config").config.logtypes.emojiLog.emojis
+	local emojis = require("chainsaw.config.config").config.logtypes.emojiLog.emojis
 	assert(emojis, "Config `logtypes.emojiLog.emojis` is not a list of strings.")
 
 	-- select the first emoji with the least number of occurrences, ensuring that
@@ -76,7 +76,7 @@ end
 --------------------------------------------------------------------------------
 
 function M.removeLogs()
-	local marker = require("chainsaw.config").config.marker
+	local marker = require("chainsaw.config.config").config.marker
 	assert(marker ~= "", "Marker may not be empty.")
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 

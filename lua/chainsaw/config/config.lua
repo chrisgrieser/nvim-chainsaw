@@ -23,7 +23,7 @@ local defaultConfig = {
 		},
 	},
 
-	logStatements = require("chainsaw.log-statements-data"),
+	logStatements = require("chainsaw.config.log-statements-data"),
 }
 M.config = defaultConfig
 
@@ -34,7 +34,8 @@ function M.setup(userConfig)
 	local warn = require("chainsaw.utils").warn
 
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
-	M.config.logStatements = require("chainsaw.superset-inheritance").insert(M.config.logStatements)
+	M.config.logStatements =
+		require("chainsaw.config.superset-inheritance").insert(M.config.logStatements)
 
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
@@ -57,7 +58,7 @@ function M.setup(userConfig)
 	if not M.config.marker or M.config.marker == "" then
 		warn("Config `marker` must not be empty.")
 	end
-	require("chainsaw.styling").styleExistingLogs()
+	require("chainsaw.visuals.styling").styleExistingLogs()
 end
 
 --------------------------------------------------------------------------------

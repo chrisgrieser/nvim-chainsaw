@@ -11,12 +11,17 @@ local M = {}
 --------------------------------------------------------------------------------
 
 ---@param userConfig? Chainsaw.config
-function M.setup(userConfig) require("chainsaw.config").setup(userConfig) end
+function M.setup(userConfig) require("chainsaw.config.config").setup(userConfig) end
 
-vim.api.nvim_create_user_command("Chainsaw", function(ctx)
+vim.api.nvim_create_user_command(
+	"Chainsaw",
 	-- INFO needs to index this file to make commands dot-repeatable
-	M[ctx.args]()
-end, { nargs = 1, complete = function() return vim.tbl_keys(require("chainsaw.log-commands")) end })
+	function(ctx) M[ctx.args]() end,
+	{
+		nargs = 1,
+		complete = function() return vim.tbl_keys(require("chainsaw.core.log-commands")) end,
+	}
+)
 
 -- DEPRECATION
 vim.api.nvim_create_user_command("ChainSaw", function()
@@ -49,7 +54,7 @@ setmetatable(M, {
 				vim.cmd.normal { "g@l", bang = true }
 			else
 				vim.b.chainsawLogType = key
-				require("chainsaw.log-commands")[key](...)
+				require("chainsaw.core.log-commands")[key](...)
 			end
 		end
 		return dotRepeatable
