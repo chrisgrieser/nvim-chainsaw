@@ -52,11 +52,24 @@ Quick and feature-rich insertion of various kinds of log statements.
 
 ```lua
 -- lazy.nvim
-{ "chrisgrieser/nvim-chainsaw" },
+{ 
+	"chrisgrieser/nvim-chainsaw", 
+	event = "VeryLazy",
+	opts = {} -- required even if left empty
+},
 
 -- packer
-use { "chrisgrieser/nvim-chainsaw" }
+use { 
+	"chrisgrieser/nvim-chainsaw"
+	config = function () 
+		require("chainsaw").setup()
+	end,
+}
 ```
+
+*The plugin needs to be loaded for highlights, signs, and scrollbar items to be
+displayed. If you do not care about them, you can also remove the early loading
+via `event = "VeryLazy"`.*
 
 ## Built-in language support
 - JavaScript/TypeScript (and supersets)
@@ -165,6 +178,8 @@ Filetypes currently supporting this feature:
 PRs adding support for more languages are welcome.
 
 ## Configuration
+The `setup` call is required for highlights, signs, and scrollbar items to be
+displayed.
 
 ### Base configuration
 
