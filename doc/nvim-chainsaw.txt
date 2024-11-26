@@ -1,6 +1,20 @@
 *nvim-chainsaw.txt*          For Neovim          Last change: 2024 November 26
 
 ==============================================================================
+Table of Contents                            *nvim-chainsaw-table-of-contents*
+
+1. nvim-chainsaw                                |nvim-chainsaw-nvim-chainsaw-|
+  - Table of Contents         |nvim-chainsaw-nvim-chainsaw--table-of-contents|
+  - Features                           |nvim-chainsaw-nvim-chainsaw--features|
+  - Installation                   |nvim-chainsaw-nvim-chainsaw--installation|
+  - Built-in language support|nvim-chainsaw-nvim-chainsaw--built-in-language-support|
+  - Usage                                 |nvim-chainsaw-nvim-chainsaw--usage|
+  - Configuration                 |nvim-chainsaw-nvim-chainsaw--configuration|
+  - Statusline                       |nvim-chainsaw-nvim-chainsaw--statusline|
+  - Similar plugins             |nvim-chainsaw-nvim-chainsaw--similar-plugins|
+  - About the developer     |nvim-chainsaw-nvim-chainsaw--about-the-developer|
+
+==============================================================================
 1. nvim-chainsaw                                *nvim-chainsaw-nvim-chainsaw-*
 
 
