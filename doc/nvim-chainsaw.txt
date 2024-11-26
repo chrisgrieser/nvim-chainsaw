@@ -68,11 +68,24 @@ respective languages.
 
 >lua
     -- lazy.nvim
-    { "chrisgrieser/nvim-chainsaw" },
+    { 
+        "chrisgrieser/nvim-chainsaw", 
+        event = "VeryLazy",
+        opts = {} -- required even if left empty
+    },
     
     -- packer
-    use { "chrisgrieser/nvim-chainsaw" }
+    use { 
+        "chrisgrieser/nvim-chainsaw"
+        config = function () 
+            require("chainsaw").setup()
+        end,
+    }
 <
+
+_The plugin needs to be loaded for highlights, signs, and scrollbar items to be
+displayed. If you do not care about them, you can also remove the early loading
+via event = "VeryLazy"._
 
 
 BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support*
@@ -179,6 +192,9 @@ PRs adding support for more languages are welcome.
 
 
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
+
+The `setup` call is required for highlights, signs, and scrollbar items to be
+displayed.
 
 
 BASE CONFIGURATION ~
