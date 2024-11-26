@@ -10,6 +10,7 @@ Table of Contents                                 *chainsaw-table-of-contents*
   - Built-in language support|chainsaw-nvim-chainsaw--built-in-language-support|
   - Usage                                      |chainsaw-nvim-chainsaw--usage|
   - Configuration                      |chainsaw-nvim-chainsaw--configuration|
+  - Statusline                            |chainsaw-nvim-chainsaw--statusline|
   - Similar plugins                  |chainsaw-nvim-chainsaw--similar-plugins|
   - About the developer          |chainsaw-nvim-chainsaw--about-the-developer|
 
@@ -36,6 +37,7 @@ TABLE OF CONTENTS                  *chainsaw-nvim-chainsaw--table-of-contents*
     - |chainsaw-base-configuration|
     - |chainsaw-custom-log-statements|
     - |chainsaw-have-your-formatter-ignore-the-log-statements|
+- |chainsaw-statusline|
 - |chainsaw-similar-plugins|
 - |chainsaw-about-the-developer|
 
@@ -187,13 +189,14 @@ BASE CONFIGURATION ~
         -- unique strings like "[Chainsaw]" are recommended.
         marker = "🪚",
     
-        loglines = {
+        visuals = {
             -- Appearance of lines with the marker. Leave empty to disable any of them.
             -- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
             -- spec to have existing log statements styled as well.)
             lineHlgroup = "Visual",
             sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
             signHlgroup = "CursorLineNr",
+            statuslineIcon = "🪚", -- solely used in nvim
         },
     
         logtypes = {
@@ -260,6 +263,16 @@ configuration to include an ignore-comment: `/* prettier-ignore */`.
             },
         },
     }
+<
+
+
+STATUSLINE                                *chainsaw-nvim-chainsaw--statusline*
+
+This function returns number of log statements _by nvim-chainsaw_ in the
+current buffer.
+
+>lua
+    require("chainsaw.visuals.statusline").countInBuffer()
 <
 
 
