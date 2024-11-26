@@ -12,10 +12,18 @@ local defaultConfig = {
 		-- Appearance of lines with the marker. Leave empty to disable any of them.
 		-- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
 		-- spec to have existing log statements styled as well.)
-		lineHlgroup = "Visual",
 		sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
 		signHlgroup = "CursorLineNr",
-		statuslineIcon = "🪚", -- solely used in nvim
+		statuslineIcon = "🪚",
+		lineHlgroup = "Visual",
+
+		nvimSatelliteIntegration = {
+			enabled = true,
+			hlgroup = "DiagnosticSignInfo",
+			icon = "▪",
+			leftOfScrollbar = false,
+			priority = 40, -- compared to other handlers (diagnostics are 50)
+		},
 	},
 
 	logtypes = {
@@ -64,7 +72,10 @@ function M.setup(userConfig)
 	if not M.config.marker or M.config.marker == "" then
 		warn("Config `marker` must not be empty.")
 	end
+
+	-- initialize
 	require("chainsaw.visuals.styling").styleExistingLogs()
+	require("chainsaw.visuals.satellite-integration")
 end
 
 --------------------------------------------------------------------------------

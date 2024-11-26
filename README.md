@@ -41,6 +41,8 @@ Quick and feature-rich insertion of various kinds of log statements.
 - Flexible templating options for customizing log statements, including
   support for multi-line templates.
 - All commands are dot-repeatable.
+- Visual indication of log statements via highlights, signcolumn, or scrollbar
+  (when using `satellite.nvim`).
 
 ## Installation
 **Requirements**
@@ -178,10 +180,18 @@ require("chainsaw").setup {
 		-- Appearance of lines with the marker. Leave empty to disable any of them.
 		-- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
 		-- spec to have existing log statements styled as well.)
-		lineHlgroup = "Visual",
 		sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
 		signHlgroup = "CursorLineNr",
-		statuslineIcon = "🪚", -- solely used in nvim
+		statuslineIcon = "🪚",
+		lineHlgroup = "Visual",
+
+		nvimSatelliteIntegration = {
+			enabled = true,
+			hlgroup = "DiagnosticSignInfo",
+			icon = "▪",
+			leftOfScrollbar = false,
+			priority = 40, -- compared to other handlers (diagnostics are 50)
+		},
 	},
 
 	logtypes = {
@@ -189,6 +199,8 @@ require("chainsaw").setup {
 			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 		},
 	},
+
+	logStatements = require("chainsaw.config.log-statements-data"),
 }
 ```
 
