@@ -56,6 +56,8 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - Flexible templating options for customizing log statements, including
     support for multi-line templates.
 - All commands are dot-repeatable.
+- Visual indication of log statements via highlights, signcolumn, or scrollbar
+    (when using `satellite.nvim`).
 
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
@@ -193,10 +195,18 @@ BASE CONFIGURATION ~
             -- Appearance of lines with the marker. Leave empty to disable any of them.
             -- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
             -- spec to have existing log statements styled as well.)
-            lineHlgroup = "Visual",
             sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
             signHlgroup = "CursorLineNr",
-            statuslineIcon = "🪚", -- solely used in nvim
+            statuslineIcon = "🪚",
+            lineHlgroup = "Visual",
+    
+            nvimSatelliteIntegration = {
+                enabled = true,
+                hlgroup = "DiagnosticSignInfo",
+                icon = "▪",
+                leftOfScrollbar = false,
+                priority = 40, -- compared to other handlers (diagnostics are 50)
+            },
         },
     
         logtypes = {
@@ -204,6 +214,8 @@ BASE CONFIGURATION ~
                 emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
             },
         },
+    
+        logStatements = require("chainsaw.config.log-statements-data"),
     }
 <
 
