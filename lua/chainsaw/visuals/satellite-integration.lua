@@ -1,4 +1,8 @@
 -- DOCS https://github.com/lewis6991/satellite.nvim/blob/main/HANDLERS.md#handlers
+
+-- Disable for the nvim-type check test, since it does not have access to
+-- `lazydev.nvim`, and thus does not know about satellite.nvim's types.
+---@diagnostic disable: undefined-doc-name
 --------------------------------------------------------------------------------
 
 local config = require("chainsaw.config.config").config.visuals.nvimSatelliteIntegration
@@ -10,7 +14,7 @@ if not satelliteInstalled or not config.enabled then return end
 
 local ns = vim.api.nvim_create_namespace("chainsaw.markers")
 
---- @type Satellite.Handler
+---@type Satellite.Handler
 local handler = {
 	name = "chainsaw",
 	ns = vim.api.nvim_create_namespace("chainsaw.satellite-integration"),
@@ -31,11 +35,14 @@ local handler = {
 			:map(function(extm)
 				local rowWithMarker = extm[2] + 1
 				local scrollbarPos, _ = require("satellite.util").row_to_barpos(winid, rowWithMarker)
-				return {
+
+				---@type Satellite.Mark
+				local mark = {
 					pos = scrollbarPos,
 					highlight = config.hlgroup,
 					symbol = config.icon,
 				}
+				return mark
 			end)
 			:totable()
 		return satelliteMarks
