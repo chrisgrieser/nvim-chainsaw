@@ -173,7 +173,7 @@ require("chainsaw").setup {
 	-- unique strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
-	loglines = {
+	visuals = {
 		-- Appearance of lines with the marker. Leave empty to disable any of them.
 		-- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
 		-- spec to have existing log statements styled as well.)

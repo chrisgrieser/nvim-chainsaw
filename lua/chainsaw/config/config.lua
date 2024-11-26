@@ -8,7 +8,7 @@ local defaultConfig = {
 	-- unique strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
-	loglines = {
+	visuals = {
 		-- Appearance of lines with the marker. Leave empty to disable any of them.
 		-- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
 		-- spec to have existing log statements styled as well.)
@@ -47,6 +47,11 @@ function M.setup(userConfig)
 	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logHighlightGroup` is deprecated. Use `loglines.lineHlgroup` instead."
 		warn(msg)
+	end
+
+	-- DEPRECATION
+	if M.config.loglines then ---@diagnostic disable-line: undefined-field
+		warn("Config `loglines` is deprecated. Use `visuals` instead.")
 	end
 
 	-- VALIDATE

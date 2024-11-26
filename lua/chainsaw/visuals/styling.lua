@@ -4,7 +4,7 @@ local ns = vim.api.nvim_create_namespace("chainsaw.markers")
 
 ---@param ln number
 function M.addStylingToLine(ln)
-	local c = require("chainsaw.config.config").config.loglines
+	local c = require("chainsaw.config.config").config.visuals
 	local lineHlgroup = (c.lineHlgroup ~= "" and c.lineHlgroup ~= false) and c.lineHlgroup or nil
 	local sign = (c.sign ~= "" and c.sign ~= false) and c.sign or nil
 	local signHlgroup = (c.signHlgroup ~= "" and c.signHlgroup ~= false) and c.signHlgroup or nil
