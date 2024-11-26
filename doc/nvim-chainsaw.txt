@@ -186,19 +186,17 @@ BASE CONFIGURATION ~
 >lua
     -- default settings
     require("chainsaw").setup {
-        -- The marker should be a unique string, since lines with it are highlighted
-        -- and since `.removeLogs()` will remove any line with it. Thus, emojis or
-        -- unique strings like "[Chainsaw]" are recommended.
+        -- The marker should be a unique string, since signs and highlgiths are based
+        -- on it and since `.removeLogs()` will remove any line with it. Thus, emojis
+        -- or unique strings like "[Chainsaw]" are recommended.
         marker = "🪚",
     
+        -- Appearance of lines with the marker
         visuals = {
-            -- Appearance of lines with the marker. Leave empty to disable any of them.
-            -- (When using `lazy.nvim`, you need to add `event = VeryLazy` to the plugin
-            -- spec to have existing log statements styled as well.)
-            sign = "🪚", -- can also use nerdfont icon since it's solely used in nvim: 󰹈
-            signHlgroup = "CursorLineNr",
-            statuslineIcon = "🪚",
-            lineHlgroup = "Visual",
+            sign = "󰹈",
+            signHlgroup = "DiagnosticSignInfo",
+            statuslineIcon = "󰹈",
+            lineHlgroup = false,
     
             nvimSatelliteIntegration = {
                 enabled = true,
