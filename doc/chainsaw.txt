@@ -85,7 +85,7 @@ BUILT-IN LANGUAGE SUPPORT  *chainsaw-nvim-chainsaw--built-in-language-support*
 
 Not every language supports every type of log statement. For the concrete
 statements used, see log-statements-data.lua
-<./lua/chainsaw/log-statements-data.lua>.
+<./lua/chainsaw/config/log-statements-data.lua>.
 
 
 USAGE                                          *chainsaw-nvim-chainsaw--usage*
@@ -217,8 +217,8 @@ be removed via `.removeLogs()`. - `{{var}}`variable as described further above.
 - _.timeLog() only_`{{index}}` inserts a running index (needed to differentiate
 between variables when inserting `timeLog` multiple times).
 
-See log-statements-data.lua <./lua/chainsaw/log-statements-data.lua> for the
-built-in log statements. PRs adding log statements for more languages are
+See log-statements-data.lua <./lua/chainsaw/config/log-statements-data.lua> for
+the built-in log statements. PRs adding log statements for more languages are
 welcome.
 
 >lua
