@@ -16,13 +16,13 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-  * [List of commands](#list-of-commands)
-  * [Smart variable detection](#smart-variable-detection)
+	* [List of commands](#list-of-commands)
+	* [Smart variable detection](#smart-variable-detection)
 - [Configuration](#configuration)
-  * [Base configuration](#base-configuration)
-  * [Custom log statements](#custom-log-statements)
-  * [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
-- [Statusline](#statusline)
+	* [Base configuration](#base-configuration)
+	* [Customize log statements](#customize-log-statements)
+	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
+	* [Statusline](#statusline)
 - [Similar plugins](#similar-plugins)
 - [About the developer](#about-the-developer)
 
@@ -31,16 +31,15 @@ Quick and feature-rich insertion of various kinds of log statements.
 ## Features
 - Quick insertion of log statements for the variable under the cursor
   (normal mode) or the selection (visual mode).
-- Support for a dozen different log statement types, such as assert statements,
-  stacktraces, or acoustic logging.
+- Smart detection of the variable under the cursor via Treesitter.
+- Commands for a dozen different log statement types, including assert statements,
+  stacktraces, or acoustic logging. All commands are dot-repeatable.
 - Builtin support for ~20 common languages, with dedicated support for
   `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or
   to clear the console.
-- Smart detection of the variable under the cursor via Treesitter.
 - Flexible templating options for customizing log statements, including
   support for multi-line templates.
-- All commands are dot-repeatable.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
   (when using [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
 
@@ -95,12 +94,12 @@ statements used, see
 [^3]: The packages `fmt` and `time` need to be imported manually.
 
 ## Usage
+
+### List of commands
 The plugin offers various types of log statements. Bind keymaps for the ones you
 want to use.
 
 All operations are dot-repeatable.
-
-### List of commands
 
 ```lua
 -- log the name & value of the variable under the cursor
@@ -179,7 +178,7 @@ PRs adding support for more languages are welcome. See
 [smart-var-detect.lua](./lua/chainsaw/config/smart-var-detect.lua).
 
 ## Configuration
-The `setup` call is required.
+The `setup()` call is required.
 
 ### Base configuration
 
@@ -235,23 +234,24 @@ require("chainsaw").setup {
 }
 ```
 
-### Custom log statements
-Custom log statements can be added in the `setup()` call. There are various
-placeholders that are dynamically replaced:
+### Customize log statements
+New log statements can be added, and existing log statements can be modified
+under the config `logStatements`. See
+[log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua) for
+the built-in log statements as reference. PRs adding log statements for more
+languages are welcome.
+
+There are various **placeholders** that are dynamically replaced:
 - `{{marker}}` inserts the value from `config.marker`. Each log statement should
   have one, so that the line can be removed via `.removeLogs()`.
 - `{{var}}`: variable as described further above.
-- `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision,
-  use `.timeLog()` instead)
+- `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision, use
+  `.timeLog()` instead)
 - `{{file}}`: basename of the current file
 - `{{lnum}}`: current line number
 - *`.emojiLog()` only*: `{{emoji}}` inserts the emoji
 - *`.timeLog()` only*: `{{index}}` inserts a running index (needed to
   differentiate between variables when inserting `timeLog` multiple times).
-
-See [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua) for
-the built-in log statements. PRs adding log statements for more languages are
-welcome.
 
 ```lua
 require("chainsaw").setup ({
@@ -266,20 +266,17 @@ require("chainsaw").setup ({
 ```
 
 > [!NOTE]
-> 1. The strings may not include line breaks. If you want to use multi-line log
->    statements, use a list of strings instead, each string representing one
->    line.
-> 2. See [superset-inheritance.lua](./lua/chainsaw/superset-inheritance.lua)
->    for how language supersets (such as `typescript` inheriting from
->    `javascript`) is handled.
+> The strings may not include line breaks. If you want to use multi-line log
+> statements, use a list of strings instead, each string representing one line.
 
 ### Have your formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
 into multiple lines, making them hard to read and breaking `.removeLogs()`, which
 relies on each line containing the marker emoji.
 
-The simplest method to deal with this is to customize the log statement in
-your configuration to include an ignore-comment: `/* prettier-ignore */`.
+The simplest method to deal with this is to customize the log statement in your
+configuration to include an ignore-comment: `/* prettier-ignore */` (and add the
+marker to it as well, so it is included in the removal by `.removeLogs()`.)
 
 ```lua
 require("chainsaw").setup {
@@ -294,7 +291,7 @@ require("chainsaw").setup {
 }
 ```
 
-## Statusline
+### Statusline
 This function returns number of log statements *by nvim-chainsaw* in the current
 buffer.
 
@@ -321,10 +318,6 @@ I also occasionally blog about vim: [Nano Tips for Vim](https://nanotipsforvim.p
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
-<a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img
-	height='36'
-	style='border:0px;height:36px;'
-	src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
-	border='0'
-	alt='Buy Me a Coffee at ko-fi.com'
-/></a>
+<a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img height='36'
+style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
+border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
