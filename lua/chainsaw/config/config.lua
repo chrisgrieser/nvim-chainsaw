@@ -36,13 +36,38 @@ M.config = defaultConfig
 
 --------------------------------------------------------------------------------
 
+local supersets = {
+	nvim_lua = "lua",
+	typescript = "javascript",
+	typescriptreact = "typescript",
+	javascriptreact = "javascript",
+	vue = "typescript",
+	svelte = "typescript",
+	bash = "sh",
+	zsh = "sh",
+	fish = "sh",
+	nu = "sh",
+	scss = "css",
+	less = "css",
+	sass = "css",
+}
+
 ---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
 	local warn = require("chainsaw.utils").warn
 
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
-	M.config.logStatements =
-		require("chainsaw.config.superset-inheritance").insert(M.config.logStatements)
+
+	-- superset-inheritance via setting `__index` metatable for each logtype
+	for _, logType in pairs(M.config.logStatements) do
+		setmetatable(logType, {
+			__index = function(type, key)
+				local targetFt = supersets[key]
+				if not targetFt then return nil end
+				return type[targetFt]
+			end,
+		})
+	end
 
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
