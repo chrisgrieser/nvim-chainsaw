@@ -24,10 +24,28 @@ local defaultConfig = {
 		},
 	},
 
+	-- configuration for specific logtypes
 	logtypes = {
 		emojiLog = {
 			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 		},
+	},
+
+	-- If a filetype has no configuration for a specific logtype, then it will
+	-- look for the configuration for a superset of that filetype.
+	supersets = {
+		nvim_lua = "lua", -- `nvim_lua` config is used when in nvim-lua
+		typescript = "javascript",
+		typescriptreact = "typescript",
+		javascriptreact = "javascript",
+		vue = "typescript",
+		svelte = "typescript",
+		bash = "sh",
+		zsh = "sh",
+		fish = "sh",
+		scss = "css",
+		less = "css",
+		sass = "css",
 	},
 
 	logStatements = require("chainsaw.config.log-statements-data"),
@@ -35,22 +53,6 @@ local defaultConfig = {
 M.config = defaultConfig
 
 --------------------------------------------------------------------------------
-
-local supersets = {
-	nvim_lua = "lua",
-	typescript = "javascript",
-	typescriptreact = "typescript",
-	javascriptreact = "javascript",
-	vue = "typescript",
-	svelte = "typescript",
-	bash = "sh",
-	zsh = "sh",
-	fish = "sh",
-	nu = "sh",
-	scss = "css",
-	less = "css",
-	sass = "css",
-}
 
 ---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
@@ -62,7 +64,7 @@ function M.setup(userConfig)
 	for _, logType in pairs(M.config.logStatements) do
 		setmetatable(logType, {
 			__index = function(type, key)
-				local targetFt = supersets[key]
+				local targetFt = M.config.supersets[key]
 				if not targetFt then return nil end
 				return type[targetFt]
 			end,
