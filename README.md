@@ -42,7 +42,7 @@ Quick and feature-rich insertion of various kinds of log statements.
   support for multi-line templates.
 - All commands are dot-repeatable.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
-  (when using `satellite.nvim`).
+  (when using [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
 
 ## Installation
 **Requirements**
