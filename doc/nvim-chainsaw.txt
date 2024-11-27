@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 November 26
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 November 27
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -32,7 +32,7 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
 - |nvim-chainsaw-built-in-language-support|
 - |nvim-chainsaw-usage|
     - |nvim-chainsaw-list-of-commands|
-    - |nvim-chainsaw-smart-variable-identification|
+    - |nvim-chainsaw-smart-variable-detection|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-base-configuration|
     - |nvim-chainsaw-custom-log-statements|
@@ -57,7 +57,7 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
     support for multi-line templates.
 - All commands are dot-repeatable.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
-    (when using `satellite.nvim`).
+    (when using satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
 
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
@@ -171,7 +171,7 @@ When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
 instead of the word under the cursor.
 
 
-SMART VARIABLE IDENTIFICATION ~
+SMART VARIABLE DETECTION ~
 
 When the variable under the cursor is an object with fields, `chainsaw`
 attempts to automatically select the correct field. Note that this feature
@@ -188,7 +188,8 @@ requires the Treesitter parser of the respective language.
 Filetypes currently supporting this feature: - Lua - Python - JavaScript (and
 supersets)
 
-PRs adding support for more languages are welcome.
+PRs adding support for more languages are welcome. See smart-var-detect.lua
+<./lua/chainsaw/config/smart-var-detect.lua>.
 
 
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
