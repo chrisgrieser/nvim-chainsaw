@@ -17,7 +17,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
   * [List of commands](#list-of-commands)
-  * [Smart variable identification](#smart-variable-identification)
+  * [Smart variable detection](#smart-variable-detection)
 - [Configuration](#configuration)
   * [Base configuration](#base-configuration)
   * [Custom log statements](#custom-log-statements)
@@ -157,7 +157,7 @@ When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
 word under the cursor.
 
-### Smart variable identification
+### Smart variable detection
 When the variable under the cursor is an object with fields, `chainsaw` attempts
 to automatically select the correct field. Note that this feature requires the
 Treesitter parser of the respective language.
@@ -175,7 +175,8 @@ Filetypes currently supporting this feature:
 - Python
 - JavaScript (and supersets)
 
-PRs adding support for more languages are welcome.
+PRs adding support for more languages are welcome. See
+[smart-var-detect.lua](./lua/chainsaw/config/smart-var-detect.lua).
 
 ## Configuration
 The `setup` call is required for highlights, signs, and scrollbar items to be

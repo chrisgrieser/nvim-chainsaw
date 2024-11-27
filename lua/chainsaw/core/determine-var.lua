@@ -21,33 +21,17 @@ function M.getVar()
 	local parserExists, node = pcall(vim.treesitter.get_node)
 	if not node or not parserExists then return vim.fn.expand("<cword>") end
 
-	-----------------------------------------------------------------------------
+	-- smart variable detection
+	local detectorFunc = require("chainsaw.config.smart-var-detect").ftConfig[vim.bo.filetype]
+	if detectorFunc then node = detectorFunc(node) end
 
-	-- smart variable identification: for fields, use parent node
-	local ft = vim.bo.filetype
-	if ft == "lua" then
-		local cursorOnDot = node:type() == "dot_index_expression"
-		local cursorOnField = node:parent()
-			and node:parent():type() == "dot_index_expression"
-			and node:prev_named_sibling()
-		if cursorOnDot then
-			node = node:parent()
-		elseif cursorOnField then
-			node = node:parent():parent()
-		end
-	elseif ft == "javascript" or ft == "typescript" or ft == "typescriptreact" then
-		local cursorOnField = node:type() == "property_identifier"
-		if cursorOnField then node = node:parent() end
-	elseif ft == "python" then
-		local cursorOnField = node:type():find("^string_") and node:parent()
-		if cursorOnField then node = node:parent():parent() end
-	end
-
-	-- GUARD the node has no parent
+	-- fallback to cword if node has no parent
 	if not node then return vim.fn.expand("<cword>") end
 
+	-- fallback to cword if node multiline
 	local nodeText = vim.treesitter.get_node_text(node, 0)
 	if nodeText:find("[\r\n]") then return vim.fn.expand("<cword>") end
+
 	return nodeText
 end
 

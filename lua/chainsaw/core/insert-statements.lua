@@ -131,7 +131,7 @@ function M.insert(logType, logtypeSpecific)
 	if isDeprecatedTemplate(logLines) then return false end
 
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
-	local var = require("chainsaw.core.var-detect").getVar()
+	local var = require("chainsaw.core.determine-var").getVar()
 	var = ensureValidQuotesInVar(var, logLines)
 
 	-- INSERT LINES
