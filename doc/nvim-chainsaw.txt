@@ -10,7 +10,6 @@ Table of Contents                            *nvim-chainsaw-table-of-contents*
   - Built-in language support|nvim-chainsaw-nvim-chainsaw--built-in-language-support|
   - Usage                                 |nvim-chainsaw-nvim-chainsaw--usage|
   - Configuration                 |nvim-chainsaw-nvim-chainsaw--configuration|
-  - Statusline                       |nvim-chainsaw-nvim-chainsaw--statusline|
   - Similar plugins             |nvim-chainsaw-nvim-chainsaw--similar-plugins|
   - About the developer     |nvim-chainsaw-nvim-chainsaw--about-the-developer|
 
@@ -35,9 +34,9 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
     - |nvim-chainsaw-smart-variable-detection|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-base-configuration|
-    - |nvim-chainsaw-custom-log-statements|
+    - |nvim-chainsaw-customize-log-statements|
     - |nvim-chainsaw-have-your-formatter-ignore-the-log-statements|
-- |nvim-chainsaw-statusline|
+    - |nvim-chainsaw-statusline|
 - |nvim-chainsaw-similar-plugins|
 - |nvim-chainsaw-about-the-developer|
 
@@ -46,16 +45,15 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 
 - Quick insertion of log statements for the variable under the cursor
     (normal mode) or the selection (visual mode).
-- Support for a dozen different log statement types, such as assert statements,
-    stacktraces, or acoustic logging.
+- Smart detection of the variable under the cursor via Treesitter.
+- Commands for a dozen different log statement types, including assert statements,
+    stacktraces, or acoustic logging. All commands are dot-repeatable.
 - Builtin support for ~20 common languages, with dedicated support for
     `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or
     to clear the console.
-- Smart detection of the variable under the cursor via Treesitter.
 - Flexible templating options for customizing log statements, including
     support for multi-line templates.
-- All commands are dot-repeatable.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
     (when using satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
 
@@ -107,13 +105,13 @@ statements used, see log-statements-data.lua
 
 USAGE                                     *nvim-chainsaw-nvim-chainsaw--usage*
 
+
+LIST OF COMMANDS ~
+
 The plugin offers various types of log statements. Bind keymaps for the ones
 you want to use.
 
 All operations are dot-repeatable.
-
-
-LIST OF COMMANDS ~
 
 >lua
     -- log the name & value of the variable under the cursor
@@ -194,7 +192,7 @@ PRs adding support for more languages are welcome. See smart-var-detect.lua
 
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
 
-The `setup` call is required.
+The `setup()` call is required.
 
 
 BASE CONFIGURATION ~
@@ -252,21 +250,22 @@ BASE CONFIGURATION ~
 <
 
 
-CUSTOM LOG STATEMENTS ~
+CUSTOMIZE LOG STATEMENTS ~
 
-Custom log statements can be added in the `setup()` call. There are various
-placeholders that are dynamically replaced: - `{{marker}}` inserts the value
-from `config.marker`. Each log statement should have one, so that the line can
-be removed via `.removeLogs()`. - `{{var}}`variable as described further above.
-- `{{time}}`timestamp formatted as `HH:MM:SS` (for millisecond-precision, use
-`.timeLog()` instead) - `{{file}}`basename of the current file -
-`{{lnum}}`current line number - _.emojiLog() only_`{{emoji}}` inserts the emoji
-- _.timeLog() only_`{{index}}` inserts a running index (needed to differentiate
-between variables when inserting `timeLog` multiple times).
+New log statements can be added, and existing log statements can be modified
+under the config `logStatements`. See log-statements-data.lua
+<./lua/chainsaw/config/log-statements-data.lua> for the built-in log statements
+as reference. PRs adding log statements for more languages are welcome.
 
-See log-statements-data.lua <./lua/chainsaw/config/log-statements-data.lua> for
-the built-in log statements. PRs adding log statements for more languages are
-welcome.
+There are various **placeholders** that are dynamically replaced: -
+`{{marker}}` inserts the value from `config.marker`. Each log statement should
+have one, so that the line can be removed via `.removeLogs()`. -
+`{{var}}`variable as described further above. - `{{time}}`timestamp formatted
+as `HH:MM:SS` (for millisecond-precision, use `.timeLog()` instead) -
+`{{file}}`basename of the current file - `{{lnum}}`current line number -
+_.emojiLog() only_`{{emoji}}` inserts the emoji - _.timeLog() only_`{{index}}`
+inserts a running index (needed to differentiate between variables when
+inserting `timeLog` multiple times).
 
 >lua
     require("chainsaw").setup ({
@@ -281,11 +280,9 @@ welcome.
 <
 
 
-  [!NOTE] 1. The strings may not include line breaks. If you want to use
-  multi-line log statements, use a list of strings instead, each string
-  representing one line. 2. See superset-inheritance.lua
-  <./lua/chainsaw/superset-inheritance.lua> for how language supersets (such as
-  `typescript` inheriting from `javascript`) is handled.
+  [!NOTE] The strings may not include line breaks. If you want to use multi-line
+  log statements, use a list of strings instead, each string representing one
+  line.
 
 HAVE YOUR FORMATTER IGNORE THE LOG STATEMENTS ~
 
@@ -294,7 +291,8 @@ into multiple lines, making them hard to read and breaking `.removeLogs()`,
 which relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
-configuration to include an ignore-comment: `/* prettier-ignore */`.
+configuration to include an ignore-comment: `/* prettier-ignore */` (and add
+the marker to it as well, so it is included in the removal by `.removeLogs()`.)
 
 >lua
     require("chainsaw").setup {
@@ -310,7 +308,7 @@ configuration to include an ignore-comment: `/* prettier-ignore */`.
 <
 
 
-STATUSLINE                           *nvim-chainsaw-nvim-chainsaw--statusline*
+STATUSLINE ~
 
 This function returns number of log statements _by nvim-chainsaw_ in the
 current buffer.
