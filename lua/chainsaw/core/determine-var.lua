@@ -22,7 +22,8 @@ function M.getVar()
 	if not node or not parserExists then return vim.fn.expand("<cword>") end
 
 	-- smart variable detection
-	local detectorFunc = require("chainsaw.config.smart-var-detect").ftConfig[vim.bo.filetype]
+	local ft = require("chainsaw.utils").getFiletype()
+	local detectorFunc = require("chainsaw.config.smart-var-detect").ftConfig[ft]
 	if detectorFunc then node = detectorFunc(node) end
 
 	-- fallback to cword if node has no parent

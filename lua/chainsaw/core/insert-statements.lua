@@ -31,10 +31,9 @@ end
 ---@return string[]|false -- returns false if not configured or invalid
 ---@nodiscard
 local function getTemplateStr(logType)
-	local warn = require("chainsaw.utils").warn
+	local u = require("chainsaw.utils")
 
-	local ft = vim.bo.filetype
-	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
+	local ft = u.getFiletype()
 
 	local logStatements = require("chainsaw.config.config").config.logStatements
 	local templateStr = logStatements[logType][ft]
@@ -43,7 +42,7 @@ local function getTemplateStr(logType)
 	-- GUARD unconfigured filetype
 	if not templateStr then
 		local msg = ("There is no configuration for %q in %q."):format(logType, ft)
-		warn(msg)
+		u.warn(msg)
 		return false
 	end
 
@@ -55,7 +54,7 @@ local function getTemplateStr(logType)
 			"The nvim-api does not accept line breaks in string when appending text.",
 			"Use a list of strings instead, each string representing one line.",
 		}, "\n")
-		warn(msg)
+		u.warn(msg)
 		return false
 	end
 

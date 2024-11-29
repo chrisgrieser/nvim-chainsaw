@@ -16,5 +16,13 @@ function M.info(msg)
 	vim.notify(msg, vim.log.levels.INFO, { title = "chainsaw", icon = icon })
 end
 
+---@return string
+---@nodiscard
+function M.getFiletype()
+	local ft = vim.bo.filetype
+	if vim.api.nvim_buf_get_name(0):find("nvim.*%.lua$") then ft = "nvim_lua" end
+	return ft
+end
+
 --------------------------------------------------------------------------------
 return M
