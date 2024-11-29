@@ -32,6 +32,7 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
 - |nvim-chainsaw-usage|
     - |nvim-chainsaw-list-of-commands|
     - |nvim-chainsaw-smart-variable-detection|
+    - |nvim-chainsaw-smart-insertion-locations|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-base-configuration|
     - |nvim-chainsaw-customize-log-statements|
@@ -45,24 +46,26 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 
 - Quick insertion of log statements for the variable under the cursor
     (normal mode) or the selection (visual mode).
-- Smart detection of the variable under the cursor via Treesitter.
-- Commands for a dozen different log statement types, including assert statements,
-    stacktraces, or acoustic logging. All commands are dot-repeatable.
+- |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
+    and the |nvim-chainsaw-correct-insertion-location-of-the-log-statement| via Treesitter.
+- Commands for a dozen different log statement types, including assert
+    statements, stacktraces, or acoustic logging. All commands are dot-repeatable.
 - Builtin support for ~20 common languages, with dedicated support for
     `nvim-lua`, and easy configuration for additional languages.
-- Helper commands to remove all log statements created by `nvim-chainsaw` or
-    to clear the console.
-- Flexible templating options for customizing log statements, including
-    support for multi-line templates.
+- Helper commands to remove all log statements created by `nvim-chainsaw` or to
+    clear the console.
+- Flexible templating options for customizing log statements, including support
+    for multi-line templates.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
     (when using satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
 
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
 
-**Requirements** - nvim 0.10 or higher. - Optional for
-|nvim-chainsaw-smart-variable-identification| Treesitterparser for the
-respective languages.
+**Requirements** - nvim 0.10 or higher. - Recommended: Treesitter parser for
+the respective languages to enable
+|nvim-chainsaw-smart-variable-identification| and
+|nvim-chainsaw-smart-insertion-locations|.
 
 >lua
     -- lazy.nvim
@@ -172,8 +175,8 @@ instead of the word under the cursor.
 SMART VARIABLE DETECTION ~
 
 When the variable under the cursor is an object with fields, `chainsaw`
-attempts to automatically select the correct field. Note that this feature
-requires the Treesitter parser of the respective language.
+attempts to automatically select the correct field. (Note that this feature
+requires the Treesitter parser of the respective language.)
 
 >lua
     myVariable.myF[i]eld = "foobar"
@@ -188,6 +191,31 @@ JavaScript (and supersets)
 
 PRs adding support for more languages are welcome. See smart-var-detect.lua
 <./lua/chainsaw/config/smart-var-detect.lua>.
+
+
+SMART INSERTION LOCATIONS ~
+
+`chainsaw` by default inserts the log statement below the cursor. The insertion
+location is automatically adapted if doing would result in invalid code. (Note
+that this feature requires the Treesitter parser of the respective language.)
+
+>lua
+    -- will insert log statement below the `}` line
+    local f[o]o = {
+        bar = 1
+    }
+    
+    -- will insert log statement above the `return` line
+    local function foobar()
+        return f[o]o
+    end
+<
+
+Filetypes currently supporting this feature: - Lua (and `nvim_lua`) -
+JavaScript (and supersets)
+
+PRs adding support for more languages are welcome. See
+smart-insert-location.lua <./lua/chainsaw/config/smart-insert-location.lua>.
 
 
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
