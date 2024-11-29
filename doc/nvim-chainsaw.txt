@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 November 27
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 November 29
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -183,8 +183,8 @@ requires the Treesitter parser of the respective language.
     -- prints: myVariable
 <
 
-Filetypes currently supporting this feature: - Lua - Python - JavaScript (and
-supersets)
+Filetypes currently supporting this feature: - Lua (and `nvim_lua`) - Python -
+JavaScript (and supersets)
 
 PRs adding support for more languages are welcome. See smart-var-detect.lua
 <./lua/chainsaw/config/smart-var-detect.lua>.
