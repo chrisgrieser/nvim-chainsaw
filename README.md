@@ -187,12 +187,17 @@ location is automatically adapted if doing would result in invalid code. (Note
 that this feature requires the Treesitter parser of the respective language.)
 
 ```lua
--- will insert log statement below the `}` line
+-- [] marks the cursor position
+
+-- default case: will insert the log statement below the cursor
+local f[o]obar = 1
+
+-- multi-line assignments: will insert log statement below the `}` line
 local f[o]o = {
 	bar = 1
 }
 
--- will insert log statement above the `return` line
+-- returns: will insert log statement above the `return` line
 local function foobar()
 	return f[o]o
 end
