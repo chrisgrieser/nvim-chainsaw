@@ -29,8 +29,15 @@ M.ftConfig = {
 	end,
 }
 
-M.ftConfig.typescript = M.ftConfig.javascript
-M.ftConfig.typescriptreact = M.ftConfig.javascript
+-- superset inheritance
+setmetatable(M.ftConfig, {
+	__index = function(type, key)
+		local supersets = require("chainsaw.config.config").config.supersets
+		local targetFt = supersets[key]
+		if not targetFt then return nil end
+		return type[targetFt]
+	end,
+})
 
 --------------------------------------------------------------------------------
 return M

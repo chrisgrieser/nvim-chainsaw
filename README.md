@@ -170,7 +170,7 @@ myVa[r]iable.myField = "foobar"
 ```
 
 Filetypes currently supporting this feature:
-- Lua
+- Lua (and `nvim_lua`)
 - Python
 - JavaScript (and supersets)
 
