@@ -29,15 +29,7 @@ M.ftConfig = {
 	end,
 }
 
--- superset inheritance
-setmetatable(M.ftConfig, {
-	__index = function(type, key)
-		local supersets = require("chainsaw.config.config").config.supersets
-		local targetFt = supersets[key]
-		if not targetFt then return nil end
-		return type[targetFt]
-	end,
-})
+require("chainsaw.config.config").supersetInheritance(M.ftConfig)
 
 --------------------------------------------------------------------------------
 return M

@@ -54,21 +54,28 @@ M.config = defaultConfig
 
 --------------------------------------------------------------------------------
 
+---superset-inheritance via setting `__index` metatable
+---@param tableToEnhance table
+function M.supersetInheritance(tableToEnhance)
+	setmetatable(tableToEnhance, {
+		__index = function(_table, key)
+			local targetFt = M.config.supersets[key]
+			if not targetFt then return nil end
+			return _table[targetFt]
+		end,
+	})
+end
+
+--------------------------------------------------------------------------------
+
 ---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
 	local warn = require("chainsaw.utils").warn
 
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
-	-- superset-inheritance via setting `__index` metatable for each logtype
 	for _, logType in pairs(M.config.logStatements) do
-		setmetatable(logType, {
-			__index = function(type, key)
-				local targetFt = M.config.supersets[key]
-				if not targetFt then return nil end
-				return type[targetFt]
-			end,
-		})
+		M.supersetInheritance(logType)
 	end
 
 	-- DEPRECATION
