@@ -5,13 +5,13 @@ local M = {}
 ---cursor. If that line is a blank, we look further down. If the next line has
 ---less indentation than the current line, it is the end of an indentation and
 ---we return the current indentation instead.
+---@param startLnum number
 ---@return string -- the indent as string
 ---@nodiscard
-local function determineIndent()
+local function determineIndent(startLnum)
 	local function getLine(lnum) return vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] end
 	local function isBlank(lnum) return getLine(lnum):find("^%s*$") ~= nil end
 
-	local startLnum = vim.api.nvim_win_get_cursor(0)[1]
 	local lastLnumInBuf = vim.api.nvim_buf_line_count(0)
 	local currentIndent = getLine(startLnum):match("^%s*")
 
@@ -115,6 +115,21 @@ local function isDeprecatedTemplate(logLines)
 	return false
 end
 
+---@return number
+---@nodiscard
+local function shiftInInsertLocation()
+	-- nvim prior to v0.9 OR no node under cursor -> return cword
+	if not vim.treesitter.get_node then return 0 end
+	local parserExists, node = pcall(vim.treesitter.get_node)
+	if not node or not parserExists then return 0 end
+
+	local ft = require("chainsaw.utils").getFiletype()
+	local shiftCalcFunc = require("chainsaw.config.smart-insert-location").ftConfig[ft]
+	if not shiftCalcFunc then return 0 end
+	local shiftLines = shiftCalcFunc(node) or 0
+	return shiftLines
+end
+
 --------------------------------------------------------------------------------
 
 ---@param logType? string
@@ -129,13 +144,15 @@ function M.insert(logType, logtypeSpecific)
 	-- DEPRECATION (2024-11-23)
 	if isDeprecatedTemplate(logLines) then return false end
 
-	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
+	-- PARAMETERS
 	local var = require("chainsaw.core.determine-var").getVar()
+	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
 	var = ensureValidQuotesInVar(var, logLines)
+	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
+	ln = ln + shiftInInsertLocation()
+	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
 
 	-- INSERT LINES
-	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
-	local indent = determineIndent() -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
 		line = insertPlaceholders(line, var, logtypeSpecific)
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
