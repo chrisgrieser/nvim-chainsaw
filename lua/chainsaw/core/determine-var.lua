@@ -17,7 +17,6 @@ function M.getVar()
 	end
 
 	-- nvim prior to v0.9 OR no node under cursor -> return cword
-	if not vim.treesitter.get_node then return vim.fn.expand("<cword>") end
 	local parserExists, node = pcall(vim.treesitter.get_node)
 	if not node or not parserExists then return vim.fn.expand("<cword>") end
 

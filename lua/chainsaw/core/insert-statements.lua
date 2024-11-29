@@ -93,9 +93,10 @@ local function insertPlaceholders(line, var, logtypeSpecific)
 		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
 		if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
 		if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
-			return assert(logtypeSpecific, "log-type specific parameter is missing.")
+			assert(logtypeSpecific, "log-type specific parameter is missing.")
+			return logtypeSpecific
 		end
-		error("Unknown placeholder: " .. placeholder)
+		require("chainsaw.utils").warn("Unknown placeholder: " .. placeholder)
 	end)
 	return line
 end
@@ -118,8 +119,6 @@ end
 ---@return number
 ---@nodiscard
 local function shiftInInsertLocation()
-	-- nvim prior to v0.9 OR no node under cursor -> return cword
-	if not vim.treesitter.get_node then return 0 end
 	local parserExists, node = pcall(vim.treesitter.get_node)
 	if not node or not parserExists then return 0 end
 

@@ -278,8 +278,8 @@ There are various **placeholders** that are dynamically replaced:
 - `{{file}}`: basename of the current file
 - `{{lnum}}`: current line number
 - *`.emojiLog()` only*: `{{emoji}}` inserts the emoji
-- *`.timeLog()` only*: `{{index}}` inserts a running index (needed to
-  differentiate between variables when inserting `timeLog` multiple times).
+- *`.timeLog()` only*: `{{index}}` inserts a running index. (Needed to
+  differentiate between variables when using `timeLog` multiple times).
 
 ```lua
 require("chainsaw").setup ({
