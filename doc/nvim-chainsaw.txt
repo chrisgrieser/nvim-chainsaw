@@ -292,8 +292,8 @@ have one, so that the line can be removed via `.removeLogs()`. -
 as `HH:MM:SS` (for millisecond-precision, use `.timeLog()` instead) -
 `{{file}}`basename of the current file - `{{lnum}}`current line number -
 _.emojiLog() only_`{{emoji}}` inserts the emoji - _.timeLog() only_`{{index}}`
-inserts a running index (needed to differentiate between variables when
-inserting `timeLog` multiple times).
+inserts a running index. (Needed to differentiate between variables when using
+`timeLog` multiple times).
 
 >lua
     require("chainsaw").setup ({
