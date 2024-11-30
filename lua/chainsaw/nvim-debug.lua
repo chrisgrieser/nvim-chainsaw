@@ -1,6 +1,4 @@
--- SOURCE
--- 1. printing varname: https://stackoverflow.com/a/10459129/22114136
--- 2. printing callor line: https://github.com/folke/snacks.nvim/blob/3c1849a09b9618cbc49eed337f0a302394ef049b/lua/snacks/debug.lua#L13-L32
+-- SOURCE printing varname is based on https://stackoverflow.com/a/10459129/22114136
 --------------------------------------------------------------------------------
 
 ---@param varValue any
@@ -23,27 +21,15 @@ function _G.Chainsaw(varValue)
 		end
 	end
 
-	-- line number of print statement
-	local caller = debug.getinfo(1, "S")
-	for stackLvl = 2, 10 do
-		local info = debug.getinfo(stackLvl, "S")
-		if
-			info
-			and info.source ~= caller.source
-			and info.what ~= "C"
-			and info.source ~= "lua"
-			and info.source ~= "@" .. (vim.env.MYVIMRC or "")
-		then
-			caller = info
-			break
-		end
-	end
+	-- line number of the print statement
+	local caller = debug.getinfo(2, "Sl") -- "S": source, "l": currentline
 	local lnum = caller.currentline
+	local source = vim.fs.basename(caller.source)
 
 	-- notify, with settings for snacks.nvim/nvim-notify
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
 	local title = varname or "unknown"
-	if lnum then title = title .. " (L" .. lnum .. ")" end
+	if lnum then title = title .. (" (%s:%d)"):format(source, lnum) end
 	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
 	vim.notify(
 		vim.inspect(varValue),
