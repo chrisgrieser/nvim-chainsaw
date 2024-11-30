@@ -308,7 +308,9 @@ require("chainsaw").setup ({
 The plugin provides a globally accessible function `Chainsaw`, specially
 designed for debugging `nvim_lua`. Given a variable, it automatically
 pretty-prints the variable, its name, and the location of the log statement
-call, all in a much more concise manner. 
+call, all in a much more concise manner. If using
+[snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
+notification will also be syntax highlighted.
 
 You can use it by setting a custom log statement like this:
 
@@ -322,7 +324,7 @@ require("chainsaw").setup {
 ```
 
 > [!WARNING]
-> Note that the feature is still experimental.
+> Note that this feature is still experimental.
 
 ### Have your formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
