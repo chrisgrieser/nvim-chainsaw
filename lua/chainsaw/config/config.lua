@@ -118,8 +118,8 @@ function M.setup(userConfig)
 	-- VALIDATE
 	local emojis = M.config.logTypes.emojiLog.emojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
-		M.config.logTypes.emojiLog.emojis = nil
-		warn("Config `logtypes.emojiLog.emojis` is not a list of strings.")
+		M.config.logTypes.emojiLog.emojis = defaultConfig.logTypes.emojiLog.emojis
+		warn("Config `logtypes.emojiLog.emojis` is not a list of strings. Falling back to defaults.")
 	end
 	if not M.config.marker or M.config.marker == "" then
 		warn("Config `marker` must not be empty.")

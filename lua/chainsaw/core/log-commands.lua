@@ -34,8 +34,7 @@ function M.assertLog()
 end
 
 function M.emojiLog()
-	local conf = require("chainsaw.config.config").config.logtypes.emojiLog
-	assert(conf.emojis, "Config `logtypes.emojiLog.emojis` is not a list of strings.")
+	local conf = require("chainsaw.config.config").config.logTypes.emojiLog
 
 	-- randomize emoji order
 	local emojis = vim.deepcopy(conf.emojis)
