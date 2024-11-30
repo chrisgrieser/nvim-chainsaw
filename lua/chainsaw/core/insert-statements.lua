@@ -1,4 +1,5 @@
 local M = {}
+local u = require("chainsaw.utils")
 --------------------------------------------------------------------------------
 
 ---Most reliable way seems to be to get the indent of the line *after* the
@@ -31,8 +32,6 @@ end
 ---@return string[]|false -- returns false if not configured or invalid
 ---@nodiscard
 local function getTemplateStr(logType)
-	local u = require("chainsaw.utils")
-
 	local ft = u.getFiletype()
 
 	local logStatements = require("chainsaw.config.config").config.logStatements
@@ -144,8 +143,12 @@ function M.insert(logType, logtypeSpecific)
 	if isDeprecatedTemplate(logLines) then return false end
 
 	-- PARAMETERS
-	local var = require("chainsaw.core.determine-var").getVar()
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
+	local var = require("chainsaw.core.determine-var").getVar()
+	if var == "" then
+		u.warn("No variable found.")
+		return false
+	end
 	var = ensureValidQuotesInVar(var, logLines)
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 	ln = ln + shiftInInsertLocation()
