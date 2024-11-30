@@ -27,14 +27,6 @@ local defaultConfig = {
 
 	-- configuration for specific logtypes
 	logTypes = {
-		variableLog = {
-			-- experimental:
-			-- uses concise debug statement specifically for nvim-lua via the
-			-- global function `Chainsaw`. (To prevent the spurious diagnostic from
-			-- lua_ls, set `settings.Lua.diagnostics.globals = { "Chainsaw" }` in
-			-- its settings.)
-			specialNvimLuaDebug = false,
-		},
 		emojiLog = {
 			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 		},
@@ -87,10 +79,7 @@ function M.setup(userConfig)
 		M.supersetInheritance(logType)
 	end
 
-	if M.config.logTypes.variableLog.specialNvimLuaDebug then
-		require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
-		M.config.logStatements.variableLog.nvim_lua = "Chainsaw({{var}}) -- {{marker}}"
-	end
+	require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
 
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field

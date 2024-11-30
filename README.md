@@ -22,6 +22,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Configuration](#configuration)
 	* [Base configuration](#base-configuration)
 	* [Customize log statements](#customize-log-statements)
+	* [`nvim_lua` and the global debugging function `Chainsaw`](#nvim_lua-and-the-global-debugging-function-chainsaw)
 	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
 	* [Statusline](#statusline)
 - [Similar plugins](#similar-plugins)
@@ -242,14 +243,6 @@ require("chainsaw").setup {
 
 	-- configuration for specific logtypes
 	logTypes = {
-		variableLog = {
-			-- experimental: 
-			-- uses concise debug statement specifically for nvim-lua via the
-			-- global function `Chainsaw`. (To prevent the spurious diagnostic from
-			-- lua_ls, set `settings.Lua.diagnostics.globals = { "Chainsaw" }` in
-			-- its settings.)
-			specialNvimLuaDebug = false,
-		},
 		emojiLog = {
 			emojis = { "🔵", "🟩", "⭐", "⭕", "💜", "🔲" },
 		},
@@ -310,6 +303,26 @@ require("chainsaw").setup ({
 > [!NOTE]
 > The strings may not include line breaks. If you want to use multi-line log
 > statements, use a list of strings instead, each string representing one line.
+
+### `nvim_lua` and the global debugging function `Chainsaw`
+The plugin provides a globally accessible function `Chainsaw`, specially
+designed for debugging `nvim_lua`. Given a variable, it automatically
+pretty-prints the variable, its name, and the location of the log statement
+call, all in a much more concise manner. 
+
+You can use it by setting a custom log statement like this:
+
+```lua
+require("chainsaw").setup {
+	logStatements = {
+		variableLog = {
+			nvim_lua = "Chainsaw({{var}}) -- {{marker}}",
+		},
+	},
+```
+
+> [!WARNING]
+> Note that the feature is still experimental.
 
 ### Have your formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
