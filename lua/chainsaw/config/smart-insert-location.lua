@@ -9,35 +9,39 @@ local M = {}
 ---@type table<string, fun(node: TSNode): integer?>
 M.ftConfig = {
 	lua = function(node)
+		local parent = node:parent()
+		local grandparent = parent and parent:parent()
+		if not parent or not grandparent then return end
+
 		-- return statement
 		local exprNode
-		if node:parent():type() == "expression_list" then
-			exprNode = node:parent()
-		elseif node:parent():parent():type() == "expression_list" then
-			exprNode = node:parent()
+		if parent:type() == "expression_list" then exprNode = parent end
+		if grandparent:type() == "expression_list" then exprNode = grandparent end
+		if exprNode and exprNode:parent() and exprNode:parent():type() == "return_statement" then
+			return -1
 		end
-		if exprNode and exprNode:parent():type() == "return_statement" then return -1 end
 
 		-- multiline assignment
-		if node:parent():parent():type() == "assignment_statement" then
-			local assignment = assert(node:parent():parent())
-			local lineCountOfAssignment = assignment:end_() - assignment:start()
-			return lineCountOfAssignment
+		if grandparent:type() == "assignment_statement" then
+			local assignmentExtraLines = grandparent:end_() - grandparent:start()
+			return assignmentExtraLines
 		end
 	end,
 	javascript = function(node)
+		local parent = node:parent()
+		if not parent then return end
+
 		-- return statement
-		local inReturnStatement = node:parent():type() == "return_statement"
-			or node:parent():parent():type() == "return_statement"
+		local inReturnStatement = parent:type() == "return_statement"
+			or (parent:parent() and parent:parent():type() == "return_statement")
 		if inReturnStatement then return -1 end
 
 		-- multiline assignment
-		local isAssignment = node:parent():type() == "variable_declarator"
-			or node:parent():type() == "assignment_expression"
+		local isAssignment = parent:type() == "variable_declarator"
+			or parent:type() == "assignment_expression"
 		if isAssignment then
-			local declarator = assert(node:parent())
-			local lineCountOfAssignment = declarator:end_() - declarator:start()
-			return lineCountOfAssignment
+			local assignmentExtraLines = parent:end_() - parent:start()
+			return assignmentExtraLines
 		end
 	end,
 }
