@@ -1,40 +1,41 @@
 -- SOURCE the varname identification is based on https://stackoverflow.com/a/10459129/22114136
 --------------------------------------------------------------------------------
 
----@param varValue any
+---@diagnostic disable-next-line: duplicate-set-field spurious diagnostic when added to `lazydev`
 function _G.Chainsaw(varValue)
 	-- caller = the `Chainsaw` log statement
-	local caller = debug.getinfo(2, "Slf") -- "S": source, "l": currentline, "f": function
+	local caller = debug.getinfo(2, "Slf") -- "S": source "l": currentline "f": function
 	local lnum = caller.currentline
 	local sourceShort = vim.fs.basename(caller.source)
+	if sourceShort == ":source (no file)" then sourceShort = "source" end
 	-----------------------------------------------------------------------------
 
-	local maybeVarnames = {}
+	local potentialVarnames = {}
 
-	-- 1. Check caller's scope
+	-- 1. caller's scope
 	for indexOfVars = 1, math.huge do
 		local localName, localValue = debug.getlocal(2, indexOfVars)
 		if not localName then break end
-		if vim.deep_equal(localValue, varValue) then table.insert(maybeVarnames, localName) end
+		if vim.deep_equal(localValue, varValue) then table.insert(potentialVarnames, localName) end
 	end
 
-	-- 2. Check caller's upvalues
+	-- 2. caller's upvalues
 	for indexOfUpvalues = 1, math.huge do
 		local upName, upValue = debug.getupvalue(caller.func, indexOfUpvalues)
 		if not upName then break end
-		if vim.deep_equal(upValue, varValue) then table.insert(maybeVarnames, upName) end
+		if vim.deep_equal(upValue, varValue) then table.insert(potentialVarnames, upName) end
 	end
 
-	-- 3. Check global scope
+	-- 3. global scope
 	for globalName, globalValue in pairs(_G) do
-		if vim.deep_equal(globalValue, varValue) then table.insert(maybeVarnames, globalName) end
+		if vim.deep_equal(globalValue, varValue) then table.insert(potentialVarnames, globalName) end
 	end
 
 	local varname
-	if #maybeVarnames == 0 then
+	if #potentialVarnames == 0 then
 		varname = "unknown"
-	elseif #maybeVarnames == 1 then
-		varname = maybeVarnames[1]
+	elseif #potentialVarnames == 1 then
+		varname = potentialVarnames[1]
 	else
 		-- HACK if there are multiple variables with the same value, we need to
 		-- resort to manually reading the line at the source file to ensure we got
@@ -53,16 +54,16 @@ function _G.Chainsaw(varValue)
 		end
 
 		local varnameInFile = callerLine:match("Chainsaw *%( *([%w_]+).-%)")
-		local likelyName = vim.iter(maybeVarnames)
+		local likelyName = vim.iter(potentialVarnames)
 			:find(function(name) return name == varnameInFile end)
 		varname = likelyName or "ambiguous_var"
 	end
 	local title = varname
-	-----------------------------------------------------------------------------
 
+	-----------------------------------------------------------------------------
 	-- notify, with options for `snacks.nvim` / `nvim-notify`
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
-	if lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
+	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
 	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
 	vim.notify(
 		vim.inspect(varValue),
