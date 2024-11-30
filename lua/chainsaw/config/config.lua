@@ -26,7 +26,7 @@ local defaultConfig = {
 	},
 
 	-- configuration for specific logtypes
-	logtypes = {
+	logTypes = {
 		variableLog = {
 			-- experimental:
 			-- uses concise debug statement specifically for nvim-lua via the
@@ -87,14 +87,20 @@ function M.setup(userConfig)
 		M.supersetInheritance(logType)
 	end
 
-	if M.config.logtypes.variableLog.specialNvimLuaDebug then
+	if M.config.logTypes.variableLog.specialNvimLuaDebug then
 		require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
 		M.config.logStatements.variableLog.nvim_lua = "Chainsaw({{var}}) -- {{marker}}"
 	end
 
 	-- DEPRECATION
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
-		local msg = "Config `logEmojis` is deprecated. Use `logtypes.emojiLog.emojis` instead."
+		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
+		warn(msg)
+	end
+
+	-- DEPRECATION
+	if M.config.logtypes then ---@diagnostic disable-line: undefined-field
+		local msg = "Config `logtypes` is deprecated. Use `logTypes` instead."
 		warn(msg)
 	end
 
@@ -110,9 +116,9 @@ function M.setup(userConfig)
 	end
 
 	-- VALIDATE
-	local emojis = M.config.logtypes.emojiLog.emojis
+	local emojis = M.config.logTypes.emojiLog.emojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
-		M.config.logtypes.emojiLog.emojis = nil
+		M.config.logTypes.emojiLog.emojis = nil
 		warn("Config `logtypes.emojiLog.emojis` is not a list of strings.")
 	end
 	if not M.config.marker or M.config.marker == "" then

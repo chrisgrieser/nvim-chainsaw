@@ -241,7 +241,7 @@ require("chainsaw").setup {
 	},
 
 	-- configuration for specific logtypes
-	logtypes = {
+	logTypes = {
 		variableLog = {
 			-- experimental: 
 			-- uses concise debug statement specifically for nvim-lua via the
