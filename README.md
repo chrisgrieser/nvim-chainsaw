@@ -305,10 +305,10 @@ require("chainsaw").setup ({
 > statements, use a list of strings instead, each string representing one line.
 
 ### `nvim_lua` and the global debugging function `Chainsaw`
-The plugin provides a globally accessible function `Chainsaw`, specially
-designed for debugging `nvim_lua`. Given a variable, it automatically
-pretty-prints the variable, its name, and the location of the log statement
-call, all in a much more concise manner. If using
+**Experimental 🧪** The plugin provides a globally accessible function
+`Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
+automatically pretty-prints the variable, its name, and the location of the log
+statement call, all in a much more concise manner. If using
 [snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
 notification will also be syntax highlighted.
 
@@ -323,8 +323,39 @@ require("chainsaw").setup {
 	},
 ```
 
-> [!WARNING]
-> Note that this feature is still experimental.
+The `lua_ls` diagnostic `undefined-global` can be disabled by adding it as a
+global to the server config.
+
+```lua
+-- Option 1: nvim-lspconfig
+require("lspconfig").lua_ls.setup {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "Chainsaw", "vim" },
+			},
+		},
+	},
+}
+```
+
+```jsonc
+// Option 2: .luarc.json
+{
+	"diagnostics": {
+		"globals": ["Chainsaw", "vim"],
+	},
+}
+```
+
+```lua
+-- Option 3: lazydev.nvim & lazy.nvim
+opts = {
+	library = {
+		{ path = "nvim-chainsaw/lua/chainsaw/nvim-debug.lua", words = { "Chainsaw" } },
+	},
+},
+```
 
 ### Have your formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
