@@ -34,8 +34,15 @@ function M.assertLog()
 end
 
 function M.emojiLog()
-	local emojis = require("chainsaw.config.config").config.logtypes.emojiLog.emojis
-	assert(emojis, "Config `logtypes.emojiLog.emojis` is not a list of strings.")
+	local conf = require("chainsaw.config.config").config.logtypes.emojiLog
+	assert(conf.emojis, "Config `logtypes.emojiLog.emojis` is not a list of strings.")
+
+	-- randomize emoji order
+	local emojis = vim.deepcopy(conf.emojis)
+	for i = #emojis, 2, -1 do
+		local j = math.random(i)
+		emojis[i], emojis[j] = emojis[j], emojis[i]
+	end
 
 	-- select the first emoji with the least number of occurrences, ensuring that
 	-- we will get as many different emojis as possible
