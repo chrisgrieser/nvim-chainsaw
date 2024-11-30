@@ -241,8 +241,9 @@ BASE CONFIGURATION ~
         -- Appearance of lines with the marker
         visuals = {
             sign = "󰹈",
-            signHlgroup = "DiagnosticSignInfo",
             statuslineIcon = "󰹈",
+            notificationIcon = "󰹈",
+            signHlgroup = "DiagnosticSignInfo",
             lineHlgroup = false,
     
             nvimSatelliteIntegration = {
@@ -255,7 +256,7 @@ BASE CONFIGURATION ~
         },
     
         -- configuration for specific logtypes
-        logtypes = {
+        logTypes = {
             variableLog = {
                 -- experimental: 
                 -- uses concise debug statement specifically for nvim-lua via the
