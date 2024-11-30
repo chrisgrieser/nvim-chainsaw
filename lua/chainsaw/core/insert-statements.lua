@@ -80,14 +80,20 @@ end
 ---@param line string
 ---@param var string
 ---@param logtypeSpecific? string
----@return string
+---@return string?
 ---@nodiscard
 local function insertPlaceholders(line, var, logtypeSpecific)
 	local marker = require("chainsaw.config.config").config.marker
 
 	line = line:gsub("{{%w-}}", function(placeholder)
 		if placeholder == "{{marker}}" then return marker end
-		if placeholder == "{{var}}" then return var end
+		if placeholder == "{{var}}" then
+			if var == "" then
+				u.warn("Could not find variable to insert.")
+				return nil
+			end
+			return var
+		end
 		if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
 		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
 		if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
@@ -145,10 +151,6 @@ function M.insert(logType, logtypeSpecific)
 	-- PARAMETERS
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
 	local var = require("chainsaw.core.determine-var").getVar()
-	if var == "" then
-		u.warn("No variable found.")
-		return false
-	end
 	var = ensureValidQuotesInVar(var, logLines)
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 	ln = ln + shiftInInsertLocation()
@@ -156,8 +158,9 @@ function M.insert(logType, logtypeSpecific)
 
 	-- INSERT LINES
 	for _, line in pairs(logLines) do
-		line = insertPlaceholders(line, var, logtypeSpecific)
-		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
+		local insert = insertPlaceholders(line, var, logtypeSpecific)
+		if not insert then return false end
+		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. insert })
 		require("chainsaw.visuals.styling").addStylingToLine(ln)
 		ln = ln + 1
 	end
