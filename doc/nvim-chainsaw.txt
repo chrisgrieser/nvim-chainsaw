@@ -34,10 +34,10 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
     - |nvim-chainsaw-smart-variable-detection|
     - |nvim-chainsaw-smart-insertion-locations|
 - |nvim-chainsaw-configuration|
-    - |nvim-chainsaw-base-configuration|
+    - |nvim-chainsaw-basic-configuration|
     - |nvim-chainsaw-customize-log-statements|
-    - |nvim-chainsaw-`nvim_lua`-and-the-global-debugging-function-`chainsaw`|
-    - |nvim-chainsaw-have-your-formatter-ignore-the-log-statements|
+    - |nvim-chainsaw-the-global-lua-function-`chainsaw`|
+    - |nvim-chainsaw-make-the-formatter-ignore-the-log-statements|
     - |nvim-chainsaw-statusline|
 - |nvim-chainsaw-similar-plugins|
 - |nvim-chainsaw-about-the-developer|
@@ -84,10 +84,6 @@ the respective languages to enable
         end,
     }
 <
-
-_The plugin needs to be loaded for highlights, signs, and scrollbar items to be
-displayed. If you do not care about them, you can also remove the early loading
-via event = "VeryLazy"._
 
 
 BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support*
@@ -229,7 +225,7 @@ CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
 The `setup()` call is required.
 
 
-BASE CONFIGURATION ~
+BASIC CONFIGURATION ~
 
 >lua
     -- default settings
@@ -319,12 +315,14 @@ inserts a running index. (Needed to differentiate between variables when using
   log statements, use a list of strings instead, each string representing one
   line.
 
-NVIM_LUA AND THE GLOBAL DEBUGGING FUNCTION CHAINSAW ~
+THE GLOBAL LUA FUNCTION CHAINSAW ~
 
-The plugin provides a globally accessible function `Chainsaw`, specially
-designed for debugging `nvim_lua`. Given a variable, it automatically
-pretty-prints the variable, its name, and the location of the log statement
-call, all in a much more concise manner. If using snacks.nvim
+
+
+**Experimental:** The plugin provides a globally accessible function
+`Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
+automatically pretty-prints the variable, its name, and the location of the log
+statement call, all in a much more concise manner. When using snacks.nvim
 <http://github.com/folke/snacks.nvim> as notification plugin, the notification
 will also be syntax highlighted.
 
@@ -339,10 +337,44 @@ You can use it by setting a custom log statement like this:
         },
 <
 
+The `lua_ls` diagnostic `undefined-global` can be disabled by adding it as a
+global to the server config:
 
-  [!WARNING] Note that this feature is still experimental.
+Options ~
 
-HAVE YOUR FORMATTER IGNORE THE LOG STATEMENTS ~
+>lua
+    -- Option 1: nvim-lspconfig
+    require("lspconfig").lua_ls.setup {
+        settings = {
+            Lua = {
+                diagnostics = {
+                    globals = { "Chainsaw", "vim" },
+                },
+            },
+        },
+    }
+<
+
+>jsonc
+    // Option 2: .luarc.json
+    {
+        "diagnostics": {
+            "globals": ["Chainsaw", "vim"],
+        },
+    }
+<
+
+>lua
+    -- Option 3: lazydev.nvim
+    opts = {
+        library = {
+            { path = "nvim-chainsaw", words = { "Chainsaw" } },
+        },
+    },
+<
+
+
+MAKE THE FORMATTER IGNORE THE LOG STATEMENTS ~
 
 A common problem is that formatters like `prettier` split up the log statements
 into multiple lines, making them hard to read and breaking `.removeLogs()`,
@@ -357,7 +389,7 @@ the marker to it as well, so it is included in the removal by `.removeLogs()`.)
         logStatements = {
             variableLog = {
                 javascript = {
-                    "/* prettier-ignore */ // {{marker}}", -- adding this
+                    "/* prettier-ignore */ // {{marker}}", -- <- adding this
                     'console.log("{{marker}} {{var}}:", {{var}});',
                 },
             },
@@ -379,8 +411,7 @@ current buffer.
 SIMILAR PLUGINS                 *nvim-chainsaw-nvim-chainsaw--similar-plugins*
 
 - debugprint.nvim <https://github.com/andrewferrier/debugprint.nvim>
-- refactoring.nvim <https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features>
-- logsitter <https://github.com/gaelph/logsitter.nvim>
+- refactoring.nvim <https://github.com/ThePrimeagen/refactoring.nvim#debug-features>
 - timber-.nvim <https://github.com/Goose97/timber.nvim>
 
 
