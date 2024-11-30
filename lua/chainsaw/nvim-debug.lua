@@ -1,27 +1,36 @@
 -- SOURCE printing varname is based on https://stackoverflow.com/a/10459129/22114136
+-- CAVEAT prints the 1st variable in the caller's scope that has the given value
 --------------------------------------------------------------------------------
 
 ---@param varValue any
 function _G.Chainsaw(varValue)
 	local varname
 
-	-- varname: Check caller's scope
-	-- CAVEAT prints the 1st variable in the caller's scope that has the given value
-	for stackLvl = 1, math.huge do
-		---@diagnostic disable-next-line: param-type-mismatch spurious diagnostic by nvim-type-check (does not occur with local lua_ls)
-		local localName, localValue = debug.getlocal(2, stackLvl, 1)
+	-- varname: 1. Check caller's scope (caller = `Chainsaw` log statement)
+	for indexOfVars = 1, math.huge do
+		local localName, localValue = debug.getlocal(2, indexOfVars)
 		if not localName then break end
 		if vim.deep_equal(localValue, varValue) then varname = localName end
 	end
 
-	-- varnme: Check global scope
+	-- varname: 2. Check caller's upvalues
+	if not varname then
+		local callerFunc = debug.getinfo(2, "f").func
+		for indexOfUpvalues = 1, math.huge do
+			local upName, upValue = debug.getupvalue(callerFunc, indexOfUpvalues)
+			if not upName then break end
+			if vim.deep_equal(upValue, varValue) then varname = upName end
+		end
+	end
+
+	-- varnme: 3. Check global scope
 	if not varname then
 		for globalName, globalValue in pairs(_G) do
 			if vim.deep_equal(globalValue, varValue) then varname = globalName end
 		end
 	end
 
-	-- line number of the print statement
+	-- line number of the caller
 	local caller = debug.getinfo(2, "Sl") -- "S": source, "l": currentline
 	local lnum = caller.currentline
 	local source = vim.fs.basename(caller.source)
