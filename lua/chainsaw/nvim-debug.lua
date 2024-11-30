@@ -10,6 +10,7 @@ function _G.Chainsaw(varValue)
 	-- varname: Check caller's scope
 	-- CAVEAT prints the 1st variable in the caller's scope that has the given value
 	for stackLvl = 1, math.huge do
+		---@diagnostic disable-next-line: param-type-mismatch spurious diagnostic by nvim-type-check (does not occur with local lua_ls)
 		local localName, localValue = debug.getlocal(2, stackLvl, 1)
 		if not localName then break end
 		if vim.deep_equal(localValue, varValue) then varname = localName end
