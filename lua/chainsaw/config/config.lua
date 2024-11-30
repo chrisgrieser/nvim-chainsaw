@@ -27,7 +27,7 @@ local defaultConfig = {
 	-- configuration for specific logtypes
 	logtypes = {
 		variableLog = {
-			-- experimental: 
+			-- experimental:
 			-- uses concise debug statement specifically for nvim-lua via the
 			-- global function `Chainsaw`. (To prevent the spurious diagnostic from
 			-- lua_ls, set `settings.Lua.diagnostics.globals = { "Chainsaw" }` in
