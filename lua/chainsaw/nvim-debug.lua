@@ -41,7 +41,7 @@ function _G.Chainsaw(varValue)
 	local lnum = caller.currentline
 
 	-- notify, with settings for snacks.nvim/nvim-notify
-	local icon = "󰹈"
+	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
 	local title = varname or "unknown"
 	if lnum then title = title .. " (L" .. lnum .. ")" end
 	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end

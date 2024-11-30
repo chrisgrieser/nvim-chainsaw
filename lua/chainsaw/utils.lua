@@ -2,19 +2,19 @@ local M = {}
 --------------------------------------------------------------------------------
 
 ---@param msg string
-function M.warn(msg)
-	local marker = require("chainsaw.config.config").config.marker
-	-- `3` to account for emojis/nerdfont that have a width of `2`
-	local icon = vim.api.nvim_strwidth(marker) < 3 and marker or nil
-	vim.notify(msg, vim.log.levels.WARN, { title = "chainsaw", icon = icon })
+---@param level "error"|"warn"|"info"|"trace"|"debug"
+local function notify(msg, level)
+	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
+	local title = "chainsaw"
+	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
+	vim.notify(msg, vim.log.levels[level:upper()], { title = title, icon = icon })
 end
 
 ---@param msg string
-function M.info(msg)
-	local marker = require("chainsaw.config.config").config.marker
-	local icon = vim.api.nvim_strwidth(marker) < 3 and marker or nil
-	vim.notify(msg, vim.log.levels.INFO, { title = "chainsaw", icon = icon })
-end
+function M.warn(msg) notify(msg, "warn") end
+
+---@param msg string
+function M.info(msg) notify(msg, "info") end
 
 ---@return string
 ---@nodiscard

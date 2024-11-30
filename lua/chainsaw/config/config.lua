@@ -11,8 +11,9 @@ local defaultConfig = {
 	-- Appearance of lines with the marker
 	visuals = {
 		sign = "󰹈",
-		signHlgroup = "DiagnosticSignInfo",
 		statuslineIcon = "󰹈",
+		notificationIcon = "󰹈",
+		signHlgroup = "DiagnosticSignInfo",
 		lineHlgroup = false,
 
 		nvimSatelliteIntegration = {
