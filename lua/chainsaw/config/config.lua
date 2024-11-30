@@ -106,7 +106,7 @@ function M.setup(userConfig)
 
 	-- DEPRECATION
 	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
-		local msg = "Config `logHighlightGroup` is deprecated. Use `loglines.lineHlgroup` instead."
+		local msg = "Config `logHighlightGroup` is deprecated. Use `visuals.lineHlgroup` instead."
 		warn(msg)
 	end
 
