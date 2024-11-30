@@ -20,10 +20,10 @@ Quick and feature-rich insertion of various kinds of log statements.
 	* [Smart variable detection](#smart-variable-detection)
 	* [Smart insertion locations](#smart-insertion-locations)
 - [Configuration](#configuration)
-	* [Base configuration](#base-configuration)
+	* [Basic configuration](#basic-configuration)
 	* [Customize log statements](#customize-log-statements)
-	* [`nvim_lua` and the global debugging function `Chainsaw`](#nvim_lua-and-the-global-debugging-function-chainsaw)
-	* [Have your formatter ignore the log statements](#have-your-formatter-ignore-the-log-statements)
+	* [The global lua function `Chainsaw`](#the-global-lua-function-chainsaw)
+	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
 	* [Statusline](#statusline)
 - [Similar plugins](#similar-plugins)
 - [About the developer](#about-the-developer)
@@ -70,10 +70,6 @@ use {
 	end,
 }
 ```
-
-*The plugin needs to be loaded for highlights, signs, and scrollbar items to be
-displayed. If you do not care about them, you can also remove the early loading
-via `event = "VeryLazy"`.*
 
 ## Built-in language support
 - JavaScript/TypeScript (and supersets)
@@ -214,7 +210,7 @@ PRs adding support for more languages are welcome. See
 ## Configuration
 The `setup()` call is required.
 
-### Base configuration
+### Basic configuration
 
 ```lua
 -- default settings
@@ -304,11 +300,13 @@ require("chainsaw").setup ({
 > The strings may not include line breaks. If you want to use multi-line log
 > statements, use a list of strings instead, each string representing one line.
 
-### `nvim_lua` and the global debugging function `Chainsaw`
-**Experimental 🧪** The plugin provides a globally accessible function
+### The global lua function `Chainsaw`
+<img alt="Showcase nvim-lua-debug function" width=75% src="https://github.com/user-attachments/assets/39681485-f077-421f-865d-c65a7c35a3c3">
+
+**Experimental:** The plugin provides a globally accessible function
 `Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
 automatically pretty-prints the variable, its name, and the location of the log
-statement call, all in a much more concise manner. If using
+statement call, all in a much more concise manner. When using
 [snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
 notification will also be syntax highlighted.
 
@@ -324,7 +322,10 @@ require("chainsaw").setup {
 ```
 
 The `lua_ls` diagnostic `undefined-global` can be disabled by adding it as a
-global to the server config.
+global to the server config:
+
+<details>
+<summary>Options</summary>
 
 ```lua
 -- Option 1: nvim-lspconfig
@@ -349,15 +350,17 @@ require("lspconfig").lua_ls.setup {
 ```
 
 ```lua
--- Option 3: lazydev.nvim & lazy.nvim
+-- Option 3: lazydev.nvim
 opts = {
 	library = {
-		{ path = "nvim-chainsaw/lua/chainsaw/nvim-debug.lua", words = { "Chainsaw" } },
+		{ path = "nvim-chainsaw", words = { "Chainsaw" } },
 	},
 },
 ```
 
-### Have your formatter ignore the log statements
+</details>
+
+### Make the formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
 into multiple lines, making them hard to read and breaking `.removeLogs()`, which
 relies on each line containing the marker emoji.
@@ -371,7 +374,7 @@ require("chainsaw").setup {
 	logStatements = {
 		variableLog = {
 			javascript = {
-				"/* prettier-ignore */ // {{marker}}", -- adding this
+				"/* prettier-ignore */ // {{marker}}", -- <- adding this
 				'console.log("{{marker}} {{var}}:", {{var}});',
 			},
 		},
@@ -389,8 +392,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 
 ## Similar plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
-- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim?tab=readme-ov-file#debug-features)
-- [logsitter](https://github.com/gaelph/logsitter.nvim)
+- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim#debug-features)
 - [timber-.nvim](https://github.com/Goose97/timber.nvim)
 
 ## About the developer

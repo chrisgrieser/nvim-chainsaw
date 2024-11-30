@@ -4,7 +4,7 @@
 ---@param varValue any
 function _G.Chainsaw(varValue)
 	-- caller = the `Chainsaw` log statement
-	local caller = debug.getinfo(2, "Slf") -- "S": source, "l": currentline
+	local caller = debug.getinfo(2, "Slf") -- "S": source, "l": currentline, "f": function
 	local lnum = caller.currentline
 	local sourceShort = vim.fs.basename(caller.source)
 	-----------------------------------------------------------------------------
