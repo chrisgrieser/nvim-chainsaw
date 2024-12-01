@@ -58,16 +58,26 @@ function _G.Chainsaw(varValue)
 			:find(function(name) return name == varnameInFile end)
 		varname = likelyName or "ambiguous_var"
 	end
-	local title = varname
 
-	-----------------------------------------------------------------------------
-	-- notify, with options for `snacks.nvim` / `nvim-notify`
-	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
+	-- STRACKTRACE
+	-- simple form, only including function names
+	local maxLevel = 15
+	local separator = " "
+	local stracktrace = {}
+	for level = 2, maxLevel do
+		local info = debug.getinfo(level, "n")
+		if not info then break end
+		if info.name then table.insert(stracktrace, info.name) end
+	end
+	-- add as lua comment for de-emphasized highlighting
+	local traceInfo = "-- " .. table.concat(stracktrace, separator)
+
+	-- NOTIFY
+	-- with options for `snacks.nvim` / `nvim-notify`
+	local title = varname
 	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
+	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
 	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
-	vim.notify(
-		vim.inspect(varValue),
-		vim.log.levels.DEBUG,
-		{ title = title, icon = icon, ft = "lua" }
-	)
+	local msg = vim.inspect(varValue) .. "\n" .. traceInfo
+	vim.notify(msg, vim.log.levels.DEBUG, { title = title, icon = icon, ft = "lua" })
 end
