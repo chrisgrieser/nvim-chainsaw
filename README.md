@@ -278,7 +278,7 @@ There are various **placeholders** that are dynamically replaced:
 - `{{var}}`: variable as described further above.
 - `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision, use
   `.timeLog()` instead)
-- `{{file}}`: basename of the current file
+- `{{filename}}`: basename of the current file
 - `{{lnum}}`: current line number
 - *`.emojiLog()` only*: `{{emoji}}` inserts the emoji
 - *`.timeLog()` only*: `{{index}}` inserts a running index. (Needed to
