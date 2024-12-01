@@ -305,8 +305,8 @@ require("chainsaw").setup ({
 
 **Experimental:** The plugin provides a globally accessible function
 `Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
-automatically pretty-prints the variable, its name, and the location of the log
-statement call, all in a much more concise manner. When using
+pretty-prints the variable, its name, its stacktrace, and the location of the
+log statement call, all in a much more concise manner. When using
 [snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
 notification will also be syntax highlighted.
 
