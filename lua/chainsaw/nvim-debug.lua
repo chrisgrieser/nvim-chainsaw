@@ -34,7 +34,7 @@ function _G.Chainsaw(varValue)
 
 	local varname
 	if #potentialVarnames == 0 then
-		varname = "unknown"
+		varname = "unclear"
 	elseif #potentialVarnames == 1 then
 		varname = potentialVarnames[1]
 	else
@@ -48,15 +48,12 @@ function _G.Chainsaw(varValue)
 		if buffer then
 			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
 		else
-			local file, err = io.open(sourcePath, "r")
-			assert(file, err) -- file should exist since reported by `debug.getinfo`
-			callerLine = vim.split(file:read("*a"), "\n")[lnum]
+			local file, _ = io.open(sourcePath, "r")
+			callerLine = file and vim.split(file:read("*a"), "\n")[lnum] or ""
 		end
 
 		local varnameInFile = callerLine:match("Chainsaw *%( *([%w_]+).-%)")
-		local likelyName = vim.iter(potentialVarnames)
-			:find(function(name) return name == varnameInFile end)
-		varname = likelyName or "ambiguous_var"
+		varname = varnameInFile or "unknown"
 	end
 
 	-- STRACKTRACE
