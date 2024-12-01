@@ -80,30 +80,33 @@ end
 ---@param line string
 ---@param var string
 ---@param logtypeSpecific? string
----@return string?
+---@return string|false line with placeholders inserted, `false` if error
 ---@nodiscard
 local function insertPlaceholders(line, var, logtypeSpecific)
 	local marker = require("chainsaw.config.config").config.marker
+	local errorMsg
 
 	line = line:gsub("{{%w-}}", function(placeholder)
 		if placeholder == "{{marker}}" then return marker end
 		if placeholder == "{{var}}" then
-			if var == "" then
-				u.warn("Could not find variable to insert.")
-				return nil
-			end
+			if var == "" then errorMsg = "Could not find a variable to insert." end
 			return var
 		end
 		if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
 		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
 		if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
 		if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
-			assert(logtypeSpecific, "log-type specific parameter is missing.")
+			if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
 			return logtypeSpecific
 		end
-		require("chainsaw.utils").warn("Unknown placeholder: " .. placeholder)
+		errorMsg = "Unknown placeholder: " .. placeholder
 	end)
-	return line
+	if errorMsg then
+		u.warn(errorMsg)
+		return false
+	else
+		return line
+	end
 end
 
 -- DEPRECATION (2024-11-23)
@@ -157,10 +160,19 @@ function M.insert(logType, logtypeSpecific)
 	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
 
 	-- INSERT LINES
+	local errorOccurred = false
+	logLines = vim.tbl_map(function(line)
+		local updatedLine = insertPlaceholders(line, var, logtypeSpecific)
+		if updatedLine == false then
+			errorOccurred = true
+			return line
+		end
+		return indent .. updatedLine
+	end, logLines)
+	if errorOccurred then return false end
+
 	for _, line in pairs(logLines) do
-		local insert = insertPlaceholders(line, var, logtypeSpecific)
-		if not insert then return false end
-		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. insert })
+		vim.api.nvim_buf_set_lines(0, ln, ln, true, { line })
 		require("chainsaw.visuals.styling").addStylingToLine(ln)
 		ln = ln + 1
 	end
