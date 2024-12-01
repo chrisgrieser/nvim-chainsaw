@@ -6,7 +6,8 @@ function _G.Chainsaw(varValue)
 	-- caller = the `Chainsaw` log statement
 	local caller = debug.getinfo(2, "Slf") -- "S": source "l": currentline "f": function
 	local lnum = caller.currentline
-	local sourceShort = vim.fs.basename(caller.source)
+	local sourcePath = caller.source:gsub("^@", "")
+	local sourceShort = vim.fs.basename(sourcePath)
 	if sourceShort == ":source (no file)" then sourceShort = "source" end
 	-----------------------------------------------------------------------------
 
@@ -44,11 +45,11 @@ function _G.Chainsaw(varValue)
 
 		-- PERF if source file is open, read the buffer, otherwise read the file
 		local buffer = vim.iter(vim.fn.getbufinfo())
-			:find(function(b) return b.name == caller.source end)
+			:find(function(b) return b.name == sourcePath end)
 		if buffer then
 			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
 		else
-			local file, err = io.open(caller.source, "r")
+			local file, err = io.open(sourcePath, "r")
 			assert(file, err) -- file should exist since reported by `debug.getinfo`
 			callerLine = vim.split(file:read("*a"), "\n")[lnum]
 		end
