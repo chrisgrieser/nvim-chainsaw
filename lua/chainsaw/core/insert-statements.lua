@@ -77,38 +77,6 @@ local function ensureValidQuotesInVar(var, templateLines)
 	return var
 end
 
----@param line string
----@param var string
----@param logtypeSpecific? string
----@return string|false line with placeholders inserted, `false` if error
----@nodiscard
-local function insertPlaceholders(line, var, logtypeSpecific)
-	local marker = require("chainsaw.config.config").config.marker
-	local errorMsg
-
-	line = line:gsub("{{%w-}}", function(placeholder)
-		if placeholder == "{{marker}}" then return marker end
-		if placeholder == "{{var}}" then
-			if var == "" then errorMsg = "Could not find a variable to insert." end
-			return var
-		end
-		if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
-		if placeholder == "{{filename}}" then return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end
-		if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
-		if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
-			if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
-			return logtypeSpecific
-		end
-		errorMsg = "Unknown placeholder: " .. placeholder
-	end)
-	if errorMsg then
-		u.warn(errorMsg)
-		return false
-	else
-		return line
-	end
-end
-
 -- DEPRECATION (2024-11-23)
 ---@param logLines string[]
 ---@return boolean
@@ -151,28 +119,43 @@ function M.insert(logType, logtypeSpecific)
 	-- DEPRECATION (2024-11-23)
 	if isDeprecatedTemplate(logLines) then return false end
 
-	-- PARAMETERS
+	-- INSERT PLACEHOLDERS
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time
 	local var = require("chainsaw.core.determine-var").getVar()
 	var = ensureValidQuotesInVar(var, logLines)
+	local marker = require("chainsaw.config.config").config.marker
+	local errorMsg
+	logLines = vim.tbl_map(function(line)
+		line = line:gsub("{{%w-}}", function(placeholder)
+			if placeholder == "{{marker}}" then return marker end
+			if placeholder == "{{var}}" then
+				if var == "" then errorMsg = "Could not find a variable to insert." end
+				return var
+			end
+			if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
+			if placeholder == "{{filename}}" then
+				return vim.fs.basename(vim.api.nvim_buf_get_name(0))
+			end
+			if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
+			if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
+				if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
+				return logtypeSpecific
+			end
+			errorMsg = "Unknown placeholder: " .. placeholder
+		end)
+		return line
+	end, logLines)
+	if errorMsg then
+		u.warn(errorMsg)
+		return false
+	end
+
+	-- INSERT LINES
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 	ln = ln + shiftInInsertLocation()
 	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
-
-	-- INSERT LINES
-	local errorOccurred = false
-	logLines = vim.tbl_map(function(line)
-		local updatedLine = insertPlaceholders(line, var, logtypeSpecific)
-		if updatedLine == false then
-			errorOccurred = true
-			return line
-		end
-		return indent .. updatedLine
-	end, logLines)
-	if errorOccurred then return false end
-
 	for _, line in pairs(logLines) do
-		vim.api.nvim_buf_set_lines(0, ln, ln, true, { line })
+		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
 		require("chainsaw.visuals.styling").addStylingToLine(ln)
 		ln = ln + 1
 	end
