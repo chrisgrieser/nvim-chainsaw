@@ -63,14 +63,14 @@ function _G.Chainsaw(varValue)
 	-- simple form, only including function names
 	local maxLevel = 15
 	local separator = " "
-	local stracktrace = {}
+	local stack = {}
 	for level = 2, maxLevel do
 		local info = debug.getinfo(level, "n")
 		if not info then break end
-		if info.name then table.insert(stracktrace, info.name) end
+		if info.name then table.insert(stack, info.name) end
 	end
 	-- add as lua comment for de-emphasized highlighting
-	local traceInfo = "-- " .. table.concat(stracktrace, separator)
+	local stacktrace = #stack > 0 and "-- " .. table.concat(stack, separator) or ""
 
 	-- NOTIFY
 	-- with options for `snacks.nvim` / `nvim-notify`
@@ -78,6 +78,6 @@ function _G.Chainsaw(varValue)
 	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
 	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
-	local msg = vim.inspect(varValue) .. "\n" .. traceInfo
+	local msg = vim.trim(vim.inspect(varValue) .. "\n" .. stacktrace)
 	vim.notify(msg, vim.log.levels.DEBUG, { title = title, icon = icon, ft = "lua" })
 end
