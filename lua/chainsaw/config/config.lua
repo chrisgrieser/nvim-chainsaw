@@ -111,7 +111,8 @@ function M.setup(userConfig)
 		warn("Config `logtypes.emojiLog.emojis` is not a list of strings. Falling back to defaults.")
 	end
 	if not M.config.marker or M.config.marker == "" then
-		warn("Config `marker` must not be empty.")
+		M.config.marker = defaultConfig.marker
+		warn("Config `marker` must not be non-empty string. Falling back to default.")
 	end
 
 	-- initialize
