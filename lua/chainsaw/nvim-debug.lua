@@ -11,10 +11,12 @@ function _G.Chainsaw(varValue)
 	if sourceShort == ":source (no file)" then sourceShort = "source" end
 	-----------------------------------------------------------------------------
 
+	-- VARNAME
 	local potentialVarnames = {}
 
 	-- 1. caller's scope
 	for indexOfVars = 1, math.huge do
+		if #potentialVarnames > 1 then break end -- PERF not needed anymore, as we will read source
 		local localName, localValue = debug.getlocal(2, indexOfVars)
 		if not localName then break end
 		if vim.deep_equal(localValue, varValue) then table.insert(potentialVarnames, localName) end
@@ -22,6 +24,7 @@ function _G.Chainsaw(varValue)
 
 	-- 2. caller's upvalues
 	for indexOfUpvalues = 1, math.huge do
+		if #potentialVarnames > 1 then break end -- not needed anymore, as we will read source
 		local upName, upValue = debug.getupvalue(caller.func, indexOfUpvalues)
 		if not upName then break end
 		if vim.deep_equal(upValue, varValue) then table.insert(potentialVarnames, upName) end
@@ -29,12 +32,13 @@ function _G.Chainsaw(varValue)
 
 	-- 3. global scope
 	for globalName, globalValue in pairs(_G) do
+		if #potentialVarnames > 1 then break end -- not needed anymore, as we will read source
 		if vim.deep_equal(globalValue, varValue) then table.insert(potentialVarnames, globalName) end
 	end
 
 	local varname
 	if #potentialVarnames == 0 then
-		varname = "unclear"
+		varname = "unknown"
 	elseif #potentialVarnames == 1 then
 		varname = potentialVarnames[1]
 	else
@@ -53,7 +57,7 @@ function _G.Chainsaw(varValue)
 		end
 
 		local varnameInFile = callerLine:match("Chainsaw *%( *([%w_]+).-%)")
-		varname = varnameInFile or "unknown"
+		varname = varnameInFile or "unclear"
 	end
 
 	-- STRACKTRACE
