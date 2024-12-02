@@ -5,9 +5,7 @@ local M = {}
 ---@param level "error"|"warn"|"info"|"trace"|"debug"
 local function notify(msg, level)
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
-	local title = "chainsaw"
-	if package.loaded["notify"] then title = vim.trim(icon .. " " .. title) end
-	vim.notify(msg, vim.log.levels[level:upper()], { title = title, icon = icon })
+	vim.notify(msg, vim.log.levels[level:upper()], { title = "chainsaw", icon = icon })
 end
 
 ---@param msg string
