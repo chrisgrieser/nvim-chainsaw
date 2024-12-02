@@ -6,7 +6,7 @@ local previous = {}
 ---@diagnostic disable-next-line: duplicate-set-field spurious diagnostic when added to `lazydev`
 function _G.Chainsaw(varValue)
 	-- caller = the `Chainsaw` log statement
-	local caller = debug.getinfo(2, "Slf") -- "S": source "l": currentline "f": function
+	local caller = debug.getinfo(2, "Slf") -- S:source l:currentline f:function
 	local lnum = caller.currentline
 	local sourcePath = caller.source:gsub("^@", "")
 	local sourceShort = vim.fs.basename(sourcePath)
@@ -64,8 +64,8 @@ function _G.Chainsaw(varValue)
 	-----------------------------------------------------------------------------
 
 	-- STRACKTRACE
-	-- simple form, only including function names
-	local maxLevel = 15
+	-- simple stacktrace only including function names
+	local maxLevel = 10
 	local separator = " "
 	local stack = {}
 	for level = 2, maxLevel do
