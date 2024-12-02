@@ -58,7 +58,7 @@ function _G.Chainsaw(varValue)
 		end
 
 		local varnameInFile = callerLine:match("Chainsaw *(%b())")
-		varname = varnameInFile and varnameInFile:sub(2, -2) or "unknown"
+		varname = varnameInFile and vim.trim(varnameInFile:sub(2, -2)) or "unknown"
 	end
 
 	-----------------------------------------------------------------------------
