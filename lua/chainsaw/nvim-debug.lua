@@ -79,5 +79,6 @@ function _G.Chainsaw(varValue)
 	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
 	local msg = vim.trim(vim.inspect(varValue) .. "\n" .. stacktrace)
-	vim.notify(msg, vim.log.levels.DEBUG, { title = title, icon = icon, ft = "lua" })
+	local level = vim.log.levels.INFO -- below `INFO` not shown with nivm-notify with defaults
+	vim.notify(msg, level, { title = title, icon = icon, ft = "lua" })
 end
