@@ -319,6 +319,7 @@ require("chainsaw").setup {
 			nvim_lua = "Chainsaw({{var}}) -- {{marker}}",
 		},
 	},
+}
 ```
 
 The `lua_ls` diagnostic `undefined-global` can be disabled by adding it as a
@@ -366,15 +367,18 @@ into multiple lines, making them hard to read and breaking `.removeLogs()`, whic
 relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
-configuration to include an ignore-comment: `/* prettier-ignore */` (and add the
-marker to it as well, so it is included in the removal by `.removeLogs()`.)
+configuration to include an ignore-comment: `/* prettier-ignore */` 
+- The log statements do not accept lines, but you can use a list of strings,
+  where each element is one line.
+- Add the marker to the added line as well, so it is included in the removal by
+  `.removeLogs()`.
 
 ```lua
 require("chainsaw").setup {
 	logStatements = {
 		variableLog = {
 			javascript = {
-				"/* prettier-ignore */ // {{marker}}", -- <- adding this
+				"/* prettier-ignore */ // {{marker}}",
 				'console.log("{{marker}} {{var}}:", {{var}});',
 			},
 		},
