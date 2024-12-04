@@ -63,41 +63,24 @@ function _G.Chainsaw(varValue)
 
 	-----------------------------------------------------------------------------
 
-	-- STRACKTRACE
-	-- simple stacktrace only including function names
-	local maxLevel = 10
-	local separator = " "
-	local stack = {}
-	for level = 2, maxLevel do
-		local info = debug.getinfo(level, "n")
-		if not info then break end
-		if info.name then table.insert(stack, info.name) end
-	end
-	-- add as lua comment for de-emphasized highlighting
-	local stacktrace = #stack > 0 and "-- " .. table.concat(stack, separator) or ""
-
-	-----------------------------------------------------------------------------
-
 	-- NOTIFY
 	-- with options for `snacks.nvim` / `nvim-notify`
 	local title = varname
 	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
 	local icon = require("chainsaw.config.config").config.visuals.notificationIcon
-	local msg = vim.trim(vim.inspect(varValue) .. "\n" .. stacktrace)
+	local msg = vim.trim(vim.inspect(varValue))
 	local level = vim.log.levels.INFO -- below `INFO` not shown with nivm-notify with defaults
 	local opts = { title = title, icon = icon, ft = "lua" }
-	local counterStr = ""
 
-	-- Track previous notifications: if the same one gets shown repeatedly, show
-	-- add a counter to the existing notification instead of displaying duplicate
-	-- notifications.
+	-- Track notifications: if the same notification is shown repeatedly, replace
+	-- the icon with a counter instead of displaying duplicates notifications
 	if previous.title == title and previous.msg == msg then
 		previous.count = (previous.count or 1) + 1
-		counterStr = ("-- %dx\n"):format(previous.count)
+		opts.icon = ("[%d]"):format(previous.count)
 		opts.id = previous.id -- replace for `snacks.nvim`
 		opts.replace = previous.isOpen and previous.id or nil -- replace for `nvim-notify`
 	else
-		previous = {} -- reset
+		previous = {} -- = reset
 	end
 	if package.loaded["notify"] then
 		-- HACK prevent replacement error when using `replace` for a non-open notification
@@ -105,6 +88,6 @@ function _G.Chainsaw(varValue)
 		opts.on_close = function() previous.isOpen = false end
 	end
 
-	local id = vim.notify(counterStr .. msg, level, opts)
+	local id = vim.notify(msg, level, opts)
 	previous.id, previous.title, previous.msg = id, title, msg
 end

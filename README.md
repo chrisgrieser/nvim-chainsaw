@@ -303,10 +303,10 @@ require("chainsaw").setup ({
 ### The global lua function `Chainsaw`
 <img alt="Showcase nvim-lua-debug function" width=75% src="https://github.com/user-attachments/assets/39681485-f077-421f-865d-c65a7c35a3c3">
 
-**Experimental:** The plugin provides a globally accessible function
-`Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
-pretty-prints the variable, its name, its stacktrace, and the location of the
-log statement call, all in a much more concise manner. When using
+**Experimental:** The plugin provides a globally accessible function `Chainsaw`,
+specially designed for debugging `nvim_lua`. Given a variable, it pretty-prints
+the variable, its name, and the location of the log statement call, all in a
+much more concise manner. When using
 [snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
 notification will also be syntax highlighted.
 
