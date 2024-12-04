@@ -82,7 +82,8 @@ function _G.Chainsaw(varValue)
 	-- the icon with a counter instead of displaying duplicates notifications
 	if prevNotif.title == title and prevNotif.msg == msg then
 		prevNotif.count = (prevNotif.count or 1) + 1
-		opts.icon = ("[%d]"):format(prevNotif.count)
+		-- "tortoise shell brackets" for distinguishability from regular brackets
+		opts.icon = ("⦗%dx⦘"):format(prevNotif.count)
 		opts.id = prevNotif.id -- replace for `snacks.nvim`
 		opts.replace = prevNotif.isOpen and prevNotif.id or nil -- replace for `nvim-notify`
 	else
