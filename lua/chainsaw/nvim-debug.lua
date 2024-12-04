@@ -5,6 +5,12 @@ local prevNotif = {}
 
 ---@diagnostic disable-next-line: duplicate-set-field spurious diagnostic when added to `lazydev`
 function _G.Chainsaw(varValue)
+	if not package.loaded["snacks"] and not package.loaded["notify"] then
+		local msg = "The `Chainsaw` function requires either `snacks.nvim` or `notify.nvim`."
+		vim.notify(msg, vim.log.levels.ERROR)
+		return
+	end
+
 	-- caller = the `Chainsaw` log statement
 	local caller = debug.getinfo(2, "Slf") -- S:source l:currentline f:function
 	local lnum = caller.currentline

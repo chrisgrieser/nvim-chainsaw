@@ -306,11 +306,14 @@ require("chainsaw").setup ({
 **Experimental:** The plugin provides a globally accessible function `Chainsaw`,
 specially designed for debugging `nvim_lua`. Given a variable, it pretty-prints
 the variable, its name, and the location of the log statement call, all in a
-much more concise manner. When using
-[snacks.nvim](http://github.com/folke/snacks.nvim) as notification plugin, the
-notification will also be syntax highlighted.
+much more concise manner. 
 
-You can use it by setting a custom log statement like this:
+**Requirements:** A notification plugin like
+[nvim-notify](https://github.com/rcarriga/nvim-notify) or
+[snacks.nvim](http://github.com/folke/snacks.nvim). Syntax highlighting inside
+the notification requires `snacks.nvim`.
+
+**Setup:** You can use it by setting a custom log statement like this:
 
 ```lua
 require("chainsaw").setup {
@@ -322,8 +325,8 @@ require("chainsaw").setup {
 }
 ```
 
-The `lua_ls` diagnostic `undefined-global` can be disabled by adding it as a
-global to the server config:
+The `lua_ls` diagnostic `undefined-global` for `Chainsaw` can be disabled with
+one of the following methods:
 
 <details>
 <summary>Options</summary>
