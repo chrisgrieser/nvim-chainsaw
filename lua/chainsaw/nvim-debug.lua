@@ -1,7 +1,7 @@
 -- SOURCE the varname identification is based on https://stackoverflow.com/a/10459129/22114136
 --------------------------------------------------------------------------------
 
-local previous = {}
+local prevNotif = {}
 
 ---@diagnostic disable-next-line: duplicate-set-field spurious diagnostic when added to `lazydev`
 function _G.Chainsaw(varValue)
@@ -74,20 +74,20 @@ function _G.Chainsaw(varValue)
 
 	-- Track notifications: if the same notification is shown repeatedly, replace
 	-- the icon with a counter instead of displaying duplicates notifications
-	if previous.title == title and previous.msg == msg then
-		previous.count = (previous.count or 1) + 1
-		opts.icon = ("[%d]"):format(previous.count)
-		opts.id = previous.id -- replace for `snacks.nvim`
-		opts.replace = previous.isOpen and previous.id or nil -- replace for `nvim-notify`
+	if prevNotif.title == title and prevNotif.msg == msg then
+		prevNotif.count = (prevNotif.count or 1) + 1
+		opts.icon = ("[%d]"):format(prevNotif.count)
+		opts.id = prevNotif.id -- replace for `snacks.nvim`
+		opts.replace = prevNotif.isOpen and prevNotif.id or nil -- replace for `nvim-notify`
 	else
-		previous = {} -- = reset
+		prevNotif = {} -- = reset
 	end
 	if package.loaded["notify"] then
 		-- HACK prevent replacement error when using `replace` for a non-open notification
-		opts.on_open = function() previous.isOpen = true end
-		opts.on_close = function() previous.isOpen = false end
+		opts.on_open = function() prevNotif.isOpen = true end
+		opts.on_close = function() prevNotif.isOpen = false end
 	end
 
 	local id = vim.notify(msg, level, opts)
-	previous.id, previous.title, previous.msg = id, title, msg
+	prevNotif.id, prevNotif.title, prevNotif.msg = id, title, msg
 end
