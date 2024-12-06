@@ -14,7 +14,7 @@ local M = {
 	variableLog = {
 		nvim_lua = 'vim.notify(vim.inspect({{var}}), nil, { title = "{{marker}} {{var}}", ft = "lua" })',
 		lua = 'print("{{marker}} {{var}}: " .. tostring({{var}}))',
-		python = 'print(f"%s {%s = }")',
+		python = 'print(f"{{marker}} {{var}}: {{{var}}}")',
 		javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
 		sh = 'echo "{{marker}} {{var}}: ${{var}}" >&2', -- `>&2` sends to stderr only
 		applescript = 'log "{{marker}} {{var}}:" & {{var}}',
@@ -94,7 +94,7 @@ local M = {
 	},
 	timeLogStart = {
 		lua = "local timelogStart{{index}} = os.clock() -- {{marker}}",
-		python = "local timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
+		python = "timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
 		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 		sh = "timelog_start_{{index}}=$(date +%%s) # {{marker}}",
