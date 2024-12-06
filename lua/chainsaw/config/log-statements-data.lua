@@ -97,7 +97,7 @@ local M = {
 		python = "timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
 		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
-		sh = "timelog_start_{{index}}=$(date +%%s) # {{marker}}",
+		sh = "timelog_start_{{index}}=$(date +%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 	},
@@ -106,8 +106,8 @@ local M = {
 		nvim_lua = 'vim.notify(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
 		python = 'print(f"#{{index}} {{marker}}: {round(time.perf_counter() - timelog_start_{{index}}, 3)}s")',
 		javascript = "console.log(`#{{index}} {{marker}}: ${(Date.now() - timelogStart{{index}}) / 1000}s`);",
-		typescript = 'console.timeEnd("#%s %s");',
-		sh = 'echo "#{{index}} %s $(($(date +%{{marker}}) - timelog_start_{{index}}))s" >&2',
+		typescript = 'console.timeEnd("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
+		sh = 'echo "#{{index}} $(($(date +%{{marker}}) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 	},
