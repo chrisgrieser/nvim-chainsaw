@@ -25,6 +25,35 @@ local defaultConfig = {
 		},
 	},
 
+	-- auto-install a pre-commit hook that prevents commits containing the marker
+	-- string. Note that this will override git's `core.hookPath`, disabling any
+	-- other hooks you have.
+	preCommitHook = {
+		enabled = false,
+		notifyOnInstall = true,
+		hookPath = ".chainsaw", -- relative to git root
+
+		-- Will insert the marker as `%s`. (Pre-commit hooks eequires a shebang.
+		-- It should exit non-zero when marker is found, to block the commit.)
+		hookContent = [[#!/bin/sh
+			grep --recursive --fixed-strings --line-number "%s" . || exit 0
+			echo
+			echo "nvim-chainsaw marker found in commit. Aborting commit."
+			exit 1
+		]],
+
+		-- List of directories where the hook will not be installed if they are
+		-- the git root. Supports globs and `~`. Must *fully* match the directory.
+		dontInstallInDirs = {
+			-- "~/special-project"
+			-- "**/repos/**",
+
+			-- If you track your nvim-config via git, and use a custom marker, you
+			-- should add it to this list, since it will contain the marker string:
+			-- "~/.config/nvim",
+		},
+	},
+
 	-- configuration for specific logtypes
 	logTypes = {
 		emojiLog = {
@@ -113,6 +142,7 @@ function M.setup(userConfig)
 	if not M.config.marker or M.config.marker == "" then
 		M.config.marker = defaultConfig.marker
 		warn("Config `marker` must not be non-empty string. Falling back to default.")
+		Chainsaw(warn) -- 🪚
 	end
 
 	-- initialize

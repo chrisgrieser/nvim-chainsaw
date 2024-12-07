@@ -161,6 +161,7 @@ function M.insert(logType, logtypeSpecific)
 	end
 	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line
 
+	require("chainsaw.pre-commit-hook").install()
 	return true
 end
 

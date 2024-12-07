@@ -46,6 +46,8 @@ Quick and feature-rich insertion of various kinds of log statements.
   for multi-line templates.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
   (when using [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
+- Optionally auto-install a pre-commit hook that prevents committing files with
+  the log statements created by `nvim-chainsaw`.
 
 ## Installation
 **Requirements**
@@ -237,6 +239,35 @@ require("chainsaw").setup {
 		},
 	},
 
+	-- auto-install a pre-commit hook that prevents commits containing the marker
+	-- string. Note that this will override git's `core.hookPath`, disabling any
+	-- other hooks you have.
+	preCommitHook = {
+		enabled = false,
+		notifyOnInstall = true,
+		hookPath = ".chainsaw", -- relative to git root
+
+		-- Will insert the marker as `%s`. (Pre-commit hooks eequires a shebang.
+		-- It should exit non-zero when marker is found, to block the commit.)
+		hookContent = [[#!/bin/sh
+			grep --recursive --fixed-strings --line-number "%s" . || exit 0
+			echo
+			echo "nvim-chainsaw marker found in commit. Aborting commit."
+			exit 1
+		]],
+
+		-- List of directories where the hook will not be installed if they are
+		-- the git root. Supports globs and `~`. Must *fully* match the directory.
+		dontInstallInDirs = {
+			-- "~/special-project"
+			-- "**/repos/**",
+
+			-- If you track your nvim-config via git, and use a custom marker, you
+			-- should add it to this list, since it will contain the marker string:
+			-- "~/.config/nvim",
+		},
+	},
+
 	-- configuration for specific logtypes
 	logTypes = {
 		emojiLog = {
@@ -306,7 +337,7 @@ require("chainsaw").setup ({
 **Experimental:** The plugin provides a globally accessible function `Chainsaw`,
 specially designed for debugging `nvim_lua`. Given a variable, it pretty-prints
 the variable, its name, and the location of the log statement call, all in a
-much more concise manner. 
+much more concise manner.
 
 **Requirements:** A notification plugin like
 [nvim-notify](https://github.com/rcarriga/nvim-notify) or
@@ -370,7 +401,7 @@ into multiple lines, making them hard to read and breaking `.removeLogs()`, whic
 relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
-configuration to include an ignore-comment: `/* prettier-ignore */` 
+configuration to include an ignore-comment: `/* prettier-ignore */`
 - The log statements do not accept lines, but you can use a list of strings,
   where each element is one line.
 - Add the marker to the added line as well, so it is included in the removal by
