@@ -25,11 +25,10 @@ function M.install()
 	if vim.uv.fs_stat(hookFile) ~= nil then return end
 
 	-- GUARD ignored directories
-	local ignored = vim.iter(config.preCommitHook.dontInstallInDirs)
-		:any(function(dirOrGlob)
-			dirOrGlob = vim.fs.normalize(dirOrGlob)
-			return vim.glob.to_lpeg(dirOrGlob):match(gitRoot)
-		end)
+	local ignored = vim.iter(config.preCommitHook.dontInstallInDirs):any(function(dirOrGlob)
+		dirOrGlob = vim.fs.normalize(dirOrGlob)
+		return vim.glob.to_lpeg(dirOrGlob):match(gitRoot)
+	end)
 	if ignored then return end
 
 	-- setup hook
