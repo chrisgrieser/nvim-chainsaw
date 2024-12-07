@@ -81,7 +81,7 @@ function M.setup(userConfig)
 
 	require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
 
-	-- DEPRECATION
+	-- DEPRECATION 2024-12-02
 	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
 		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
 		warn(msg)
