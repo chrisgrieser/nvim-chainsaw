@@ -57,7 +57,7 @@ function _G.Chainsaw(varValue)
 		-- PERF if source file is open, read the buffer, otherwise read the file
 		local buffer = vim.iter(vim.fn.getbufinfo()):find(function(b) return b.name == sourcePath end)
 		if buffer then
-			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
+			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
 		else
 			local file, _ = io.open(sourcePath, "r")
 			callerLine = file and vim.split(file:read("*a"), "\n")[lnum] or ""
