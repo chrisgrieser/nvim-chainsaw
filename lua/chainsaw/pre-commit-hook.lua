@@ -41,6 +41,13 @@ function M.install()
 	end)
 	if ignored then return end
 
+	-- GUARD not in nvim config, since user can have customized `marker`
+	if config.preCommitHook.notInNvimConfigDir then
+		local nvimConfigPath = vim.fn.stdpath("config") --[[@as string]]
+		local isInNvimConfig = vim.api.nvim_buf_get_name(0):find(nvimConfigPath, nil, true)
+		if isInNvimConfig then return end
+	end
+
 	-----------------------------------------------------------------------------
 
 	-- setup hook

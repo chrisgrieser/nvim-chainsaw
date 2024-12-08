@@ -25,7 +25,7 @@ local defaultConfig = {
 		},
 	},
 
-	-- auto-install a pre-commit hook that prevents commits containing the marker
+	-- Auto-install a pre-commit hook that prevents commits containing the marker
 	-- string. Note that this will override git's `core.hookPath`, disabling any
 	-- other hooks you have.
 	preCommitHook = {
@@ -34,7 +34,7 @@ local defaultConfig = {
 		hookPath = ".chainsaw", -- relative to git root
 
 		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
-		-- It should exit non-zero when marker is found, to block the commit.)
+		-- The hook should exit non-zero when marker is found, to block the commit.)
 		hookContent = [[#!/bin/sh
 			git grep --fixed-strings --line-number "%s" . || exit 0
 			echo
@@ -45,15 +45,16 @@ local defaultConfig = {
 		-- don't install the hook, if the repo already has different pre-commit hook
 		noHookOverride = true,
 
+		-- If you track your nvim-config via git, and use a custom marker, you
+		-- should add it to this list, since your config will then always include
+		-- a marker, thus always falsely triggering the pre-commit hook.
+		notInNvimConfigDir = true,
+
 		-- List of directories where the hook will not be installed if they are
 		-- the git root. Supports globs and `~`. Must *fully* match the directory.
 		dontInstallInDirs = {
 			-- "~/special-project"
 			-- "~/repos/**",
-
-			-- If you track your nvim-config via git, and use a custom marker, you
-			-- should add it to this list, since it will contain the marker string:
-			-- "~/.config/nvim",
 		},
 	},
 

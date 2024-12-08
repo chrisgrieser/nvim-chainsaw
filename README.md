@@ -46,8 +46,8 @@ Quick and feature-rich insertion of various kinds of log statements.
   for multi-line templates.
 - Visual indication of log statements via highlights, signcolumn, or scrollbar
   (when using [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
-- Optionally auto-install a pre-commit hook that prevents committing files with
-  the log statements created by `nvim-chainsaw`.
+- Auto-install a pre-commit hook that prevents committing files with
+  the log statements created by `nvim-chainsaw` (opt-in).
 
 ## Installation
 **Requirements**
@@ -108,7 +108,7 @@ All operations are dot-repeatable.
 -- log the name & value of the variable under the cursor
 require("chainsaw").variableLog()
 
--- like variableLog, but with syntax specific to inspect an object such as
+-- like variableLog, but with syntax specific to inspect an object, for example
 -- `console.log(JSON.stringify(foobar))` in javascript
 require("chainsaw").objectLog()
 
@@ -133,7 +133,7 @@ require("chainsaw").sound()
 require("chainsaw").messageLog()
 
 -- 1st call: start measuring the time
--- 2nd call: logs the time duration since
+-- 2nd call: log the time duration since the 1st statement
 require("chainsaw").timeLog()
 
 -- debug statements like `debugger` in javascript or `breakpoint()` in python
@@ -239,7 +239,7 @@ require("chainsaw").setup {
 		},
 	},
 
-	-- auto-install a pre-commit hook that prevents commits containing the marker
+	-- Auto-install a pre-commit hook that prevents commits containing the marker
 	-- string. Note that this will override git's `core.hookPath`, disabling any
 	-- other hooks you have.
 	preCommitHook = {
@@ -248,7 +248,7 @@ require("chainsaw").setup {
 		hookPath = ".chainsaw", -- relative to git root
 
 		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
-		-- It should exit non-zero when marker is found, to block the commit.)
+		-- The hook should exit non-zero when marker is found, to block the commit.)
 		hookContent = [[#!/bin/sh
 			git grep --fixed-strings --line-number "%s" . || exit 0
 			echo
@@ -259,15 +259,16 @@ require("chainsaw").setup {
 		-- don't install the hook, if the repo already has different pre-commit hook
 		noHookOverride = true,
 
+		-- If you track your nvim-config via git, and use a custom marker, you
+		-- should add it to this list, since your config will then always include
+		-- a marker, thus always falsely triggering the pre-commit hook.
+		notInNvimConfigDir = true,
+
 		-- List of directories where the hook will not be installed if they are
 		-- the git root. Supports globs and `~`. Must *fully* match the directory.
 		dontInstallInDirs = {
 			-- "~/special-project"
 			-- "~/repos/**",
-
-			-- If you track your nvim-config via git, and use a custom marker, you
-			-- should add it to this list, since it will contain the marker string:
-			-- "~/.config/nvim",
 		},
 	},
 
@@ -426,7 +427,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 ## Similar plugins
 - [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
 - [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim#debug-features)
-- [timber-.nvim](https://github.com/Goose97/timber.nvim)
+- [timber-nvim](https://github.com/Goose97/timber.nvim)
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
