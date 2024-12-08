@@ -36,9 +36,9 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-basic-configuration|
     - |nvim-chainsaw-customize-log-statements|
-    - |nvim-chainsaw-the-global-lua-function-`chainsaw`|
+    - |nvim-chainsaw-the-global-pretty-logging-function-`chainsaw`|
     - |nvim-chainsaw-make-the-formatter-ignore-the-log-statements|
-    - |nvim-chainsaw-statusline|
+    - |nvim-chainsaw-status-line|
 - |nvim-chainsaw-similar-plugins|
 - |nvim-chainsaw-about-the-developer|
 
@@ -50,8 +50,8 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
     and the |nvim-chainsaw-correct-insertion-location-of-the-log-statement| via Treesitter.
 - Commands for a dozen different log statement types, including assert
-    statements, stacktraces, or acoustic logging. All commands are dot-repeatable.
-- Builtin support for ~20 common languages, with dedicated support for
+    statements, stack traces, or acoustic logging. All commands are dot-repeatable.
+- Built-in support for ~20 common languages, with dedicated support for
     `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
     clear the console.
@@ -293,24 +293,10 @@ BASIC CONFIGURATION ~
             },
         },
     
-        -- If a filetype has no configuration for a specific logtype, then it will
-        -- look for the configuration for a superset of that filetype.
-        supersets = {
-            nvim_lua = "lua", -- `nvim_lua` config is used when in nvim-lua
-            typescript = "javascript",
-            typescriptreact = "typescript",
-            javascriptreact = "javascript",
-            vue = "typescript",
-            svelte = "typescript",
-            bash = "sh",
-            zsh = "sh",
-            fish = "sh",
-            scss = "css",
-            less = "css",
-            sass = "css",
-        },
-    
-        logStatements = require("chainsaw.config.log-statements-data"),
+        -----------------------------------------------------------------------------
+        -- see https://github.com/chrisgrieser/nvim-chainsaw/blob/main/lua/chainsaw/config/log-statements-data.lua
+        logStatements = require("chainsaw.config.log-statements-data").logStatements,
+        supersets = require("chainsaw.config.log-statements-data").supersets,
     }
 <
 
@@ -349,14 +335,14 @@ inserts a running index. (Needed to differentiate between variables when using
   log statements, use a list of strings instead, each string representing one
   line.
 
-THE GLOBAL LUA FUNCTION CHAINSAW ~
+THE GLOBAL PRETTY-LOGGING FUNCTION CHAINSAW() ~
 
 
 
-**Experimental:** The plugin provides a globally accessible function
-`Chainsaw`, specially designed for debugging `nvim_lua`. Given a variable, it
-pretty-prints the variable, its name, and the location of the log statement
-call, all in a much more concise manner.
+The plugin provides a globally accessible function `Chainsaw()`, specifically
+designed for debugging `nvim_lua`. Given a variable, it pretty-prints the
+variable, its name, and the location of the log statement call, all in a much
+more concise manner.
 
 **Requirements:** A notification plugin like nvim-notify
 <https://github.com/rcarriga/nvim-notify> or snacks.nvim
@@ -375,6 +361,10 @@ notification requires `snacks.nvim`.
     }
 <
 
+
+  [!TIP] To use `Chainsaw()` during or shortly after startup, you may not
+  lazy-load `nvim-chainsaw`. Using `lazy.nvim`, set `lazy = false` and if needed
+  `priority = 200` to ensure the plugin loads before other start-plugins.
 The `lua_ls` diagnostic `undefined-global` for `Chainsaw` can be disabled with
 one of the following methods:
 
@@ -438,7 +428,7 @@ included in the removal by `.removeLogs()`.
 <
 
 
-STATUSLINE ~
+STATUS LINE ~
 
 This function returns number of log statements _by nvim-chainsaw_ in the
 current buffer.
