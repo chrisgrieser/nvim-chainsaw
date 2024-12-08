@@ -24,7 +24,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 	* [Customize log statements](#customize-log-statements)
 	* [The global lua function `Chainsaw`](#the-global-lua-function-chainsaw)
 	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
-	* [Statusline](#statusline)
+	* [Status line](#status-line)
 - [Similar plugins](#similar-plugins)
 - [About the developer](#about-the-developer)
 
@@ -37,8 +37,8 @@ Quick and feature-rich insertion of various kinds of log statements.
   and the [correct insertion location of the log
   statement](#smart-insertion-location) via Treesitter.
 - Commands for a dozen different log statement types, including assert
-  statements, stacktraces, or acoustic logging. All commands are dot-repeatable.
-- Builtin support for ~20 common languages, with dedicated support for
+  statements, stack traces, or acoustic logging. All commands are dot-repeatable.
+- Built-in support for ~20 common languages, with dedicated support for
   `nvim-lua`, and easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
   clear the console.
@@ -410,8 +410,8 @@ require("chainsaw").setup {
 }
 ```
 
-### Statusline
-This function returns number of log statements *by nvim-chainsaw* in the current
+### Status line
+This function returns number of log statements *by `nvim-chainsaw`* in the current
 buffer.
 
 ```lua
