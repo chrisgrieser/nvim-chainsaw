@@ -19,7 +19,10 @@ vim.api.nvim_create_user_command(
 	function(ctx) M[ctx.args]() end,
 	{
 		nargs = 1,
-		complete = function() return vim.tbl_keys(require("chainsaw.core.log-commands")) end,
+		complete = function(query)
+			local cmds = vim.tbl_keys(require("chainsaw.core.log-commands"))
+			return vim.tbl_filter(function(cmd) return cmd:lower():find(query) end, cmds)
+		end,
 	}
 )
 
