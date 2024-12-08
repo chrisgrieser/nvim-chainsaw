@@ -22,7 +22,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Configuration](#configuration)
 	* [Basic configuration](#basic-configuration)
 	* [Customize log statements](#customize-log-statements)
-	* [The global lua function `Chainsaw`](#the-global-lua-function-chainsaw)
+	* [The global pretty-logging function `Chainsaw`](#the-global-pretty-logging-function-chainsaw)
 	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
 	* [Status line](#status-line)
 - [Similar plugins](#similar-plugins)
@@ -321,13 +321,13 @@ require("chainsaw").setup ({
 > The strings may not include line breaks. If you want to use multi-line log
 > statements, use a list of strings instead, each string representing one line.
 
-### The global lua function `Chainsaw`
+### The global pretty-logging function `Chainsaw()`
 <img alt="Showcase nvim-lua-debug function" width=75% src="https://github.com/user-attachments/assets/39681485-f077-421f-865d-c65a7c35a3c3">
 
-**Experimental:** The plugin provides a globally accessible function `Chainsaw`,
-specially designed for debugging `nvim_lua`. Given a variable, it pretty-prints
-the variable, its name, and the location of the log statement call, all in a
-much more concise manner.
+The plugin provides a globally accessible function `Chainsaw()`, specifically
+designed for debugging `nvim_lua`. Given a variable, it pretty-prints the
+variable, its name, and the location of the log statement call, all in a much
+more concise manner.
 
 **Requirements:** A notification plugin like
 [nvim-notify](https://github.com/rcarriga/nvim-notify) or
@@ -345,6 +345,11 @@ require("chainsaw").setup {
 	},
 }
 ```
+
+> [!TIP]
+> To use `Chainsaw()` during or shortly after startup, you may not lazy-load
+> `nvim-chainsaw`. Using `lazy.nvim`, set `lazy = false` and if needed `priority
+> = 200` to ensure the plugin loads before other start-plugins.
 
 The `lua_ls` diagnostic `undefined-global` for `Chainsaw` can be disabled with
 one of the following methods:
