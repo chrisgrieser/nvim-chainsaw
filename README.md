@@ -247,16 +247,16 @@ require("chainsaw").setup {
 		notifyOnInstall = true,
 		hookPath = ".chainsaw", -- relative to git root
 
-		-- Will insert the marker as `%s`. (Pre-commit hooks eequires a shebang.
+		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
 		-- It should exit non-zero when marker is found, to block the commit.)
 		hookContent = [[#!/bin/sh
-			grep --recursive --fixed-strings --line-number "%s" . || exit 0
+			git grep --fixed-strings --line-number "%s" . || exit 0
 			echo
-			echo "nvim-chainsaw marker found in commit. Aborting commit."
+			echo "nvim-chainsaw marker found. Aborting commit."
 			exit 1
 		]],
 
-		-- do not install the hook, if the repo already has one a pre-commit hook
+		-- don't install the hook, if the repo already has different pre-commit hook
 		noHookOverride = true,
 
 		-- List of directories where the hook will not be installed if they are
