@@ -15,8 +15,7 @@ function M.setup(userConfig) require("chainsaw.config.config").setup(userConfig)
 
 vim.api.nvim_create_user_command(
 	"Chainsaw",
-	-- INFO needs to index this file to make commands dot-repeatable
-	function(ctx) M[ctx.args]() end,
+	function(ctx) M[ctx.args]() end, -- INFO needs to index this file to make cmd dot-repeatable
 	{
 		nargs = 1,
 		complete = function(query)
@@ -25,12 +24,6 @@ vim.api.nvim_create_user_command(
 		end,
 	}
 )
-
--- DEPRECATION
-vim.api.nvim_create_user_command("ChainSaw", function()
-	local msg = "`:ChainSaw` is deprecated. Use `:Chainsaw` instead."
-	vim.notify(msg, vim.log.levels.WARN)
-end, { nargs = "?" })
 
 -- 1. The metatable sends any indexing operation to the `log-commands` module.
 -- 2. The `require` is wrapped in code that makes the the action dot-repeatable
