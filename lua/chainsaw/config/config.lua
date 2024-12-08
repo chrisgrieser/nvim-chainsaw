@@ -49,7 +49,7 @@ local defaultConfig = {
 		-- the git root. Supports globs and `~`. Must *fully* match the directory.
 		dontInstallInDirs = {
 			-- "~/special-project"
-			-- "**/repos/**",
+			-- "~/repos/**",
 
 			-- If you track your nvim-config via git, and use a custom marker, you
 			-- should add it to this list, since it will contain the marker string:

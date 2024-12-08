@@ -17,12 +17,14 @@ function M.install()
 	local config = require("chainsaw.config.config").config
 	if not config.preCommitHook.enabled then return end
 
-	-- GUARD hook already installed
+	-- GUARD not in a git repo
 	local gitRoot = vim.fs.root(0, ".git")
-	if not gitRoot then return end -- not in a git repo
+	if not gitRoot then return end
+
+	-- GUARD already installed
 	local hookPath = vim.fs.normalize(gitRoot .. "/" .. config.preCommitHook.hookPath)
 	local hookFile = vim.fs.normalize(hookPath .. "/pre-commit")
-	if vim.uv.fs_stat(hookFile) ~= nil then return end
+	if vim.uv.fs_stat(hookFile) then return end
 
 	-- GUARD already has another pre-commit hook
 	if config.preCommitHook.noHookOverride then
@@ -38,6 +40,8 @@ function M.install()
 		return vim.glob.to_lpeg(dirOrGlob):match(gitRoot)
 	end)
 	if ignored then return end
+
+	-----------------------------------------------------------------------------
 
 	-- setup hook
 	local hookContent = config.preCommitHook.hookContent:format(config.marker)
