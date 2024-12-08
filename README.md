@@ -278,26 +278,13 @@ require("chainsaw").setup {
 		},
 	},
 
-	-- If a filetype has no configuration for a specific logtype, then it will
-	-- look for the configuration for a superset of that filetype.
-	supersets = {
-		nvim_lua = "lua", -- `nvim_lua` config is used when in nvim-lua
-		typescript = "javascript",
-		typescriptreact = "typescript",
-		javascriptreact = "javascript",
-		vue = "typescript",
-		svelte = "typescript",
-		bash = "sh",
-		zsh = "sh",
-		fish = "sh",
-		scss = "css",
-		less = "css",
-		sass = "css",
-	},
-
-	logStatements = require("chainsaw.config.log-statements-data"),
+	-----------------------------------------------------------------------------
+	-- see https://github.com/chrisgrieser/nvim-chainsaw/blob/main/lua/chainsaw/config/log-statements-data.lua
+	logStatements = require("chainsaw.config.log-statements-data").logStatements,
+	supersets = require("chainsaw.config.log-statements-data").supersets,
 }
 ```
+
 
 ### Customize log statements
 New log statements can be added, and existing log statements can be modified

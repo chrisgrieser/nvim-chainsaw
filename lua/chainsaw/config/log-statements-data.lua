@@ -1,5 +1,3 @@
----@alias logStatementData table<string, table<string, string|string[]?>>
-
 --------------------------------------------------------------------------------
 -- INFO
 -- 1. The strings may not include linebreaks. If you want to use multi-line log
@@ -8,9 +6,14 @@
 -- 3. See `superset-inheritance.lua` for superset-languages.
 -- (e.g, `typescript` inheriting log statements from `javascript`.)
 --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+local M = {}
+
+---@alias logStatementData table<string, table<string, string|string[]?>>
 
 ---@type logStatementData
-local M = {
+M.logStatements = {
 	variableLog = {
 		nvim_lua = 'vim.notify(vim.inspect({{var}}), nil, { title = "{{marker}} {{var}}", ft = "lua" })',
 		lua = 'print("{{marker}} {{var}}: " .. tostring({{var}}))',
@@ -111,6 +114,24 @@ local M = {
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 	},
+}
+
+-- If a filetype has no configuration for a specific logtype, look in this table
+-- for a related filetype, and use its log statements
+---@type table<string, string>
+M.supersets = {
+	nvim_lua = "lua", -- `nvim_lua` config is used when in nvim-lua
+	typescript = "javascript",
+	typescriptreact = "typescript",
+	javascriptreact = "javascript",
+	vue = "typescript",
+	svelte = "typescript",
+	bash = "sh",
+	zsh = "sh",
+	fish = "sh",
+	scss = "css",
+	less = "css",
+	sass = "css",
 }
 
 --------------------------------------------------------------------------------
