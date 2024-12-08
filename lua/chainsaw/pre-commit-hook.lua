@@ -24,6 +24,14 @@ function M.install()
 	local hookFile = vim.fs.normalize(hookPath .. "/pre-commit")
 	if vim.uv.fs_stat(hookFile) ~= nil then return end
 
+	-- GUARD already has another pre-commit hook
+	if config.preCommitHook.noHookOverride then
+		local currentHookPath =
+			vim.trim(vim.system({ "git", "config", "--get", "core.hooksPath" }):wait().stdout)
+		local currentHookFile = vim.fs.normalize(gitRoot .. "/" .. currentHookPath .. "/pre-commit")
+		if vim.uv.fs_stat(currentHookFile) then return end
+	end
+
 	-- GUARD ignored directories
 	local ignored = vim.iter(config.preCommitHook.dontInstallInDirs):any(function(dirOrGlob)
 		dirOrGlob = vim.fs.normalize(dirOrGlob)

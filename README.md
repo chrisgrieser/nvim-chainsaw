@@ -256,6 +256,9 @@ require("chainsaw").setup {
 			exit 1
 		]],
 
+		-- do not install the hook, if the repo already has one a pre-commit hook
+		noHookOverride = true,
+
 		-- List of directories where the hook will not be installed if they are
 		-- the git root. Supports globs and `~`. Must *fully* match the directory.
 		dontInstallInDirs = {
