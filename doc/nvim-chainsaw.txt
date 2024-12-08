@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 07
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 08
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -262,20 +262,23 @@ BASIC CONFIGURATION ~
             notifyOnInstall = true,
             hookPath = ".chainsaw", -- relative to git root
     
-            -- Will insert the marker as `%s`. (Pre-commit hooks eequires a shebang.
+            -- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
             -- It should exit non-zero when marker is found, to block the commit.)
             hookContent = [[#!/bin/sh
-                grep --recursive --fixed-strings --line-number "%s" . || exit 0
+                git grep --fixed-strings --line-number "%s" . || exit 0
                 echo
-                echo "nvim-chainsaw marker found in commit. Aborting commit."
+                echo "nvim-chainsaw marker found. Aborting commit."
                 exit 1
             ]],
+    
+            -- don't install the hook, if the repo already has different pre-commit hook
+            noHookOverride = true,
     
             -- List of directories where the hook will not be installed if they are
             -- the git root. Supports globs and `~`. Must *fully* match the directory.
             dontInstallInDirs = {
                 -- "~/special-project"
-                -- "**/repos/**",
+                -- "~/repos/**",
     
                 -- If you track your nvim-config via git, and use a custom marker, you
                 -- should add it to this list, since it will contain the marker string:
