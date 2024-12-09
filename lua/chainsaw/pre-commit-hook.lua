@@ -27,12 +27,11 @@ function M.install()
 	if vim.uv.fs_stat(hookFile) then return end
 
 	-- GUARD already has another pre-commit hook
-	if config.preCommitHook.noHookOverride then
-		local currentHookPath =
-			vim.trim(vim.system({ "git", "config", "--get", "core.hooksPath" }):wait().stdout)
-		local currentHookFile = vim.fs.normalize(gitRoot .. "/" .. currentHookPath .. "/pre-commit")
-		if vim.uv.fs_stat(currentHookFile) then return end
-	end
+	local out = vim.system({ "git", "config", "--get", "core.hooksPath" }):wait()
+	local hasHookConfig = out.code == 0
+	local currentHookFile = vim.fs.normalize(gitRoot .. "/" .. vim.trim(out.stdout) .. "/pre-commit")
+	local hookFileExists = vim.uv.fs_stat(currentHookFile)
+	if hasHookConfig and hookFileExists then return end
 
 	-- GUARD ignored directories
 	local ignored = vim.iter(config.preCommitHook.dontInstallInDirs):any(function(dirOrGlob)
@@ -44,7 +43,7 @@ function M.install()
 	-- GUARD not in nvim config, since user can have customized `marker`
 	if config.preCommitHook.notInNvimConfigDir then
 		local nvimConfigPath = vim.fn.stdpath("config") --[[@as string]]
-		local isInNvimConfig = vim.api.nvim_buf_get_name(0):find(nvimConfigPath, nil, true)
+		local isInNvimConfig = vim.startswith(vim.api.nvim_buf_get_name(0), nvimConfigPath)
 		if isInNvimConfig then return end
 	end
 
