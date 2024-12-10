@@ -466,9 +466,11 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
   accidentally commit pre-commit hook (opt-in)                     
   log statements                                                   
 
-  logstatement        line numbers, filenames,                     linenumbers,
-  customization       time, multi-line                             insertation
-                      statements                                   location
+  logstatement        line numbers, filenames,  line               line numbers,
+  customization       time, multi-line          numbers+filename   insertation
+                      statements                (location), nearby location
+                                                line snippet,      
+                                                unique counter     
 
   insertation         below, treesitter-based   below, above       below, above,
   location            adjustments for some                         surround,
