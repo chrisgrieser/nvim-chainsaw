@@ -22,10 +22,10 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Configuration](#configuration)
 	* [Basic configuration](#basic-configuration)
 	* [Customize log statements](#customize-log-statements)
-	* [The global pretty-logging function `Chainsaw`](#the-global-pretty-logging-function-chainsaw)
+	* [The global pretty-logging function `Chainsaw()`](#the-global-pretty-logging-function-chainsaw)
 	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
 	* [Status line](#status-line)
-- [Similar plugins](#similar-plugins)
+- [Comparison with similar plugins](#comparison-with-similar-plugins)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -420,10 +420,24 @@ buffer.
 require("chainsaw.visuals.statusline").countInBuffer()
 ```
 
-## Similar plugins
-- [debugprint.nvim](https://github.com/andrewferrier/debugprint.nvim)
-- [refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim#debug-features)
-- [timber-nvim](https://github.com/Goose97/timber.nvim)
+## Comparison with similar plugins
+
+|                                                   | nvim-chainsaw                                                                                          | debugprint.nvim                                                           | timber.nvim                                                     |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console | variables                                                                 | variables, objects, time                                        |
+| builtin language support                          | ~20                                                                                                    | ~35                                                                       | ~15                                                             |
+| inheritance of log statements from superset langs | ✅                                                                                                      | ❌                                                                         | ❌                                                               |
+| delete all log statements                         | ✅                                                                                                      | ✅                                                                         | ✅                                                               |
+| comment all log statements                        | ❌                                                                                                      | ✅                                                                         | ✅                                                               |
+| protection to accidentally commit log statements  | via auto-installed pre-commit hook (opt-in)                                                            | ❌                                                                         | ❌                                                               |
+| log statement customization                       | line numbers, filenames, time, multi-line statements                                                   | ❌                                                                         | line numbers, insertation location                              |
+| insertation location                              | below, treesitter-based adjustments for some languages                                                 | below, above                                                              | below, above, surround, operator, treesitter-based adjustments  |
+| variable detection                                | word under cursor, visual selection, treesitter-based selection                                        | word under cursor, operator, visual selection, treesitter-based selection | word under cursor, visual selection, treesitter-based selection |
+| dot-repeatability                                 | ✅                                                                                                      | ✅                                                                         | ✅                                                               |
+| visual emphasis of log statements                 | signcolumn, line-highlight, statusline, scrollbar                                                      | ❌                                                                         | flash on inserting statement                                    |
+| extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                      | ❌                                                                         | ❌                                                               |
+| log file watcher                                  | ❌                                                                                                      | ❌                                                                         | ✅                                                               |
+| maintanability / efficiency                       | ~1000 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
