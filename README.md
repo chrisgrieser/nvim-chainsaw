@@ -37,17 +37,20 @@ Quick and feature-rich insertion of various kinds of log statements.
   and the [correct insertion location of the log
   statement](#smart-insertion-location) via Treesitter.
 - Commands for a dozen different log statement types, including assert
-  statements, stack traces, or acoustic logging. All commands are dot-repeatable.
+  statements, stack traces, or acoustic logging. All commands are
+  dot-repeatable.
 - Built-in support for ~20 common languages, with dedicated support for
-  `nvim-lua`, and easy configuration for additional languages.
+  `nvim-lua`. Easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
   clear the console.
 - Flexible templating options for customizing log statements, including support
   for multi-line templates.
-- Visual indication of log statements via highlights, signcolumn, or scrollbar
-  (when using [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
-- Auto-install a pre-commit hook that prevents committing files with
-  the log statements created by `nvim-chainsaw` (opt-in).
+- Statusline component to display the count of log statements in the current
+  buffer. Visual indication of log statements via line-highlights, signcolumn,
+  or scrollbar (when using
+  [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
+- Auto-install a pre-commit hook that prevents committing files with the log
+  statements created by `nvim-chainsaw` (opt-in).
 
 ## Installation
 **Requirements**
@@ -77,7 +80,7 @@ use {
 - JavaScript/TypeScript (and supersets)
 - Python
 - Lua (with special considerations for `nvim-lua`[^1])
-- Shell (and supersets)
+- bash & zsh
 - AppleScript
 - Ruby
 - Rust
@@ -298,8 +301,8 @@ There are various **placeholders** that are dynamically replaced:
   `.timeLog()` instead)
 - `{{filename}}`: basename of the current file
 - `{{lnum}}`: current line number
-- *`.emojiLog()` only*: `{{emoji}}` inserts the emoji
-- *`.timeLog()` only*: `{{index}}` inserts a running index. (Needed to
+- `.emojiLog()` only: `{{emoji}}` inserts the emoji
+- `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
   differentiate between variables when using `timeLog` multiple times).
 
 ```lua
@@ -413,8 +416,8 @@ require("chainsaw").setup {
 ```
 
 ### Status line
-This function returns number of log statements *by `nvim-chainsaw`* in the current
-buffer.
+This function returns number of log statements by `nvim-chainsaw` in the current
+buffer, for use in your status line.
 
 ```lua
 require("chainsaw.visuals.statusline").countInBuffer()
