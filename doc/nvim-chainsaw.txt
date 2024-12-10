@@ -50,17 +50,20 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
     and the |nvim-chainsaw-correct-insertion-location-of-the-log-statement| via Treesitter.
 - Commands for a dozen different log statement types, including assert
-    statements, stack traces, or acoustic logging. All commands are dot-repeatable.
+    statements, stack traces, or acoustic logging. All commands are
+    dot-repeatable.
 - Built-in support for ~20 common languages, with dedicated support for
-    `nvim-lua`, and easy configuration for additional languages.
+    `nvim-lua`. Easy configuration for additional languages.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
     clear the console.
 - Flexible templating options for customizing log statements, including support
     for multi-line templates.
-- Visual indication of log statements via highlights, signcolumn, or scrollbar
-    (when using satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
-- Auto-install a pre-commit hook that prevents committing files with
-    the log statements created by `nvim-chainsaw` (opt-in).
+- Statusline component to display the count of log statements in the current
+    buffer. Visual indication of log statements via line-highlights, signcolumn,
+    or scrollbar (when using
+    satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
+- Auto-install a pre-commit hook that prevents committing files with the log
+    statements created by `nvim-chainsaw` (opt-in).
 
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
@@ -93,7 +96,7 @@ BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support
 - JavaScript/TypeScript (and supersets)
 - Python
 - Lua (with special considerations for `nvim-lua`)
-- Shell (and supersets)
+- bash & zsh
 - AppleScript
 - Ruby
 - Rust
@@ -311,9 +314,9 @@ have one, so that the line can be removed via `.removeLogs()`. -
 `{{var}}`variable as described further above. - `{{time}}`timestamp formatted
 as `HH:MM:SS` (for millisecond-precision, use `.timeLog()` instead) -
 `{{filename}}`basename of the current file - `{{lnum}}`current line number -
-_.emojiLog() only_`{{emoji}}` inserts the emoji - _.timeLog() only_`{{index}}`
-inserts a running index. (Needed to differentiate between variables when using
-`timeLog` multiple times).
+`.emojiLog()` only: `{{emoji}}` inserts the emoji - `.timeLog()` only:
+`{{index}}` inserts a running index. (Needed to differentiate between variables
+when using `timeLog` multiple times).
 
 >lua
     require("chainsaw").setup ({
@@ -427,8 +430,8 @@ included in the removal by `.removeLogs()`.
 
 STATUS LINE ~
 
-This function returns number of log statements _by nvim-chainsaw_ in the
-current buffer.
+This function returns number of log statements by `nvim-chainsaw` in the
+current buffer, for use in your status line.
 
 >lua
     require("chainsaw.visuals.statusline").countInBuffer()
