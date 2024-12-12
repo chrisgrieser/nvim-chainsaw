@@ -78,8 +78,8 @@ function _G.Chainsaw(varValue)
 	local level = vim.log.levels.INFO -- below `INFO` not shown with nivm-notify with defaults
 	local opts = { title = title, icon = icon, ft = "lua" }
 
-	-- Track notifications: if the same notification is shown repeatedly, replace
-	-- the icon with a counter instead of displaying duplicates notifications
+	-- notify-spam protection: if the same notification is shown repeatedly,
+	-- replace the icon with a counter instead of displaying duplicates
 	if prevNotif.title == title and prevNotif.msg == msg then
 		prevNotif.count = (prevNotif.count or 1) + 1
 		-- "tortoise shell brackets" for distinguishability from regular brackets
@@ -95,6 +95,6 @@ function _G.Chainsaw(varValue)
 		opts.on_close = function() prevNotif.isOpen = false end
 	end
 
-	local id = vim.notify(msg, level, opts)
-	prevNotif.id, prevNotif.title, prevNotif.msg = id, title, msg
+	local notif = vim.notify(msg, level, opts) --[[@as { id: number }]]
+	prevNotif.id, prevNotif.title, prevNotif.msg = notif.id, title, msg
 end
