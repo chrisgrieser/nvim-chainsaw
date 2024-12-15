@@ -99,21 +99,19 @@ function M.setup(userConfig)
 
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION 2024-12-02
-	if M.config.logEmojis then 
+	if M.config.logEmojis then
 		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
 		warn(msg)
 	end
-	if M.config.logtypes then 
+	if M.config.logtypes then
 		local msg = "Config `logtypes` is deprecated. Use `logTypes` instead."
 		warn(msg)
 	end
-	if M.config.logHighlightGroup then 
+	if M.config.logHighlightGroup then
 		local msg = "Config `logHighlightGroup` is deprecated. Use `visuals.lineHlgroup` instead."
 		warn(msg)
 	end
-	if M.config.loglines then 
-		warn("Config `loglines` is deprecated. Use `visuals` instead.")
-	end
+	if M.config.loglines then warn("Config `loglines` is deprecated. Use `visuals` instead.") end
 	---@diagnostic enable: undefined-field
 
 	-- VALIDATE
