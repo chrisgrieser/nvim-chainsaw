@@ -97,28 +97,24 @@ function M.setup(userConfig)
 
 	require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
 
+	---@diagnostic disable: undefined-field
 	-- DEPRECATION 2024-12-02
-	if M.config.logEmojis then ---@diagnostic disable-line: undefined-field
+	if M.config.logEmojis then 
 		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
 		warn(msg)
 	end
-
-	-- DEPRECATION
-	if M.config.logtypes then ---@diagnostic disable-line: undefined-field
+	if M.config.logtypes then 
 		local msg = "Config `logtypes` is deprecated. Use `logTypes` instead."
 		warn(msg)
 	end
-
-	-- DEPRECATION
-	if M.config.logHighlightGroup then ---@diagnostic disable-line: undefined-field
+	if M.config.logHighlightGroup then 
 		local msg = "Config `logHighlightGroup` is deprecated. Use `visuals.lineHlgroup` instead."
 		warn(msg)
 	end
-
-	-- DEPRECATION
-	if M.config.loglines then ---@diagnostic disable-line: undefined-field
+	if M.config.loglines then 
 		warn("Config `loglines` is deprecated. Use `visuals` instead.")
 	end
+	---@diagnostic enable: undefined-field
 
 	-- VALIDATE
 	local emojis = M.config.logTypes.emojiLog.emojis
@@ -129,7 +125,6 @@ function M.setup(userConfig)
 	if not M.config.marker or M.config.marker == "" then
 		M.config.marker = defaultConfig.marker
 		warn("Config `marker` must not be non-empty string. Falling back to default.")
-		Chainsaw(warn) -- 🪚
 	end
 
 	-- initialize
