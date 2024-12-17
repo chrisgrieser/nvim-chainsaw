@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 15
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 17
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -264,13 +264,14 @@ BASIC CONFIGURATION ~
             notifyOnInstall = true,
             hookPath = ".chainsaw", -- relative to git root
     
-            -- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
-            -- The hook should exit non-zero when marker is found, to block the commit.)
+            -- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
+            -- and exit non-zero when marker is found to block the commit.)
             hookContent = [[#!/bin/sh
-                git grep --fixed-strings --line-number "%s" . || exit 0
-                echo
-                echo "nvim-chainsaw marker found. Aborting commit."
-                exit 1
+                if git grep --fixed-strings --line-number "%s" .; then
+                    echo
+                    echo "nvim-chainsaw marker found. Aborting commit."
+                    exit 1
+                fi
             ]],
     
             -- If you track your nvim-config via git, and use a custom marker, you
@@ -496,7 +497,7 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
 
   logfile watcher                                                  
 
-  maintanability/     ~1000 LoC                 ~1600 LoC          ~4500 LoC
+  maintainability/    ~1000 LoC                 ~1600 LoC          ~4500 LoC
   efficiency                                                       (excluding tests)
   -----------------------------------------------------------------------------------
 
