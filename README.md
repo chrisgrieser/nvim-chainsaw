@@ -249,13 +249,14 @@ require("chainsaw").setup {
 		notifyOnInstall = true,
 		hookPath = ".chainsaw", -- relative to git root
 
-		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang.
-		-- The hook should exit non-zero when marker is found, to block the commit.)
+		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
+		-- and exit non-zero when marker is found to block the commit.)
 		hookContent = [[#!/bin/sh
-			git grep --fixed-strings --line-number "%s" . || exit 0
-			echo
-			echo "nvim-chainsaw marker found. Aborting commit."
-			exit 1
+			if git grep --fixed-strings --line-number "%s" .; then
+				echo
+				echo "nvim-chainsaw marker found. Aborting commit."
+				exit 1
+			fi
 		]],
 
 		-- If you track your nvim-config via git, and use a custom marker, you
