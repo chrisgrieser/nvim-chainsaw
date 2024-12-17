@@ -425,6 +425,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 
 ## Comparison with similar plugins
 
+<!-- LTeX: enabled=false -->
 |                                                   | nvim-chainsaw                                                                                          | debugprint.nvim                                                           | timber.nvim                                                     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console | variables                                                                 | variables, objects, time                                        |
@@ -440,7 +441,8 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | visual emphasis of log statements                 | signcolumn, line-highlight, statusline, scrollbar                                                      | ❌                                                                         | flash on inserting statement                                    |
 | extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                      | ❌                                                                         | ❌                                                               |
 | log file watcher                                  | ❌                                                                                                      | ❌                                                                         | ✅                                                               |
-| maintanability / efficiency                       | ~1000 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
+| maintainability / efficiency                      | ~1000 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
+<!-- LTeX: enabled=true -->
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
