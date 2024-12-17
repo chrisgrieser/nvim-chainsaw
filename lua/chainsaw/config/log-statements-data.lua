@@ -27,7 +27,7 @@ M.logStatements = {
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 	},
 	objectLog = {
-		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}))',
+		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}, null, 2))', -- `2` ensures it's pretty-printed
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 	},
