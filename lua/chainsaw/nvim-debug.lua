@@ -95,6 +95,6 @@ function _G.Chainsaw(varValue)
 		opts.on_close = function() prevNotif.isOpen = false end
 	end
 
-	local notif = vim.notify(msg, level, opts) --[[@as { id: number }]]
+	local notif = vim.notify(msg, level, opts) or { id = -1 } --[[@as { id: number }]]
 	prevNotif.id, prevNotif.title, prevNotif.msg = notif.id, title, msg
 end
