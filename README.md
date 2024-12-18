@@ -161,7 +161,8 @@ variableLog` is same as `:lua require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
-word under the cursor.
+word under the cursor. `removeLogs` can also be used in visual mode to only
+remove log statements inside the selected lines.
 
 ### Smart variable detection
 When the variable under the cursor is an object with fields, `chainsaw` attempts

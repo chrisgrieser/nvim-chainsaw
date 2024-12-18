@@ -83,48 +83,42 @@ end
 
 function M.removeLogs()
 	local marker = require("chainsaw.config.config").config.marker
-
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
-
 	local mode = vim.fn.mode()
+	local bufLines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 
+	-- normal mode: whole buffer
+	-- visual mode: selected lines
+	local startLnum, endLnum
 	if mode == "n" then
-		-- Remove lines. Deleting individual lines instead of rewriting the whole
-		-- buffer to preserve marks, folds, and undos.
-		local bufLines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-		for i = #bufLines, 1, -1 do
-			if bufLines[i]:find(marker, nil, true) then
-				vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
-			end
+		startLnum = 1
+		endLnum = #bufLines
+	elseif mode:find("[Vv]") then
+		startLnum = vim.fn.getpos("v")[2]
+		endLnum = vim.fn.getpos(".")[2]
+		if startLnum > endLnum then
+			startLnum, endLnum = endLnum, startLnum
 		end
-	elseif mode == "v" or mode == "V" then
-		-- Get the start and end of current visual selection
-		local selectedStart = vim.fn.getpos("v")[2]
-		local selectedEnd = vim.fn.getpos(".")[2]
-		if selectedStart > selectedEnd then
-			selectedStart, selectedEnd = selectedEnd, selectedStart
-		end
+		vim.cmd.normal { mode, bang = true } -- leave visual mode
+	end
 
-		-- Remove lines only for visual selection
-		for i = selectedEnd, selectedStart, -1 do
-			local selectedLine = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-			if selectedLine:find(marker, nil, true) then
-				vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
-			end
+	-- Remove lines
+	-- (Deleting lines instead of overriding whole buffer to preserve marks, folds, etc.)
+	for lnum = endLnum, startLnum, -1 do
+		if bufLines[lnum]:find(marker, nil, true) then
+			vim.api.nvim_buf_set_lines(0, lnum - 1, lnum, false, {})
 		end
-
-		-- Go back to normal mode
-		vim.cmd.normal { vim.fn.mode(), bang = true }
 	end
 
 	-- notify on number of lines removed
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
-	local msg = ("Removed %d lines."):format(linesRemoved)
-	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
+	local pluralS = linesRemoved == 1 and "" or "s"
+	local msg = ("Removed %d line%s."):format(linesRemoved, pluralS)
 	require("chainsaw.utils").info(msg)
 
 	-- reset
 	vim.b.timelogStart = nil
+	vim.b.timeLogIndex = nil
 end
 
 --------------------------------------------------------------------------------
