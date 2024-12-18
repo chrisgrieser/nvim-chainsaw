@@ -152,6 +152,9 @@ require("chainsaw").clearLog()
 
 -- remove all log statements created by nvim-chainsaw
 require("chainsaw").removeLogs()
+
+-- remove all log statements within visually selected region by nvim-chainsaw
+require("chainsaw").removeLogsVisual()
 ```
 
 These features can also be accessed with the user command `:Chainsaw`. Each

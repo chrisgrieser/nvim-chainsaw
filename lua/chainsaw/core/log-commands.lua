@@ -131,6 +131,9 @@ function M.removeLogsVisual()
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
 	require("chainsaw.utils").info(msg)
 
+	-- Go back to normal mode
+	vim.api.nvim_feedkeys("<Esc>", "n", true)
+
 	-- reset
 	vim.b.timelogStart = nil
 end
