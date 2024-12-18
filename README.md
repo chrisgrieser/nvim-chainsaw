@@ -229,9 +229,7 @@ require("chainsaw").setup {
 
 	-- Appearance of lines with the marker
 	visuals = {
-		sign = "󰹈",
-		statuslineIcon = "󰹈",
-		notificationIcon = "󰹈",
+		icon = "󰹈", -- as opposed to marker only used in nvim, thus nerdfont icons are okay
 		signHlgroup = "DiagnosticSignInfo",
 		lineHlgroup = false,
 
