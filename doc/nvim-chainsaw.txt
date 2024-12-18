@@ -172,7 +172,8 @@ is same as `:lua require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
 `assertLog` can also be used in **visual mode** to use the visual selection
-instead of the word under the cursor.
+instead of the word under the cursor. `removeLogs` can also be used in visual
+mode to only remove log statements inside the selected lines.
 
 
 SMART VARIABLE DETECTION ~
