@@ -83,15 +83,38 @@ end
 
 function M.removeLogs()
 	local marker = require("chainsaw.config.config").config.marker
+
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 
-	-- Remove lines. Deleting individual lines instead of rewriting the whole
-	-- buffer to preserve marks, folds, and undos.
-	local bufLines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	for i = #bufLines, 1, -1 do
-		if bufLines[i]:find(marker, nil, true) then
-			vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
+	local mode = vim.fn.mode()
+
+	if mode == "n" then
+		-- Remove lines. Deleting individual lines instead of rewriting the whole
+		-- buffer to preserve marks, folds, and undos.
+		local bufLines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+		for i = #bufLines, 1, -1 do
+			if bufLines[i]:find(marker, nil, true) then
+				vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
+			end
 		end
+	elseif mode == "v" or mode == "V" then
+		-- Get the start and end of current visual selection
+		local selectedStart = vim.fn.getpos("v")[2]
+		local selectedEnd = vim.fn.getpos(".")[2]
+		if selectedStart > selectedEnd then
+			selectedStart, selectedEnd = selectedEnd, selectedStart
+		end
+
+		-- Remove lines only for visual selection
+		for i = selectedEnd, selectedStart, -1 do
+			local selectedLine = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+			if selectedLine:find(marker, nil, true) then
+				vim.api.nvim_buf_set_lines(0, i - 1, i, false, {})
+			end
+		end
+
+		-- Go back to normal mode
+		vim.cmd.normal { vim.fn.mode(), bang = true }
 	end
 
 	-- notify on number of lines removed
@@ -99,39 +122,6 @@ function M.removeLogs()
 	local msg = ("Removed %d lines."):format(linesRemoved)
 	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
 	require("chainsaw.utils").info(msg)
-
-	-- reset
-	vim.b.timelogStart = nil
-end
-
-function M.removeLogsVisual()
-	local marker = require("chainsaw.config.config").config.marker
-	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
-
-	-- Get the start and end of current visual selection
-	local selectedStart = vim.fn.getpos("v")
-	local selectedEnd = vim.fn.getpos(".")
-	if selectedStart[2] > selectedEnd[2] then
-		selectedStart, selectedEnd = selectedEnd, selectedStart
-	end
-
-	-- Remove lines only for visual selection
-	local bufLines = vim.api.nvim_buf_get_lines(0, selectedStart[2] - 1, selectedEnd[2], false)
-	for i = #bufLines, 1, -1 do
-		if bufLines[i]:find(marker, nil, true) then
-			local actualLine = selectedStart[2] + i - 1
-			vim.api.nvim_buf_set_lines(0, actualLine - 1, actualLine, false, {})
-		end
-	end
-
-	-- notify on number of lines removed
-	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
-	local msg = ("Removed %d lines."):format(linesRemoved)
-	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
-	require("chainsaw.utils").info(msg)
-
-	-- Go back to normal mode
-	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "v", true)
 
 	-- reset
 	vim.b.timelogStart = nil
