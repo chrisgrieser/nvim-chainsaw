@@ -104,5 +104,36 @@ function M.removeLogs()
 	vim.b.timelogStart = nil
 end
 
+function M.removeLogsVisual()
+	local marker = require("chainsaw.config.config").config.marker
+	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
+
+	-- Get the start and end of current visual selection
+	local s_start = vim.fn.getpos("v")
+	local s_end = vim.fn.getpos(".")
+	if s_start[2] > s_end[2] then
+		s_start, s_end = s_end, s_start
+	end
+
+	-- Remove lines only for visual selection
+	local bufLines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
+	for i = #bufLines, 1, -1 do
+		if bufLines[i]:find(marker, nil, true) then
+			local actualLine = s_start[2] + i - 1
+			vim.api.nvim_buf_set_lines(0, actualLine - 1, actualLine, false, {})
+		end
+	end
+
+
+	-- notify on number of lines removed
+	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
+	local msg = ("Removed %d lines."):format(linesRemoved)
+	if linesRemoved == 1 then msg = msg:sub(1, -3) .. "." end -- 1 = singular
+	require("chainsaw.utils").info(msg)
+
+	-- reset
+	vim.b.timelogStart = nil
+end
+
 --------------------------------------------------------------------------------
 return M
