@@ -109,17 +109,17 @@ function M.removeLogsVisual()
 	local numOfLinesBefore = vim.api.nvim_buf_line_count(0)
 
 	-- Get the start and end of current visual selection
-	local s_start = vim.fn.getpos("v")
-	local s_end = vim.fn.getpos(".")
-	if s_start[2] > s_end[2] then
-		s_start, s_end = s_end, s_start
+	local selectedStart = vim.fn.getpos("v")
+	local selectedEnd = vim.fn.getpos(".")
+	if selectedStart[2] > selectedEnd[2] then
+		selectedStart, selectedEnd = selectedEnd, selectedStart
 	end
 
 	-- Remove lines only for visual selection
-	local bufLines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
+	local bufLines = vim.api.nvim_buf_get_lines(0, selectedStart[2] - 1, selectedEnd[2], false)
 	for i = #bufLines, 1, -1 do
 		if bufLines[i]:find(marker, nil, true) then
-			local actualLine = s_start[2] + i - 1
+			local actualLine = selectedStart[2] + i - 1
 			vim.api.nvim_buf_set_lines(0, actualLine - 1, actualLine, false, {})
 		end
 	end
@@ -132,7 +132,7 @@ function M.removeLogsVisual()
 	require("chainsaw.utils").info(msg)
 
 	-- Go back to normal mode
-	vim.api.nvim_feedkeys("<Esc>", "n", true)
+	vim.api.nvim_feedkeys("", "v", true)
 
 	-- reset
 	vim.b.timelogStart = nil
