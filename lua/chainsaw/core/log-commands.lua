@@ -124,7 +124,6 @@ function M.removeLogsVisual()
 		end
 	end
 
-
 	-- notify on number of lines removed
 	local linesRemoved = numOfLinesBefore - vim.api.nvim_buf_line_count(0)
 	local msg = ("Removed %d lines."):format(linesRemoved)
