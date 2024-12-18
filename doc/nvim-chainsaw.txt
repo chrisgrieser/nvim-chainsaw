@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 17
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 18
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -161,7 +161,8 @@ All operations are dot-repeatable.
     
     ---------------------------------------------------
     
-    -- remove all log statements created by nvim-chainsaw
+    -- remove all log statements or all log statements in visually selected region 
+    -- created by nvim-chainsaw 
     require("chainsaw").removeLogs()
 <
 
