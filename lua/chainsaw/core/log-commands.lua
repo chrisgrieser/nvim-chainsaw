@@ -131,7 +131,7 @@ function M.removeLogsVisual()
 	require("chainsaw.utils").info(msg)
 
 	-- Go back to normal mode
-	vim.api.nvim_feedkeys("", "v", true)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "v", true)
 
 	-- reset
 	vim.b.timelogStart = nil
