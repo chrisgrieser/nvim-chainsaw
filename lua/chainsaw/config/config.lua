@@ -35,7 +35,7 @@ local defaultConfig = {
 		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
 		-- and exit non-zero when marker is found to block the commit.)
 		hookContent = [[#!/bin/sh
-			if git grep --fixed-strings --line-number "🪚" .; then
+			if git grep --fixed-strings --line-number "%s" .; then
 				echo
 				echo "nvim-chainsaw marker found. Aborting commit."
 				exit 1
