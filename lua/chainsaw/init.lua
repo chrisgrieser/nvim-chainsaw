@@ -6,24 +6,18 @@ if version.major == 0 and version.minor < 10 then
 	)
 	return
 end
-
-local M = {}
 --------------------------------------------------------------------------------
 
----@param userConfig? Chainsaw.config
-function M.setup(userConfig) require("chainsaw.config.config").setup(userConfig) end
+local M = {}
+local setupWasCalled = false
 
-vim.api.nvim_create_user_command(
-	"Chainsaw",
-	function(ctx) M[ctx.args]() end, -- INFO needs to index this file to make cmd dot-repeatable
-	{
-		nargs = 1,
-		complete = function(query)
-			local cmds = vim.tbl_keys(require("chainsaw.core.log-commands"))
-			return vim.tbl_filter(function(cmd) return cmd:lower():find(query) end, cmds)
-		end,
-	}
-)
+---@param userConfig? Chainsaw.config
+function M.setup(userConfig)
+	require("chainsaw.config.config").setup(userConfig)
+	setupWasCalled = true
+end
+
+--------------------------------------------------------------------------------
 
 -- 1. The metatable sends any indexing operation to the `log-commands` module.
 -- 2. The `require` is wrapped in code that makes the the action dot-repeatable
@@ -44,6 +38,11 @@ vim.api.nvim_create_user_command(
 -- would result in vim leaving visual mode, breaking mode detection later on.
 setmetatable(M, {
 	__index = function(_, key)
+		if not setupWasCalled then
+			local msg = "[nvim-chainsaw] requires a `.setup()` call before being used."
+			require("chainsaw.utils").warn(msg)
+			return function() end -- prevent call-attempt error
+		end
 		local function dotRepeatable(motion, ...)
 			if not motion and vim.fn.mode() == "n" then
 				vim.o.operatorfunc = "v:lua.require'chainsaw'." .. key

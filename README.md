@@ -76,6 +76,9 @@ use {
 }
 ```
 
+Note that the `.setup()` call (or `lazy.nvim`'s `opts`) is required, even if
+called without options.
+
 ## Built-in language support
 - JavaScript/TypeScript (and supersets)
 - Python
