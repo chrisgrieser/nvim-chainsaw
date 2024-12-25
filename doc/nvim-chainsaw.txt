@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 18
+*nvim-chainsaw.txt*          For Neovim          Last change: 2024 December 25
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -32,7 +32,7 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
 - |nvim-chainsaw-usage|
     - |nvim-chainsaw-list-of-commands|
     - |nvim-chainsaw-smart-variable-detection|
-    - |nvim-chainsaw-smart-insertion-locations|
+    - |nvim-chainsaw-smart-insertion-location|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-basic-configuration|
     - |nvim-chainsaw-customize-log-statements|
@@ -71,7 +71,7 @@ INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
 **Requirements** - nvim 0.10 or higher. - Recommended: Treesitter parser for
 the respective languages to enable
 |nvim-chainsaw-smart-variable-identification| and
-|nvim-chainsaw-smart-insertion-locations|.
+|nvim-chainsaw-smart-insertion-location|.
 
 >lua
     -- lazy.nvim
@@ -197,7 +197,7 @@ PRs adding support for more languages are welcome. See smart-var-detect.lua
 <./lua/chainsaw/config/smart-var-detect.lua>.
 
 
-SMART INSERTION LOCATIONS ~
+SMART INSERTION LOCATION ~
 
 `chainsaw` by default inserts the log statement below the cursor. The insertion
 location is automatically adapted if doing would result in invalid code. (Note
