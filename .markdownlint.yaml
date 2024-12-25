@@ -8,7 +8,7 @@ blanks-around-headings:
 ul-style: { style: sublist }
 
 # not autofixable
-ol-prefix: { style: ordered } 
+ol-prefix: { style: ordered }
 line-length:
   tables: false
   code_blocks: false
