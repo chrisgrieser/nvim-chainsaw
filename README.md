@@ -18,7 +18,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Usage](#usage)
 	* [List of commands](#list-of-commands)
 	* [Smart variable detection](#smart-variable-detection)
-	* [Smart insertion locations](#smart-insertion-locations)
+	* [Smart insertion location](#smart-insertion-location)
 - [Configuration](#configuration)
 	* [Basic configuration](#basic-configuration)
 	* [Customize log statements](#customize-log-statements)
@@ -56,8 +56,8 @@ Quick and feature-rich insertion of various kinds of log statements.
 **Requirements**
 - nvim 0.10 or higher.
 - Recommended: Treesitter parser for the respective languages to enable [smart
-  variable identification](#smart-variable-identification) and [smart insertion
-  locations](#smart-insertion-locations).
+  variable identification](#smart-variable-detection) and [smart insertion
+  location](#smart-insertion-location).
 
 ```lua
 -- lazy.nvim
@@ -185,7 +185,7 @@ Filetypes currently supporting this feature:
 PRs adding support for more languages are welcome. See
 [smart-var-detect.lua](./lua/chainsaw/config/smart-var-detect.lua).
 
-### Smart insertion locations
+### Smart insertion location
 `chainsaw` by default inserts the log statement below the cursor. The insertion
 location is automatically adapted if doing would result in invalid code. (Note
 that this feature requires the Treesitter parser of the respective language.)
@@ -285,7 +285,6 @@ require("chainsaw").setup {
 	supersets = require("chainsaw.config.log-statements-data").supersets,
 }
 ```
-
 
 ### Customize log statements
 New log statements can be added, and existing log statements can be modified
