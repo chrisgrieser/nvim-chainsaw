@@ -8,4 +8,3 @@ end, {
 		return vim.tbl_filter(function(cmd) return cmd:lower():find(query) end, cmds)
 	end,
 })
-
