@@ -110,7 +110,7 @@ M.logStatements = {
 		python = 'print(f"#{{index}} {{marker}}: {round(time.perf_counter() - timelog_start_{{index}}, 3)}s")',
 		javascript = "console.log(`#{{index}} {{marker}}: ${(Date.now() - timelogStart{{index}}) / 1000}s`);",
 		typescript = 'console.timeEnd("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
-		sh = 'echo "#{{index}} $(($(date +%{{marker}}) - timelog_start_{{index}}))s" >&2',
+		sh = 'echo "#{{index}} {{marker}} $(($(date +%s) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 	},
