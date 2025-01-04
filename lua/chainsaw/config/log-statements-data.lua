@@ -36,7 +36,7 @@ M.logStatements = {
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}}"',
 		typescript = 'console.assert({{var}}, "{{marker}} {{var}}");',
-		rust = 'assert!({{var}}, "{} {}", "{marker}", "{var}");'
+		rust = 'assert!({{var}}, "{} {}", "{{marker}}", "{{var}}");'
 	},
 	typeLog = {
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
@@ -54,7 +54,7 @@ M.logStatements = {
 		applescript = 'log "{{marker}} {{emoji}}"',
 		ruby = 'puts "{{marker}} {{emoji}}"',
 		go = 'fmt.Println("{{marker}} {{emoji}}")',
-		rust = 'println!("{} {}", "{marker}", "{emoji}");'
+		rust = 'println!("{} {}", "{{marker}}", "{{emoji}}");'
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
 		sh = 'printf "\\a" # {{marker}}',
