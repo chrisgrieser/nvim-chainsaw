@@ -1,6 +1,5 @@
 --------------------------------------------------------------------------------
--- INFO
--- 1. The strings may not include linebreaks. If you want to use multi-line log
+-- INFO 1. The strings may not include linebreaks. If you want to use multi-line log
 -- statements, use a list of strings instead, each string representing one line.
 -- 2. Use `{{placerholder}}` to insert vars, marker, etc.
 -- 3. See `superset-inheritance.lua` for superset-languages.
@@ -30,11 +29,13 @@ M.logStatements = {
 		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}, null, 2))', -- `2` ensures it's pretty-printed
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
+		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
 	},
 	assertLog = {
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}}"',
 		typescript = 'console.assert({{var}}, "{{marker}} {{var}}");',
+		rust = 'assert!({{var}}, "{} {}", "{{marker}}", "{{var}}");',
 	},
 	typeLog = {
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
@@ -52,6 +53,7 @@ M.logStatements = {
 		applescript = 'log "{{marker}} {{emoji}}"',
 		ruby = 'puts "{{marker}} {{emoji}}"',
 		go = 'fmt.Println("{{marker}} {{emoji}}")',
+		rust = 'println!("{} {}", "{{marker}}", "{{emoji}}");',
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
 		sh = 'printf "\\a" # {{marker}}',
@@ -89,6 +91,7 @@ M.logStatements = {
 			"set -exuo pipefail # {{marker}}", -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 			"set +exuo pipefail # {{marker}}", -- re-enable, so it does not disturb stuff from interactive shell
 		},
+		rust = "dbg!(&{{var}}); // {{marker}}",
 	},
 	clearLog = {
 		javascript = "console.clear(); // {{marker}}",
@@ -103,6 +106,7 @@ M.logStatements = {
 		sh = "timelog_start_{{index}}=$(date +%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
+		rust = "let timelog_start_{{index}} = std::time::Instant::now(); // {{marker}}",
 	},
 	timeLogStop = {
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
@@ -113,6 +117,7 @@ M.logStatements = {
 		sh = 'echo "#{{index}} {{marker}} $(($(date +%s) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
+		rust = 'println!("{} #{}: {}", "{{marker}}", "{{index}}", timelog_start_{{index}}.elapsed().as_millis());',
 	},
 }
 
