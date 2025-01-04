@@ -106,7 +106,7 @@ M.logStatements = {
 		sh = "timelog_start_{{index}}=$(date +%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
-		rust = "let timelog_start = std::time::Instant::now();",
+		rust = "let timelog_start_{{index}} = std::time::Instant::now(); // {{marker}}",
 	},
 	timeLogStop = {
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
@@ -117,7 +117,7 @@ M.logStatements = {
 		sh = 'echo "#{{index}} {{marker}} $(($(date +%s) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
-		rust = 'println!("{}", timelog_start.elapsed().as_millis());',
+		rust = 'println!("{} #{}: {}", "{{marker}}", "{{index}}", timelog_start_{{index}}.elapsed().as_millis());',
 	},
 }
 
