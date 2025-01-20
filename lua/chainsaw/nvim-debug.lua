@@ -95,6 +95,12 @@ function _G.Chainsaw(varValue)
 		opts.on_close = function() prevNotif.isOpen = false end
 	end
 
-	local notif = vim.notify(msg, level, opts) or { id = -1 } --[[@as { id: number }]]
-	prevNotif.id, prevNotif.title, prevNotif.msg = notif.id, title, msg
+	local notif = vim.notify(msg, level, opts) --[[@as { id: number }]]
+	-- in certain race conditions related to plugin load order, still uses
+	-- nvim-core's `vim.notify` which does not return anything, thus need to fall
+	-- back to id of `-1`
+	prevNotif.id = type(notif) == "table" and notif.id or -1
+
+	prevNotif.title = title
+	prevNotif.msg = msg
 end
