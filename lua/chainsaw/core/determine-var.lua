@@ -16,21 +16,29 @@ function M.getVar()
 		return text
 	end
 
-	-- nvim prior to v0.9 OR no node under cursor -> return cword
-	local parserExists, node = pcall(vim.treesitter.get_node)
-	if not node or not parserExists then return vim.fn.expand("<cword>") end
+	-- cursor-word
+	-- (extended with `.` to try to include the correct variable in most languages)
+	local previousOpt = vim.opt.iskeyword:get()
+	vim.opt.iskeyword:append(".")
+	local cword = vim.fn.expand("<cword>")
+	vim.opt.iskeyword = previousOpt
 
-	-- smart variable detection
+	-- smart variable detection, fallback to cword if
+	-- * filetype has no configuration for it
+	-- * no treesitter parser or no node under cursor
+	-- * node is has line breaks
+	local parserExists, node = pcall(vim.treesitter.get_node)
+	if not node or not parserExists then return cword end
+
 	local ft = require("chainsaw.utils").getFiletype()
 	local detectorFunc = require("chainsaw.config.smart-var-detect").ftConfig[ft]
+	if not detectorFunc then return cword end
+
 	if detectorFunc then node = detectorFunc(node) end
+	if not node then return cword end
 
-	-- fallback to cword if node has no parent
-	if not node then return vim.fn.expand("<cword>") end
-
-	-- fallback to cword if node multiline
 	local nodeText = vim.treesitter.get_node_text(node, 0)
-	if nodeText:find("[\r\n]") then return vim.fn.expand("<cword>") end
+	if nodeText:find("[\r\n]") then return cword end
 
 	return nodeText
 end
