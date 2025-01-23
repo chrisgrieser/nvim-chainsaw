@@ -18,8 +18,17 @@ M.ftConfig = {
 		return node
 	end,
 	python = function(node)
-		local cursorOnField = node:type():find("^string_") and node:parent()
+		local cursorOnField = node:type():find("^string_")
+			and node:parent()
+			and node:parent():parent()
+			and node:parent():parent():type() == "subscript"
 		if cursorOnField then node = node:parent():parent() end
+
+		local cursorOnAttribute = node
+			and node:type() == "identifier"
+			and node:parent()
+			and node:parent():type() == "attribute"
+		if cursorOnAttribute and node then node = node:parent() end
 		return node
 	end,
 	javascript = function(node)
