@@ -2,30 +2,25 @@ local M = {}
 local u = require("chainsaw.utils")
 --------------------------------------------------------------------------------
 
----Most reliable way seems to be to get the indent of the line *after* the
----cursor. If that line is a blank, we look further down. If the next line has
----less indentation than the current line, it is the end of an indentation and
----we return the current indentation instead.
+---Determines the ideal indent for a new line after `startLnum` by leveraging
+---Vim's built-in indentation rules. This is done by simulating the 'o' command
+---to create a new line, capturing the auto-generated indent, then cleaning up
+---the temporary line. Avoids manual calculations by relying on editor behavior.
 ---@param startLnum number
 ---@return string -- the indent as string
 ---@nodiscard
 local function determineIndent(startLnum)
-	local function getLine(lnum) return vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] end
-	local function isBlank(lnum) return getLine(lnum):find("^%s*$") ~= nil end
-
-	local lastLnumInBuf = vim.api.nvim_buf_line_count(0)
-	local currentIndent = getLine(startLnum):match("^%s*")
-
-	if startLnum == lastLnumInBuf then return currentIndent end
-	local lnum = startLnum
-	repeat
-		lnum = lnum + 1
-	until lnum >= lastLnumInBuf or not isBlank(lnum)
-
-	local nextLineIndent = getLine(lnum):match("^%s*")
-	local lineIsEndOfIndentation = #nextLineIndent < #currentIndent
-	if lineIsEndOfIndentation then return currentIndent end
-	return nextLineIndent
+	local origin = vim.o.eventignore
+	vim.o.eventignore = "all"
+	vim.api.nvim_win_set_cursor(0, { startLnum, 0 })
+	-- simulate "o" to get the ideal indentation, we have to
+	-- input an extra char ("a") here otherewise indent is 0.
+	vim.api.nvim_feedkeys("oa", "nix", true)
+	local indent = vim.api.nvim_get_current_line():match("^%s*")
+	-- remove the fake line
+	vim.api.nvim_buf_set_lines(0, startLnum, startLnum + 1, false, {})
+	vim.o.eventignore = origin
+	return indent
 end
 
 ---@param logType string
