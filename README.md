@@ -54,10 +54,8 @@ Quick and feature-rich insertion of various kinds of log statements.
 
 ## Installation
 **Requirements**
-- nvim 0.10 or higher.
-- Recommended: Treesitter parser for the respective languages to enable [smart
-  variable identification](#smart-variable-detection) and [smart insertion
-  location](#smart-insertion-location).
+- nvim 0.10+
+- Treesitter parser for the languages you with this plugin
 
 ```lua
 -- lazy.nvim
@@ -94,12 +92,11 @@ Not every language supports every type of log statement. For the concrete
 statements used, see
 [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
-[^1]: `variableLog` for `nvim_lua` uses a log statement that inspects objects
-	and is designed to work with various notification plugins like
-	`nvim-notify`, `snacks.nvim`, or `noice.nvim`. If using `snacks.nvim`, lua
-	syntax highlighting is added as well.
+[^1]: `nvim_lua` uses log statements that inspect objects and is designed to
+	work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
+	`noice.nvim`.
 [^2]: Uses statements such as `outline: 2px solid red !important;` that are the
-	somewhat similar logging.
+	 somewhat similar logging.
 [^3]: The packages `fmt` and `time` need to be imported manually.
 
 ## Usage
