@@ -43,6 +43,15 @@ M.ftConfig = {
 			local assignmentExtraLines = parent:end_() - parent:start()
 			return assignmentExtraLines
 		end
+
+		-- multiline function parameter, see #28
+		local isFunctionParam = vim.endswith(parent:type(), "parameter")
+		local paramList = parent:parent()
+		if isFunctionParam and paramList then
+			local paramLnum = parent:start()
+			local paramExtraLines = paramList:end_() - paramLnum
+			return paramExtraLines
+		end
 	end,
 }
 
