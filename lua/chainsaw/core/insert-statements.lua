@@ -153,11 +153,13 @@ function M.insert(logType, logtypeSpecific)
 	-- INSERT LINES
 	local ln, col = unpack(vim.api.nvim_win_get_cursor(0))
 	ln = ln + shiftInInsertLocation()
-	assert(ln > vim.api.nvim_buf_line_count(0), "Insert location is past the end of the buffer.")
+	assert(ln <= vim.api.nvim_buf_line_count(0), "Insert location is past the end of the buffer.")
 	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
-		require("chainsaw.visuals.styling").addStylingToLine(ln)
+		if line:find(marker, nil, true) then
+			require("chainsaw.visuals.styling").addStylingToLine(ln)
+		end
 		ln = ln + 1
 	end
 	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line
