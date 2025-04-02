@@ -12,6 +12,7 @@ local defaultConfig = {
 	visuals = {
 		icon = "󰹈", -- as opposed to marker only used in nvim, thus nerdfont icons are okay
 		signHlgroup = "DiagnosticSignInfo",
+		signPriority = 50,
 		lineHlgroup = false,
 
 		nvimSatelliteIntegration = {

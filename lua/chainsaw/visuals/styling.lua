@@ -15,6 +15,7 @@ function M.addStylingToLine(ln)
 		sign_hl_group = signHlgroup,
 		invalidate = true, -- deletes the extmark if the line is deleted
 		undo_restore = true, -- makes undo restore those
+		priority = c.signPriority or 50,
 	})
 end
 

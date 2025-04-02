@@ -45,7 +45,7 @@ Quick and feature-rich insertion of various kinds of log statements.
   clear the console.
 - Flexible templating options for customizing log statements, including support
   for multi-line templates.
-- Statusline component to display the count of log statements in the current
+- Status line component to display the count of log statements in the current
   buffer. Visual indication of log statements via line-highlights, signcolumn,
   or scrollbar (when using
   [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
@@ -232,6 +232,7 @@ require("chainsaw").setup {
 		icon = "󰹈", -- as opposed to marker only used in nvim, thus nerdfont icons are okay
 		signHlgroup = "DiagnosticSignInfo",
 		lineHlgroup = false,
+		signPriority = 50,
 
 		nvimSatelliteIntegration = {
 			enabled = true,
@@ -438,7 +439,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | insertation location                              | below, treesitter-based adjustments for some languages                                                 | below, above                                                              | below, above, surround, operator, treesitter-based adjustments  |
 | variable detection                                | word under cursor, visual selection, treesitter-based selection                                        | word under cursor, operator, visual selection, treesitter-based selection | word under cursor, visual selection, treesitter-based selection |
 | dot-repeatability                                 | ✅                                                                                                      | ✅                                                                         | ✅                                                               |
-| visual emphasis of log statements                 | signcolumn, line-highlight, statusline, scrollbar                                                      | ❌                                                                         | flash on inserting statement                                    |
+| visual emphasis of log statements                 | signcolumn, line-highlight, status line, scrollbar                                                      | ❌                                                                         | flash on inserting statement                                    |
 | extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                      | ❌                                                                         | ❌                                                               |
 | log file watcher                                  | ❌                                                                                                      | ❌                                                                         | ✅                                                               |
 | maintainability / efficiency                      | ~1000 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
