@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*           For Neovim          Last change: 2025 January 30
+*nvim-chainsaw.txt*            For Neovim           Last change: 2025 April 02
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -58,7 +58,7 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
     clear the console.
 - Flexible templating options for customizing log statements, including support
     for multi-line templates.
-- Statusline component to display the count of log statements in the current
+- Status line component to display the count of log statements in the current
     buffer. Visual indication of log statements via line-highlights, signcolumn,
     or scrollbar (when using
     satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
@@ -248,6 +248,7 @@ BASIC CONFIGURATION ~
             icon = "󰹈", -- as opposed to marker only used in nvim, thus nerdfont icons are okay
             signHlgroup = "DiagnosticSignInfo",
             lineHlgroup = false,
+            signPriority = 50,
     
             nvimSatelliteIntegration = {
                 enabled = true,
@@ -489,8 +490,8 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
   dot-repeatability                                                
 
   visualemphasis of   signcolumn,                                  flashon inserting
-  log statements      line-highlight,                              statement
-                      statusline, scrollbar                        
+  log statements      line-highlight, status                       statement
+                      line, scrollbar                              
 
   extra features for  separate configuration,                      
   nvim_lua            availability of global                       
