@@ -24,12 +24,14 @@ M.logStatements = {
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
+		swift = 'print("{{marker}} {{var}}, {{var}}")',
 	},
 	objectLog = {
 		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}, null, 2))', -- `2` ensures it's pretty-printed
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
+		swift = 'print("{{marker}} {{var}}, {{var}}")', -- automatically pretty-prints object
 	},
 	assertLog = {
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
@@ -54,6 +56,7 @@ M.logStatements = {
 		ruby = 'puts "{{marker}} {{emoji}}"',
 		go = 'fmt.Println("{{marker}} {{emoji}}")',
 		rust = 'println!("{} {}", "{{marker}}", "{{emoji}}");',
+		swift = 'print("{{marker}} {{emoji}}")',
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
 		sh = 'printf "\\a" # {{marker}}',
@@ -75,6 +78,7 @@ M.logStatements = {
 		rust = 'println!("{} ", "{{marker}}");',
 		ruby = 'puts "{{marker}} "',
 		go = 'fmt.Println("{{marker}} ")',
+		swift = 'print("{{marker}} ")',
 	},
 	stacktraceLog = {
 		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"

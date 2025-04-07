@@ -87,6 +87,7 @@ called without options.
 - Rust
 - CSS[^2] (and supersets)
 - Go[^3]
+- Swift
 
 Not every language supports every type of log statement. For the concrete
 statements used, see
