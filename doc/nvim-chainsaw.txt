@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*            For Neovim           Last change: 2025 April 02
+*nvim-chainsaw.txt*            For Neovim           Last change: 2025 April 07
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -103,6 +103,7 @@ BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support
 - Rust
 - CSS (and supersets)
 - Go
+- Swift
 
 Not every language supports every type of log statement. For the concrete
 statements used, see log-statements-data.lua
