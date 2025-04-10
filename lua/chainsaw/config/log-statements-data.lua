@@ -24,7 +24,7 @@ M.logStatements = {
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
-		swift = 'print("{{marker}} {{var}}, {{var}}")',
+		swift = 'print("{{marker}} {{var}}:", {{var}})',
 	},
 	objectLog = {
 		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}, null, 2))', -- `2` ensures it's pretty-printed
