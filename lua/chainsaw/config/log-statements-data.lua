@@ -31,7 +31,7 @@ M.logStatements = {
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
-		swift = 'print("{{marker}} {{var}}, {{var}}")', -- automatically pretty-prints object
+		swift = "dump({{var}}, maxItems: 10)  // {{marker}}",
 	},
 	assertLog = {
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
