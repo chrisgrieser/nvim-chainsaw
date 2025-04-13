@@ -1,4 +1,6 @@
 local M = {}
+
+local u = require("chainsaw.utils")
 -------------------------------------------------------------------------------
 
 ---@param path string
@@ -19,7 +21,8 @@ function M.install()
 
 	-- GUARD not in a git repo
 	local gitRoot = vim.fs.root(0, ".git")
-	if not gitRoot then return end
+	local isInGitRepo = vim.system({ "git", "rev-parse", "--is-inside-work-tree" }):wait().code == 0
+	if not gitRoot or not isInGitRepo then return end
 
 	-- GUARD already installed
 	local hookPath = vim.fs.normalize(gitRoot .. "/" .. config.preCommitHook.hookPath)
@@ -44,7 +47,7 @@ function M.install()
 	end)
 	if ignored then return end
 
-	-- GUARD not in nvim config, since user can have customized `marker`
+	-- GUARD not in nvim config itself, since user can have customized `marker`
 	if config.preCommitHook.notInNvimConfigDir then
 		local nvimConfigPath = vim.fn.stdpath("config") --[[@as string]]
 		local isInNvimConfig = vim.startswith(vim.api.nvim_buf_get_name(0), nvimConfigPath)
@@ -56,7 +59,13 @@ function M.install()
 	-- setup hook
 	local hookContent = config.preCommitHook.hookContent:format(config.marker)
 
-	vim.system { "git", "config", "core.hooksPath", config.preCommitHook.hookPath }
+	local args = { "git", "config", "core.hooksPath", config.preCommitHook.hookPath }
+	local result = vim.system(args):wait()
+	if result.code ~= 0 then
+		u.warn("Could not install pre-commit hook: " .. result.stderr)
+		return
+	end
+
 	vim.fn.mkdir(hookPath, "p")
 
 	writeFile(vim.fs.normalize(hookPath .. "/.gitignore"), "*") -- gitignore the hook file
@@ -64,9 +73,7 @@ function M.install()
 	vim.fn.setfperm(hookFile, "rwxr-xr-x") -- make it executable (chmod 755)
 
 	-- notify
-	if config.preCommitHook.notifyOnInstall then
-		require("chainsaw.utils").info("Installed pre-commit hook.")
-	end
+	if config.preCommitHook.notifyOnInstall then u.info("Installed pre-commit hook.") end
 end
 
 --------------------------------------------------------------------------------
