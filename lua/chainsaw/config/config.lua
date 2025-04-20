@@ -10,7 +10,7 @@ local defaultConfig = {
 
 	-- Appearance of lines with the marker
 	visuals = {
-		icon = "󰹈", -- as opposed to marker only used in nvim, thus nerdfont icons are okay
+		icon = "󰹈", -- as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
 		signHlgroup = "DiagnosticSignInfo",
 		signPriority = 50,
 		lineHlgroup = false,
@@ -41,13 +41,13 @@ local defaultConfig = {
 			fi
 		]],
 
-		-- If you track your nvim-config via git, and use a custom marker, you
-		-- should add it to this list, since your config will then always include
-		-- a marker, thus always falsely triggering the pre-commit hook.
+		-- Relevant if you track your nvim-config via git and use a custom marker,
+		-- as your config will then always include the marker ans falsely trigger
+		-- the pre-commit hook.
 		notInNvimConfigDir = true,
 
-		-- List of directories where the hook should not be installed if they are
-		-- the git root. Supports globs and `~`. Must *fully* match the directory.
+		-- List of git roots where the hook should not be installed. Supports
+		-- globs and `~`. Must match the full directory.
 		dontInstallInDirs = {
 			-- "~/special-project"
 			-- "~/repos/**",
@@ -95,7 +95,7 @@ function M.setup(userConfig)
 		M.supersetInheritance(logType)
 	end
 
-	require("chainsaw.nvim-debug") -- actives `Chainsaw` global var
+	require("chainsaw.nvim-debug") -- activates `Chainsaw` global var
 
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION 2024-12-02
