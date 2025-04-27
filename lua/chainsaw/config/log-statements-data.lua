@@ -34,10 +34,12 @@ M.logStatements = {
 		swift = "dump({{var}}, maxItems: 10)  // {{marker}}",
 	},
 	assertLog = {
+		javascript = 'if (!{{var}}) throw new Error("{{marker}} {{var}}");', -- no native assert in JS
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}}"',
 		typescript = 'console.assert({{var}}, "{{marker}} {{var}}");',
 		rust = 'assert!({{var}}, "{} {}", "{{marker}}", "{{var}}");',
+		swift = 'assert({{var}} != nil, "{{marker}} {{var}}")',
 	},
 	typeLog = {
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
@@ -45,6 +47,7 @@ M.logStatements = {
 		javascript = 'console.log("{{marker}} {{var}}: type is " + typeof {{var}})',
 		python = 'print(f"{{marker}} {{var}}: type is {type({{var}})}")',
 		go = 'fmt.Println("{{marker}} {{var}}: type is", fmt.Sprintf("%T", {{var}}))',
+		swift = 'print("{{marker}} {{var}}: type is \\(type(of: {{var}}))")',
 	},
 	emojiLog = {
 		lua = 'print("{{marker}} {{emoji}}")',
@@ -60,7 +63,8 @@ M.logStatements = {
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
 		sh = 'printf "\\a" # {{marker}}',
-		python = 'print("\\a")  # {{marker}}', -- python formatters expect 2 spaces before `#`
+		python = 'print("\\a")  # {{marker}}',
+		swift = 'print("\\u{07}")',
 		applescript = "beep -- {{marker}}",
 		go = 'fmt.Println("\\a") // {{marker}}',
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
@@ -99,7 +103,7 @@ M.logStatements = {
 	},
 	clearLog = {
 		javascript = "console.clear(); // {{marker}}",
-		python = "clear()  # {{marker}}", -- python formatters expect 2 spaces before `#`
+		python = "clear()  # {{marker}}",
 		sh = "clear # {{marker}}",
 	},
 	timeLogStart = {
@@ -111,6 +115,7 @@ M.logStatements = {
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 		rust = "let timelog_start_{{index}} = std::time::Instant::now(); // {{marker}}",
+		swift = "let timelogStart{{index}} = Date() //  {{marker}}",
 	},
 	timeLogStop = {
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
@@ -122,6 +127,7 @@ M.logStatements = {
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 		rust = 'println!("{} #{}: {}", "{{marker}}", "{{index}}", timelog_start_{{index}}.elapsed().as_millis());',
+		swift = 'print("#{{index}} {{marker}}: \\(Date().timeIntervalSince(timelogStart{{index}}))")',
 	},
 }
 
