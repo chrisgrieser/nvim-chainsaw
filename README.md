@@ -39,15 +39,15 @@ Smart and highly customizable insertion of various kinds of log statements.
 - Commands for **a dozen different log statement types**, including assert
   statements, stack traces, or acoustic logging.
 - All commands are **dot-repeatable**.
-- **Built-in** support for ~20 languages. Easy configuration for additional
-  languages.
-- Flexible **templating** options for customizing log statements, including
-  support for multi-line templates.
+- [Built-in support for ~20 languages](#built-in-language-support). Easy
+  configuration for additional languages.
+- [Flexible templating options](#customize-log-statements-via-templates) for
+  customizing log statements, including support for multi-line templates.
 - Special support and utilities for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
   clear the console.
-- **Status line component** to display the count of log statements in the
-  current buffer. In addition, visual indication of log statements via
+- [Status line component](#status-line) to display the count of log statements
+  in the current buffer. In addition, visual indication of log statements via
   line-highlights, signcolumn, or scrollbar (when using
   [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
 - Auto-install a **pre-commit hook** that prevents committing files with the log
@@ -79,27 +79,28 @@ Note that the `.setup()` call (or `lazy.nvim`'s `opts`) is required, even if
 called without options.
 
 ## Built-in language support
-- JavaScript/TypeScript (and supersets)
+- JavaScript (+ Typescript, Svelte, React)
 - Python
-- Lua (with special considerations for `nvim-lua`[^1])
-- bash & zsh
+- Lua (+ special considerations for `nvim-lua`[^1])
+- bash, zsh, fish
 - AppleScript
 - Ruby
 - Rust
-- CSS[^2] (and supersets)
+- CSS[^2] (+ SCSS, SASS, LESS)
 - Go[^3]
 - Swift
 
-Not every language supports every type of log statement. For the concrete
-statements used, see
-[log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
+> [!NOTE]
+> Not every language supports every type of log statement. For the statements
+> used, see
+> [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
 [^1]: `nvim_lua` uses log statements that inspect objects and is designed to
 	work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
 	`noice.nvim`.
 [^2]: Uses statements such as `outline: 2px solid red !important;` that are the
 	 somewhat similar logging.
-[^3]: The packages `fmt` and `time` need to be imported manually.
+[^3]: The `fmt` package needs to be imported manually.
 
 ## Usage
 
@@ -195,16 +196,19 @@ that this feature requires the Treesitter parser of the respective language.)
 ```lua
 -- [] marks the cursor position
 
--- default case: will insert the log statement below the cursor
+-- default behavior
 local f[o]obar = 1
+-- will insert log statement here, below the cursor line
 
--- multi-line assignments: will insert log statement below the `}` line
+-- multi-line assignments
 local f[o]o = {
 	bar = 1
 }
+-- will insert log statement, here after the assignment
 
--- returns: will insert log statement above the `return` line
+-- returns statements
 local function foobar()
+	-- will insert log statement here, before the return
 	return f[o]o
 end
 ```
@@ -224,9 +228,9 @@ The `setup()` call is required.
 ```lua
 -- default settings
 require("chainsaw").setup {
-	-- The marker should be a unique string, since signs and highlgiths are based
-	-- on it and since `.removeLogs()` will remove any line with it. Thus, emojis
-	-- or unique strings like "[Chainsaw]" are recommended.
+	-- The marker should be a unique string, since signs and highlights are based
+	-- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
+	-- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
 	marker = "🪚",
 
 	-- Appearance of lines with the marker
@@ -263,7 +267,7 @@ require("chainsaw").setup {
 		]],
 
 		-- Relevant if you track your nvim-config via git and use a custom marker,
-		-- as your config will then always include the marker ans falsely trigger
+		-- as your config will then always include the marker and falsely trigger
 		-- the pre-commit hook.
 		notInNvimConfigDir = true,
 
@@ -316,9 +320,9 @@ require("chainsaw").setup ({
 	logStatements = {
 		variableLog = {
 			javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
-			otherFiletype = … -- <-- add the statement for your filetype here
+			yourFiletype = "", -- <-- add the statement for your filetype here
 		},
-		-- the same way for the other log statement operations
+		-- the same for the other log statement operations
 	},
 })
 ```

@@ -3,9 +3,9 @@ local M = {}
 
 ---@class Chainsaw.config
 local defaultConfig = {
-	-- The marker should be a unique string, since signs and highlgiths are based
-	-- on it and since `.removeLogs()` will remove any line with it. Thus, emojis
-	-- or unique strings like "[Chainsaw]" are recommended.
+	-- The marker should be a unique string, since signs and highlights are based
+	-- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
+	-- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
 	marker = "🪚",
 
 	-- Appearance of lines with the marker
@@ -42,7 +42,7 @@ local defaultConfig = {
 		]],
 
 		-- Relevant if you track your nvim-config via git and use a custom marker,
-		-- as your config will then always include the marker ans falsely trigger
+		-- as your config will then always include the marker and falsely trigger
 		-- the pre-commit hook.
 		notInNvimConfigDir = true,
 
