@@ -4,7 +4,7 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
-Quick and feature-rich insertion of various kinds of log statements.
+Smart and highly customizable insertion of various kinds of log statements.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
@@ -21,7 +21,7 @@ Quick and feature-rich insertion of various kinds of log statements.
 	* [Smart insertion location](#smart-insertion-location)
 - [Configuration](#configuration)
 	* [Basic configuration](#basic-configuration)
-	* [Customize log statements](#customize-log-statements)
+	* [Customize log statements via templates](#customize-log-statements-via-templates)
 	* [The global pretty-logging function `Chainsaw()`](#the-global-pretty-logging-function-chainsaw)
 	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
 	* [Status line](#status-line)
@@ -36,20 +36,21 @@ Quick and feature-rich insertion of various kinds of log statements.
 - [Smart detection of the variable under the cursor](#smart-variable-detection)
   and the [correct insertion location of the log
   statement](#smart-insertion-location) via Treesitter.
-- Commands for a dozen different log statement types, including assert
-  statements, stack traces, or acoustic logging. All commands are
-  dot-repeatable.
-- Built-in support for ~20 common languages, with dedicated support for
-  `nvim-lua`. Easy configuration for additional languages.
+- Commands for **a dozen different log statement types**, including assert
+  statements, stack traces, or acoustic logging.
+- All commands are **dot-repeatable**.
+- **Built-in** support for ~20 languages. Easy configuration for additional
+  languages.
+- Flexible **templating** options for customizing log statements, including
+  support for multi-line templates.
+- Special support and utilities for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
   clear the console.
-- Flexible templating options for customizing log statements, including support
-  for multi-line templates.
-- Status line component to display the count of log statements in the current
-  buffer. Visual indication of log statements via line-highlights, signcolumn,
-  or scrollbar (when using
+- **Status line component** to display the count of log statements in the
+  current buffer. In addition, visual indication of log statements via
+  line-highlights, signcolumn, or scrollbar (when using
   [satellite.nvim](https://github.com/lewis6991/satellite.nvim)).
-- Auto-install a pre-commit hook that prevents committing files with the log
+- Auto-install a **pre-commit hook** that prevents committing files with the log
   statements created by `nvim-chainsaw` (opt-in).
 
 ## Installation
@@ -288,7 +289,7 @@ require("chainsaw").setup {
 }
 ```
 
-### Customize log statements
+### Customize log statements via templates
 New log statements can be added, and existing log statements can be modified
 under the config `logStatements`. See
 [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua) for
@@ -303,6 +304,9 @@ There are various **placeholders** that are dynamically replaced:
   `.timeLog()` instead)
 - `{{filename}}`: basename of the current file
 - `{{lnum}}`: current line number
+- `{{insert}}`: will enter insert mode at this location; by default used in
+  `assertLog` and `messageLog`. (For multi-line statements only works on the
+  last line.)
 - `.emojiLog()` only: `{{emoji}}` inserts the emoji
 - `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
   differentiate between variables when using `timeLog` multiple times).

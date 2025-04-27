@@ -141,6 +141,7 @@ function M.insert(logType, logtypeSpecific)
 				if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
 				return logtypeSpecific
 			end
+			if placeholder == "{{insert}}" then return end -- just to avoid error
 			errorMsg = "Unknown placeholder: " .. placeholder
 		end)
 		return line
@@ -163,6 +164,16 @@ function M.insert(logType, logtypeSpecific)
 		ln = ln + 1
 	end
 	vim.api.nvim_win_set_cursor(0, { ln, col }) -- move to last inserted line
+
+	-- Handle `{{insert}}` in the last line
+	local curLine = vim.api.nvim_get_current_line()
+	local insertStart, insertEnd = curLine:find("{{insert}}")
+	if insertStart and insertEnd then
+		local updatedLine = curLine:sub(1, insertStart - 1) .. curLine:sub(insertEnd + 1)
+		vim.api.nvim_set_current_line(updatedLine)
+		vim.api.nvim_win_set_cursor(0, { ln, insertStart - 1 })
+		vim.schedule(vim.cmd.startinsert)
+	end
 
 	require("chainsaw.pre-commit-hook").install()
 	return true

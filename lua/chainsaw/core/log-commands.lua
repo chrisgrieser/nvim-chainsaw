@@ -1,18 +1,5 @@
 local insertStatements = require("chainsaw.core.insert-statements").insert
 
----@return boolean success
-local function moveCursorToQuotes()
-	local lnum = vim.api.nvim_win_get_cursor(0)[1]
-	local curLine = vim.api.nvim_get_current_line()
-	local _, _end = curLine:find([[".*"]])
-	if not _end then
-		_, _end = curLine:find([['.*']])
-	end
-	if not _end then return false end
-	vim.api.nvim_win_set_cursor(0, { lnum, _end - 1 })
-	return true
-end
-
 --------------------------------------------------------------------------------
 
 -- not using metatable-__index, as the logtype-names are needed for suggestions
@@ -25,13 +12,9 @@ local M = {
 	debugLog = insertStatements,
 	clearLog = insertStatements,
 	sound = insertStatements,
+	assertLog = insertStatements,
+	messageLog = insertStatements,
 }
-
-function M.assertLog()
-	local success = insertStatements()
-	if not success then return end
-	moveCursorToQuotes() -- easier to edit assertion msg
-end
 
 function M.emojiLog()
 	local conf = require("chainsaw.config.config").config.logTypes.emojiLog
@@ -52,15 +35,6 @@ function M.emojiLog()
 		if count < emojiToUse.count then emojiToUse = { emoji = emoji, count = count } end
 	end
 	insertStatements(nil, emojiToUse.emoji)
-end
-
-function M.messageLog()
-	local success = insertStatements()
-	if not success then return end
-
-	-- goto insert mode at correct location to enter message
-	success = moveCursorToQuotes()
-	if success then vim.defer_fn(vim.cmd.startinsert, 1) end
 end
 
 function M.timeLog()
