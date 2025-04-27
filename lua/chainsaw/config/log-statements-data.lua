@@ -14,22 +14,22 @@ local M = {}
 ---@type logStatementData
 M.logStatements = {
 	variableLog = {
-		nvim_lua = 'vim.notify(vim.inspect({{var}}), nil, { title = "{{marker}} {{var}}", ft = "lua" })',
-		lua = 'print("{{marker}} {{var}}: " .. tostring({{var}}))',
-		python = 'print(f"{{marker}} { {{var}} = }")',
-		javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
-		sh = 'echo "{{marker}} {{var}}: ${{var}}" >&2', -- `>&2` sends to stderr only
 		applescript = 'log "{{marker}} {{var}}:" & {{var}}',
 		css = "outline: 2px solid red !important; /* {{marker}} */",
-		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
-		ruby = 'puts "{{marker}} {{var}}: #{{{var}}}"',
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
+		javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
+		lua = 'print("{{marker}} {{var}}: " .. tostring({{var}}))',
+		nvim_lua = 'vim.notify(vim.inspect({{var}}), nil, { title = "{{marker}} {{var}}", ft = "lua" })',
+		python = 'print(f"{{marker}} { {{var}} = }")',
+		ruby = 'puts "{{marker}} {{var}}: #{{{var}}}"',
+		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
+		sh = 'echo "{{marker}} {{var}}: ${{var}}" >&2', -- `>&2` sends to stderr only
 		swift = 'print("{{marker}} {{var}}:", {{var}})',
 	},
 	objectLog = {
+		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 		javascript = 'console.log("{{marker}} {{var}}:", JSON.stringify({{var}}, null, 2))', -- `2` ensures it's pretty-printed
 		ruby = 'puts "{{marker}} {{var}}: #{{{var}}.inspect}"',
-		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 		rust = 'println!("{} {}: {:?}", "{{marker}}", "{{var}}", {{var}});',
 		swift = "dump({{var}}, maxItems: 10)  // {{marker}}",
 	},
@@ -37,69 +37,69 @@ M.logStatements = {
 		javascript = 'if (!{{var}}) throw new Error("{{marker}} {{var}}");', -- no native assert in JS
 		lua = 'assert({{var}}, "{{marker}} {{var}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}}"',
-		typescript = 'console.assert({{var}}, "{{marker}} {{var}}");',
 		rust = 'assert!({{var}}, "{} {}", "{{marker}}", "{{var}}");',
 		swift = 'assert({{var}} != nil, "{{marker}} {{var}}")',
+		typescript = 'console.assert({{var}}, "{{marker}} {{var}}");',
 	},
 	typeLog = {
+		go = 'fmt.Println("{{marker}} {{var}}: type is", fmt.Sprintf("%T", {{var}}))',
+		javascript = 'console.log("{{marker}} {{var}}: type is " + typeof {{var}})',
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
 		nvim_lua = 'vim.notify("{{marker}} {{var}}: type is " .. type({{var}}))',
-		javascript = 'console.log("{{marker}} {{var}}: type is " + typeof {{var}})',
 		python = 'print(f"{{marker}} {{var}}: type is {type({{var}})}")',
-		go = 'fmt.Println("{{marker}} {{var}}: type is", fmt.Sprintf("%T", {{var}}))',
 		swift = 'print("{{marker}} {{var}}: type is \\(type(of: {{var}}))")',
 	},
 	emojiLog = {
+		applescript = 'log "{{marker}} {{emoji}}"',
+		go = 'fmt.Println("{{marker}} {{emoji}}")',
+		javascript = 'console.log("{{marker}} {{emoji}}");',
 		lua = 'print("{{marker}} {{emoji}}")',
 		nvim_lua = 'vim.notify("{{marker}} {{emoji}}")',
 		python = 'print("{{marker}} {{emoji}}")',
-		javascript = 'console.log("{{marker}} {{emoji}}");',
-		sh = 'echo "{{marker}} {{emoji}}" >&2',
-		applescript = 'log "{{marker}} {{emoji}}"',
 		ruby = 'puts "{{marker}} {{emoji}}"',
-		go = 'fmt.Println("{{marker}} {{emoji}}")',
 		rust = 'println!("{} {}", "{{marker}}", "{{emoji}}");',
+		sh = 'echo "{{marker}} {{emoji}}" >&2',
 		swift = 'print("{{marker}} {{emoji}}")',
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
-		sh = 'printf "\\a" # {{marker}}',
-		python = 'print("\\a")  # {{marker}}',
-		swift = 'print("\\u{07}")',
 		applescript = "beep -- {{marker}}",
 		go = 'fmt.Println("\\a") // {{marker}}',
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
 		-- macOS only, since relying on `osascript`
 		lua = jit.os == "OSX" and [[os.execute("osascript -e 'beep'") -- {{marker}}]] or nil,
 		nvim_lua = jit.os == "OSX" and 'vim.system({"osascript", "-e", "beep"}) -- {{marker}}' or nil,
+		python = 'print("\\a")  # {{marker}}',
+		sh = 'printf "\\a" # {{marker}}',
+		swift = 'print("\\u{07}")',
 	},
 	messageLog = {
+		applescript = 'log "{{marker}} "',
+		go = 'fmt.Println("{{marker}} ")',
+		javascript = 'console.log("{{marker}} ");',
 		lua = 'print("{{marker}} ")',
 		nvim_lua = 'vim.notify("{{marker}} ")',
 		python = 'print("{{marker}} ")',
-		javascript = 'console.log("{{marker}} ");',
-		sh = 'echo "{{marker}} " >&2',
-		applescript = 'log "{{marker}} "',
-		rust = 'println!("{} ", "{{marker}}");',
 		ruby = 'puts "{{marker}} "',
-		go = 'fmt.Println("{{marker}} ")',
+		rust = 'println!("{} ", "{{marker}}");',
+		sh = 'echo "{{marker}} " >&2',
 		swift = 'print("{{marker}} ")',
 	},
 	stacktraceLog = {
-		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"
-		nvim_lua = 'vim.notify(debug.traceback("{{marker}}"))',
-		zsh = 'print "{{marker}} stacktrack: $funcfiletrace $funcstack"',
 		bash = "print '{{marker}} stacktrace: ' ; caller 0",
 		javascript = 'console.log("{{marker}} stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
+		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"
+		nvim_lua = 'vim.notify(debug.traceback("{{marker}}"))',
 		typescript = 'console.trace("{{marker}} stacktrace: ");',
+		zsh = 'print "{{marker}} stacktrack: $funcfiletrace $funcstack"',
 	},
 	debugLog = {
 		javascript = "debugger; // {{marker}}",
 		python = "breakpoint()  # {{marker}}",
+		rust = "dbg!(&{{var}}); // {{marker}}",
 		sh = {
 			"set -exuo pipefail # {{marker}}", -- https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 			"set +exuo pipefail # {{marker}}", -- re-enable, so it does not disturb stuff from interactive shell
 		},
-		rust = "dbg!(&{{var}}); // {{marker}}",
 	},
 	clearLog = {
 		javascript = "console.clear(); // {{marker}}",
@@ -107,27 +107,27 @@ M.logStatements = {
 		sh = "clear # {{marker}}",
 	},
 	timeLogStart = {
+		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
+		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
 		lua = "local timelogStart{{index}} = os.clock() -- {{marker}}",
 		python = "timelog_start_{{index}} = time.perf_counter()  # {{marker}}",
-		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
-		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
-		sh = "timelog_start_{{index}}=$(date +%s) # {{marker}}",
 		ruby = "timelog_start_{{index}} = Process.clock_gettime(Process::CLOCK_MONOTONIC) # {{marker}}",
-		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 		rust = "let timelog_start_{{index}} = std::time::Instant::now(); // {{marker}}",
+		sh = "timelog_start_{{index}}=$(date +%s) # {{marker}}",
 		swift = "let timelogStart{{index}} = Date() //  {{marker}}",
+		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 	},
 	timeLogStop = {
+		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
+		javascript = "console.log(`#{{index}} {{marker}}: ${(Date.now() - timelogStart{{index}}) / 1000}s`);",
 		lua = 'print(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
 		nvim_lua = 'vim.notify(("#{{index}} {{marker}}: %%.3fs"):format(os.clock() - timelogStart{{index}}))',
 		python = 'print(f"#{{index}} {{marker}}: {round(time.perf_counter() - timelog_start_{{index}}, 3)}s")',
-		javascript = "console.log(`#{{index}} {{marker}}: ${(Date.now() - timelogStart{{index}}) / 1000}s`);",
-		typescript = 'console.timeEnd("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
-		sh = 'echo "#{{index}} {{marker}} $(($(date +%s) - timelog_start_{{index}}))s" >&2',
 		ruby = 'puts "#{{index}} {{marker}}: #{Process.clock_gettime(Process::CLOCK_MONOTONIC) - timelog_start_{{index}}}s"',
-		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 		rust = 'println!("{} #{}: {}", "{{marker}}", "{{index}}", timelog_start_{{index}}.elapsed().as_millis());',
+		sh = 'echo "#{{index}} {{marker}} $(($(date +%s) - timelog_start_{{index}}))s" >&2',
 		swift = 'print("#{{index}} {{marker}}: \\(Date().timeIntervalSince(timelogStart{{index}}))")',
+		typescript = 'console.timeEnd("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 	},
 }
 
@@ -135,18 +135,18 @@ M.logStatements = {
 -- for a related filetype, and use its log statements
 ---@type table<string, string>
 M.supersets = {
+	bash = "sh",
+	fish = "sh",
+	javascriptreact = "javascript",
+	less = "css",
 	nvim_lua = "lua", -- `nvim_lua` config is used when in nvim-lua
+	sass = "css",
+	scss = "css",
+	svelte = "typescript",
 	typescript = "javascript",
 	typescriptreact = "typescript",
-	javascriptreact = "javascript",
 	vue = "typescript",
-	svelte = "typescript",
-	bash = "sh",
 	zsh = "sh",
-	fish = "sh",
-	scss = "css",
-	less = "css",
-	sass = "css",
 }
 
 --------------------------------------------------------------------------------
