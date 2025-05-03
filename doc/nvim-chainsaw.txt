@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*            For Neovim           Last change: 2025 April 20
+*nvim-chainsaw.txt*             For Neovim            Last change: 2025 May 03
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -18,7 +18,7 @@ Table of Contents                            *nvim-chainsaw-table-of-contents*
 
 
 
-Quickand feature-rich insertion of various kinds of log statements.
+Smartand highly customizable insertion of various kinds of log statements.
 
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
@@ -35,7 +35,7 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
     - |nvim-chainsaw-smart-insertion-location|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-basic-configuration|
-    - |nvim-chainsaw-customize-log-statements|
+    - |nvim-chainsaw-customize-log-statements-via-templates|
     - |nvim-chainsaw-the-global-pretty-logging-function-`chainsaw()`|
     - |nvim-chainsaw-make-the-formatter-ignore-the-log-statements|
     - |nvim-chainsaw-status-line|
@@ -49,20 +49,21 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
     (normal mode) or the selection (visual mode).
 - |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
     and the |nvim-chainsaw-correct-insertion-location-of-the-log-statement| via Treesitter.
-- Commands for a dozen different log statement types, including assert
-    statements, stack traces, or acoustic logging. All commands are
-    dot-repeatable.
-- Built-in support for ~20 common languages, with dedicated support for
-    `nvim-lua`. Easy configuration for additional languages.
+- Commands for **a dozen different log statement types**, including assert
+    statements, stack traces, or acoustic logging.
+- All commands are **dot-repeatable**.
+- |nvim-chainsaw-built-in-support-for-~20-languages|. Easy
+    configuration for additional languages.
+- |nvim-chainsaw-flexible-templating-options| for
+    customizing log statements, including support for multi-line templates.
+- Special support and utilities for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
     clear the console.
-- Flexible templating options for customizing log statements, including support
-    for multi-line templates.
-- Status line component to display the count of log statements in the current
-    buffer. Visual indication of log statements via line-highlights, signcolumn,
-    or scrollbar (when using
+- |nvim-chainsaw-status-line-component| to display the count of log statements
+    in the current buffer. In addition, visual indication of log statements via
+    line-highlights, signcolumn, or scrollbar (when using
     satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
-- Auto-install a pre-commit hook that prevents committing files with the log
+- Auto-install a **pre-commit hook** that prevents committing files with the log
     statements created by `nvim-chainsaw` (opt-in).
 
 
@@ -94,21 +95,21 @@ called without options.
 
 BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript/TypeScript (and supersets)
+- JavaScript (+ Typescript, Svelte, React)
 - Python
-- Lua (with special considerations for `nvim-lua`)
-- bash & zsh
+- Lua (+ special considerations for `nvim-lua`)
+- bash, zsh, fish
 - AppleScript
 - Ruby
 - Rust
-- CSS (and supersets)
+- CSS (+ SCSS, SASS, LESS)
 - Go
 - Swift
 
-Not every language supports every type of log statement. For the concrete
-statements used, see log-statements-data.lua
-<./lua/chainsaw/config/log-statements-data.lua>.
 
+  [!NOTE] Not every language supports every type of log statement. For the
+  statements used, see log-statements-data.lua
+  <./lua/chainsaw/config/log-statements-data.lua>.
 
 USAGE                                     *nvim-chainsaw-nvim-chainsaw--usage*
 
@@ -208,16 +209,19 @@ that this feature requires the Treesitter parser of the respective language.)
 >lua
     -- [] marks the cursor position
     
-    -- default case: will insert the log statement below the cursor
+    -- default behavior
     local f[o]obar = 1
+    -- will insert log statement here, below the cursor line
     
-    -- multi-line assignments: will insert log statement below the `}` line
+    -- multi-line assignments
     local f[o]o = {
         bar = 1
     }
+    -- will insert log statement, here after the assignment
     
-    -- returns: will insert log statement above the `return` line
+    -- returns statements
     local function foobar()
+        -- will insert log statement here, before the return
         return f[o]o
     end
 <
@@ -239,9 +243,9 @@ BASIC CONFIGURATION ~
 >lua
     -- default settings
     require("chainsaw").setup {
-        -- The marker should be a unique string, since signs and highlgiths are based
-        -- on it and since `.removeLogs()` will remove any line with it. Thus, emojis
-        -- or unique strings like "[Chainsaw]" are recommended.
+        -- The marker should be a unique string, since signs and highlights are based
+        -- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
+        -- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
         marker = "🪚",
     
         -- Appearance of lines with the marker
@@ -278,7 +282,7 @@ BASIC CONFIGURATION ~
             ]],
     
             -- Relevant if you track your nvim-config via git and use a custom marker,
-            -- as your config will then always include the marker ans falsely trigger
+            -- as your config will then always include the marker and falsely trigger
             -- the pre-commit hook.
             notInNvimConfigDir = true,
     
@@ -305,7 +309,7 @@ BASIC CONFIGURATION ~
 <
 
 
-CUSTOMIZE LOG STATEMENTS ~
+CUSTOMIZE LOG STATEMENTS VIA TEMPLATES ~
 
 New log statements can be added, and existing log statements can be modified
 under the config `logStatements`. See log-statements-data.lua
@@ -318,7 +322,9 @@ have one, so that the line can be removed via `.removeLogs()`. -
 `{{var}}`variable as described further above. - `{{time}}`timestamp formatted
 as `HH:MM:SS` (for millisecond-precision, use `.timeLog()` instead) -
 `{{filename}}`basename of the current file - `{{lnum}}`current line number -
-`.emojiLog()` only: `{{emoji}}` inserts the emoji - `.timeLog()` only:
+`{{insert}}`will enter insert mode at this location; by default used in
+`assertLog` and `messageLog`. (For multi-line statements only works on the last
+line.) - `.emojiLog()` only: `{{emoji}}` inserts the emoji - `.timeLog()` only:
 `{{index}}` inserts a running index. (Needed to differentiate between variables
 when using `timeLog` multiple times).
 
@@ -327,9 +333,9 @@ when using `timeLog` multiple times).
         logStatements = {
             variableLog = {
                 javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
-                otherFiletype = … -- <-- add the statement for your filetype here
+                yourFiletype = "", -- <-- add the statement for your filetype here
             },
-            -- the same way for the other log statement operations
+            -- the same for the other log statement operations
         },
     })
 <
@@ -511,9 +517,6 @@ digital economy. For my PhD project, I investigate the governance of the app
 economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in
 touch.
-
-I also occasionally blog about vim: Nano Tips for Vim
-<https://nanotipsforvim.prose.sh>
 
 - Website <https://chris-grieser.de/>
 - Mastodon <https://pkm.social/@pseudometa>
