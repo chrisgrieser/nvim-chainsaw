@@ -220,6 +220,24 @@ Filetypes currently supporting this feature:
 PRs adding support for more languages are welcome. See
 [smart-insert-location.lua](./lua/chainsaw/config/smart-insert-location.lua).
 
+### List all log statements in the project
+Since all log statements are marked with a specific string, you list easily use
+any picker plugin to list and navigate to log statements across your project.
+For example, when using [snacks.nvim](https://github.com/folke/snacks.nvim)
+with `ripgrep`:
+
+```lua
+local marker = require("chainsaw.config.config").config.marker
+require("snacks").picker.grep_word {
+	title = marker .. " log statements",
+	cmd = "rg",
+	args = { "--trim" },
+	search = marker,
+	regex = false,
+	live = false,
+}
+```
+
 ## Configuration
 The `setup()` call is required.
 
@@ -439,7 +457,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 |                                                   | nvim-chainsaw                                                                                          | debugprint.nvim                                                           | timber.nvim                                                     |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console | variables                                                                 | variables, objects, time                                        |
-| builtin language support                          | ~20                                                                                                    | ~35                                                                       | ~15                                                             |
+| built-in language support                         | ~20                                                                                                    | ~35                                                                       | ~15                                                             |
 | inheritance of log statements from superset langs | ✅                                                                                                      | ✅                                                                         | ❌                                                               |
 | delete all log statements                         | ✅                                                                                                      | ✅                                                                         | ✅                                                               |
 | comment all log statements                        | ❌                                                                                                      | ✅                                                                         | ✅                                                               |
