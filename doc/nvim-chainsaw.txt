@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*             For Neovim            Last change: 2025 May 03
+*nvim-chainsaw.txt*             For Neovim            Last change: 2025 May 07
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -233,9 +233,29 @@ PRs adding support for more languages are welcome. See
 smart-insert-location.lua <./lua/chainsaw/config/smart-insert-location.lua>.
 
 
+LIST ALL LOG STATEMENTS IN THE PROJECT ~
+
+Since all log statements are marked with a specific string, you list easily use
+any picker plugin to list and navigate to log statements across your project.
+For example, when using snacks.nvim <https://github.com/folke/snacks.nvim> with
+`ripgrep`
+
+>lua
+    local marker = require("chainsaw.config.config").config.marker
+    require("snacks").picker.grep_word {
+        title = marker .. " log statements",
+        cmd = "rg",
+        args = { "--trim" },
+        search = marker,
+        regex = false,
+        live = false,
+    }
+<
+
+
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
 
-The `setup()` call is required.
+The`setup()` call is required.
 
 
 BASIC CONFIGURATION ~
@@ -459,7 +479,7 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
                       messages, debugger, time,                    
                       clear-console                                
 
-  builtin language    ~20                       ~35                ~15
+  built-in language   ~20                       ~35                ~15
   support                                                          
 
   inheritance of log                                               
