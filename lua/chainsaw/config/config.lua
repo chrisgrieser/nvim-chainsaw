@@ -96,6 +96,7 @@ function M.setup(userConfig)
 	end
 
 	require("chainsaw.nvim-debug") -- activates `Chainsaw` global var
+	vim.treesitter.start() -- highlighting for `Chainsaw` global var if user lazy-loads this plugin
 
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION 2024-12-02
