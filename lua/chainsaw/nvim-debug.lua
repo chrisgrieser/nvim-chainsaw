@@ -1,5 +1,8 @@
 -- SOURCE the varname identification is based on https://stackoverflow.com/a/10459129/22114136
 --------------------------------------------------------------------------------
+-- highlighting for `Chainsaw` global var if user lazy-loads this plugin
+if vim.bo.filetype == "lua" then pcall(vim.treesitter.start) end
+--------------------------------------------------------------------------------
 
 local prevNotif = {}
 
