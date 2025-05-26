@@ -87,18 +87,14 @@ end
 
 ---@param userConfig? Chainsaw.config
 function M.setup(userConfig)
-	local warn = require("chainsaw.utils").warn
-
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
-
 	for _, logType in pairs(M.config.logStatements) do
 		M.supersetInheritance(logType)
 	end
 
-	require("chainsaw.nvim-debug") -- activates `Chainsaw` global var
-
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION 2024-12-02
+	local warn = require("chainsaw.utils").warn
 	if M.config.logEmojis then
 		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
 		warn(msg)
@@ -130,6 +126,7 @@ function M.setup(userConfig)
 	end
 
 	-- initialize
+	require("chainsaw.nvim-debug") -- activates `Chainsaw` global var
 	require("chainsaw.visuals.styling").styleExistingLogs()
 	require("chainsaw.visuals.satellite-integration")
 end
