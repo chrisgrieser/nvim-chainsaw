@@ -15,6 +15,7 @@ local M = {}
 M.logStatements = {
 	variableLog = {
 		applescript = 'log "{{marker}} {{var}}:" & {{var}}',
+		cpp = 'std::cout << "{{marker}} {{var}}: " << {{var}} << std::endl;',
 		css = "outline: 2px solid red !important; /* {{marker}} */",
 		go = 'fmt.Println("{{marker}} {{var}}:", {{var}})',
 		javascript = 'console.log("{{marker}} {{var}}:", {{var}});',
@@ -34,6 +35,7 @@ M.logStatements = {
 		swift = "dump({{var}}, maxItems: 10)  // {{marker}}",
 	},
 	assertLog = {
+		cpp = 'if (!({{var}})) throw std::runtime_error("{{marker}} {{var}} {{insert}}");',
 		javascript = 'if (!{{var}}) throw new Error("{{marker}} {{var}} {{insert}}");', -- no native assert in JS
 		lua = 'assert({{var}}, "{{marker}} {{var}} {{insert}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}} {{insert}}"',
@@ -42,6 +44,7 @@ M.logStatements = {
 		typescript = 'console.assert({{var}}, "{{marker}} {{var}} {{insert}}");',
 	},
 	typeLog = {
+		cpp = 'std::cout << "{{marker}} {{var}}: type is " << typeid({{var}}).name() << std::endl;',
 		go = 'fmt.Println("{{marker}} {{var}}: type is", fmt.Sprintf("%T", {{var}}))',
 		javascript = 'console.log("{{marker}} {{var}}: type is " + typeof {{var}})',
 		lua = 'print("{{marker}} {{var}}: type is " .. type({{var}}))',
@@ -51,6 +54,7 @@ M.logStatements = {
 	},
 	emojiLog = {
 		applescript = 'log "{{marker}} {{emoji}}"',
+		cpp = 'std::cout << "{{marker}} {{emoji}}" << std::endl;',
 		go = 'fmt.Println("{{marker}} {{emoji}}")',
 		javascript = 'console.log("{{marker}} {{emoji}}");',
 		lua = 'print("{{marker}} {{emoji}}")',
@@ -63,17 +67,20 @@ M.logStatements = {
 	},
 	sound = { -- NOTE `\a` is terminal bell, the other commands are system sound
 		applescript = "beep -- {{marker}}",
+		cpp = 'std::cout << "\\a"; // {{marker}}',
 		go = 'fmt.Println("\\a") // {{marker}}',
 		javascript = 'new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"+Array(800).join("200")).play(); // {{marker}}',
 		-- macOS only, since relying on `osascript`
 		lua = jit.os == "OSX" and [[os.execute("osascript -e 'beep'") -- {{marker}}]] or nil,
 		nvim_lua = jit.os == "OSX" and 'vim.system({"osascript", "-e", "beep"}) -- {{marker}}' or nil,
+		rust = 'print!("\\x07"); // {{marker}}',
 		python = 'print("\\a")  # {{marker}}',
 		sh = 'printf "\\a" # {{marker}}',
 		swift = 'print("\\u{07}")',
 	},
 	messageLog = {
 		applescript = 'log "{{marker}} {{insert}}"',
+		cpp = 'std::cout << "{{marker}} {{insert}}" << std::endl;',
 		go = 'fmt.Println("{{marker}} ")',
 		javascript = 'console.log("{{marker}} {{insert}}");',
 		lua = 'print("{{marker}} {{insert}}")',
@@ -89,6 +96,7 @@ M.logStatements = {
 		javascript = 'console.log("{{marker}} stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"
 		nvim_lua = 'vim.notify(debug.traceback("{{marker}}"))',
+		rust = 'println!("{} stacktrace: {}", "{{marker}}", std::backtrace::Backtrace::force_capture());',
 		typescript = 'console.trace("{{marker}} stacktrace: ");',
 		zsh = 'print "{{marker}} stacktrack: $funcfiletrace $funcstack"',
 	},
@@ -107,6 +115,7 @@ M.logStatements = {
 		sh = "clear # {{marker}}",
 	},
 	timeLogStart = {
+		cpp = "auto timelog_start_{{index}} = std::chrono::steady_clock::now(); // {{marker}}",
 		go = "var timelog_start_{{index}} = time.Now() // {{marker}}",
 		javascript = "const timelogStart{{index}} = Date.now(); // {{marker}}", -- not all JS engines support console.time
 		lua = "local timelogStart{{index}} = os.clock() -- {{marker}}",
@@ -118,6 +127,7 @@ M.logStatements = {
 		typescript = 'console.time("#{{index}} {{marker}}");', -- string needs to be identical to `console.timeEnd`
 	},
 	timeLogStop = {
+		cpp = 'std::cout << "#{{index}} {{marker}}: " << std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now() - timelog_start_{{index}}).count() << "s" << std::endl;',
 		go = 'fmt.Println("#{{index}} {{marker}}:", time.Since(timelog_start_{{index}})) // {{marker}}',
 		javascript = "console.log(`#{{index}} {{marker}}: ${(Date.now() - timelogStart{{index}}) / 1000}s`);",
 		lua = 'print(("#{{index}} {{marker}}: %.4fs"):format(os.clock() - timelogStart{{index}}))',
