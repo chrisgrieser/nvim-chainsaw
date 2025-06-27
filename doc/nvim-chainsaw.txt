@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*            For Neovim            Last change: 2025 June 16
+*nvim-chainsaw.txt*            For Neovim            Last change: 2025 June 27
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -74,16 +74,16 @@ this plugin
 
 >lua
     -- lazy.nvim
-    { 
-        "chrisgrieser/nvim-chainsaw", 
+    {
+        "chrisgrieser/nvim-chainsaw",
         event = "VeryLazy",
         opts = {} -- required even if left empty
     },
     
     -- packer
-    use { 
+    use {
         "chrisgrieser/nvim-chainsaw"
-        config = function () 
+        config = function ()
             require("chainsaw").setup()
         end,
     }
@@ -100,6 +100,7 @@ BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support
 - Lua (+ special considerations for `nvim-lua`)
 - bash, zsh, fish
 - AppleScript
+- C++
 - Ruby
 - Rust
 - CSS (+ SCSS, SASS, LESS)
@@ -164,8 +165,8 @@ All operations are dot-repeatable.
     
     ---------------------------------------------------
     
-    -- remove all log statements or all log statements in visually selected region 
-    -- created by nvim-chainsaw 
+    -- remove all log statements or all log statements in visually selected region
+    -- created by nvim-chainsaw
     require("chainsaw").removeLogs()
 <
 
