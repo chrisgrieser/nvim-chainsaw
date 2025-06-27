@@ -60,16 +60,16 @@ Smart and highly customizable insertion of various kinds of log statements.
 
 ```lua
 -- lazy.nvim
-{ 
-	"chrisgrieser/nvim-chainsaw", 
+{
+	"chrisgrieser/nvim-chainsaw",
 	event = "VeryLazy",
 	opts = {} -- required even if left empty
 },
 
 -- packer
-use { 
+use {
 	"chrisgrieser/nvim-chainsaw"
-	config = function () 
+	config = function ()
 		require("chainsaw").setup()
 	end,
 }
@@ -84,6 +84,7 @@ called without options.
 - Lua (+ special considerations for `nvim-lua`[^1])
 - bash, zsh, fish
 - AppleScript
+- C++
 - Ruby
 - Rust
 - CSS[^2] (+ SCSS, SASS, LESS)
@@ -153,8 +154,8 @@ require("chainsaw").clearLog()
 
 ---------------------------------------------------
 
--- remove all log statements or all log statements in visually selected region 
--- created by nvim-chainsaw 
+-- remove all log statements or all log statements in visually selected region
+-- created by nvim-chainsaw
 require("chainsaw").removeLogs()
 ```
 
