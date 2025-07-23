@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*            For Neovim            Last change: 2025 June 27
+*nvim-chainsaw.txt*            For Neovim            Last change: 2025 July 23
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -271,10 +271,10 @@ BASIC CONFIGURATION ~
     
         -- Appearance of lines with the marker
         visuals = {
-            icon = "󰹈", -- as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
-            signHlgroup = "DiagnosticSignInfo",
+            icon = "󰹈", ---@type string|false as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+            signHlgroup = "DiagnosticSignInfo", ---@type string|false
             signPriority = 50,
-            lineHlgroup = false,
+            lineHlgroup = false, ---@type string|false
     
             nvimSatelliteIntegration = {
                 enabled = true,
