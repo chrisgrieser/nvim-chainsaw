@@ -35,7 +35,7 @@ body:
         2. Press…
     validations: { required: true }
   - type: textarea
-    id: screenshot
+    id: sample-text
     attributes:
       label: Sample text
       description: Text used to reproduce the bug
