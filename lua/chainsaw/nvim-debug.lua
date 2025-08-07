@@ -1,7 +1,5 @@
--- SOURCE the varname identification is based on https://stackoverflow.com/a/10459129/22114136
---------------------------------------------------------------------------------
--- highlighting for `Chainsaw` global var via `queries/lua/highlights.scm`,
--- in case the user lazy-loads this plugin
+-- load treesitter-highlighting for the `Chainsaw` global var from this plugin's
+-- `queries/lua/highlights.scm`, manually, in case user lazy-loads this plugin
 if vim.bo.filetype == "lua" then pcall(vim.treesitter.start) end
 --------------------------------------------------------------------------------
 
@@ -15,12 +13,21 @@ function _G.Chainsaw(varValue)
 		return
 	end
 
-	-- caller = the `Chainsaw` log statement
-	local caller = debug.getinfo(2, "Slf") -- S:source l:currentline f:function
+	-- IDENTIFY CALLER IN STACK
+	-- caller = where the `Chainsaw` function is called
+	local stacklvl = 2
+	local caller = debug.getinfo(stacklvl, "Slf") -- S:source, l:currentline, f:function
+
+	-- In case user wraps the `Chainsaw` call in a function, use the caller of that
+	local higherCaller = debug.getinfo(stacklvl + 1, "Slf")
+	if higherCaller and higherCaller.source ~= caller.source then
+		stacklvl = stacklvl + 1
+		caller = higherCaller
+	end
+
 	local lnum = caller.currentline
-	local sourcePath = caller.source:gsub("^@", "")
-	local sourceShort = vim.fs.basename(sourcePath)
-	if sourceShort == ":source (no file)" then sourceShort = "source" end
+	local sourceAbspath = caller.short_src
+	local sourceFile = vim.fs.basename(sourceAbspath)
 	-----------------------------------------------------------------------------
 
 	-- VARNAME
@@ -30,7 +37,7 @@ function _G.Chainsaw(varValue)
 	-- 1. caller's scope
 	for indexOfVars = 1, math.huge do
 		if #potentialVarnames > 1 then break end -- PERF not needed anymore, as we will use callerline
-		local localName, localValue = debug.getlocal(2, indexOfVars)
+		local localName, localValue = debug.getlocal(stacklvl, indexOfVars)
 		if not localName then break end
 		if vim.deep_equal(localValue, varValue) then table.insert(potentialVarnames, localName) end
 	end
@@ -60,11 +67,12 @@ function _G.Chainsaw(varValue)
 		local callerLine
 
 		-- PERF if source file is open, read the buffer, otherwise read the file
-		local buffer = vim.iter(vim.fn.getbufinfo()):find(function(b) return b.name == sourcePath end)
+		local buffer = vim.iter(vim.fn.getbufinfo())
+			:find(function(b) return b.name == sourceAbspath end)
 		if buffer then
 			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
 		else
-			local file, _ = io.open(sourcePath, "r")
+			local file, _ = io.open(sourceAbspath, "r")
 			callerLine = file and vim.split(file:read("*a"), "\n")[lnum] or ""
 		end
 
@@ -77,7 +85,7 @@ function _G.Chainsaw(varValue)
 	-- NOTIFY
 	-- with options for `snacks.nvim` / `nvim-notify`
 	local title = varname
-	if sourceShort and lnum then title = title .. (" (%s:%d)"):format(sourceShort, lnum) end
+	if lnum then title = title .. (" (%s:%d)"):format(sourceFile, lnum) end
 	local icon = require("chainsaw.config.config").config.visuals.icon or ""
 	local msg = vim.trim(vim.inspect(varValue))
 	local level = vim.log.levels.INFO -- below `INFO` not shown with nivm-notify with defaults
