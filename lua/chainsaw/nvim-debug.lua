@@ -31,7 +31,7 @@ function _G.Chainsaw(varValue)
 	end
 
 	local lnum = caller.currentline
-	local sourceAbspath = caller.short_src
+	local sourceAbspath = caller.source:gsub("^@", "") -- don't use `short_src`, since it is truncated
 	local sourceFile = vim.fs.basename(sourceAbspath)
 	-----------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ function _G.Chainsaw(varValue)
 
 		-- PERF if source file is open, read the buffer, otherwise read the file
 		local buffer = vim.iter(vim.fn.getbufinfo())
-			:find(function(b) return b.name == sourceAbspath end)
+			:find(function(buf) return buf.name == sourceAbspath end)
 		if buffer then
 			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
 		else
