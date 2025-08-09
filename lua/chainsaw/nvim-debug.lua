@@ -15,14 +15,19 @@ function _G.Chainsaw(varValue)
 
 	-- IDENTIFY CALLER IN STACK
 	-- caller = where the `Chainsaw` function is called
-	local stacklvl = 2
-	local caller = debug.getinfo(stacklvl, "Slf") -- S:source, l:currentline, f:function
+	-- similar https://github.com/folke/snacks.nvim/blob/main/lua/snacks/debug.lua
+	local stacklvl = 1
+	local caller = debug.getinfo(stacklvl, "Slfn") -- S:source, l:currentline, f:function, n:name
 
-	-- In case user wraps the `Chainsaw` call in a function, use the caller of that
-	local higherCaller = debug.getinfo(stacklvl + 1, "Slf")
-	if higherCaller and higherCaller.source ~= caller.source then
+	-- find the `Chainsaw` function in the stack
+	while true do
 		stacklvl = stacklvl + 1
-		caller = higherCaller
+		local info = debug.getinfo(stacklvl, "Slfn")
+		-- Excluding the name "Chainsaw" used their own wrapper around `Chainsaw`
+		if info and info.source ~= caller.source and info.name ~= "Chainsaw" then
+			caller = info
+			break
+		end
 	end
 
 	local lnum = caller.currentline
