@@ -112,6 +112,9 @@ want to use.
 All operations are dot-repeatable.
 
 ```lua
+-- log the file & line number under the cursor
+require("chainsaw").variableLog()
+
 -- log the name & value of the variable under the cursor
 require("chainsaw").variableLog()
 
