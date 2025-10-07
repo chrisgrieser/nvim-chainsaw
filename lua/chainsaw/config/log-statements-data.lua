@@ -13,6 +13,20 @@ local M = {}
 
 ---@type logStatementData
 M.logStatements = {
+	lineLog = {
+		applescript = 'log "{{marker}} {{filename}}:{{lnum}}"',
+		cpp = 'std::cout << "{{marker}} {{filename}}:{{lnum}}" << std::endl;',
+		css = "outline: 2px solid red !important; /* {{marker}} {{filename}}:{{lnum}} */",
+		go = 'fmt.Println("{{marker}} {{filename}}:{{lnum}}")',
+		javascript = 'console.log("{{marker}} {{filename}}:{{lnum}}");',
+		lua = 'print("{{marker}} {{filename}}:{{lnum}}")',
+		nvim_lua = 'vim.notify("{{marker}} {{filename}}:{{lnum}}", nil, { title = "Log" })',
+		python = 'print(f"{{marker}} {{filename}}:{{lnum}}")',
+		ruby = 'puts "{{marker}} {{filename}}:{{lnum}}"',
+		rust = 'println!("{} {}:{}", "{{marker}}", "{{filename}}", "{{lnum}}");',
+		sh = 'echo "{{marker}} {{filename}}:{{lnum}}" >&2', -- stderr
+		swift = 'print("{{marker}} {{filename}}:{{lnum}}")',
+	},
 	variableLog = {
 		applescript = 'log "{{marker}} {{var}}:" & {{var}}',
 		cpp = 'std::cout << "{{marker}} {{var}}: " << {{var}} << std::endl;',

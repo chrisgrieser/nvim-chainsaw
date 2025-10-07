@@ -5,6 +5,7 @@ local insertStatements = require("chainsaw.core.insert-statements").insert
 -- not using metatable-__index, as the logtype-names are needed for suggestions
 -- for the `:Chainsaw` command
 local M = {
+	lineLog = insertStatements,
 	variableLog = insertStatements,
 	objectLog = insertStatements,
 	typeLog = insertStatements,
