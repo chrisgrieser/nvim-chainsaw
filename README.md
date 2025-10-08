@@ -19,6 +19,7 @@ Smart and highly customizable insertion of various kinds of log statements.
 	* [List of commands](#list-of-commands)
 	* [Smart variable detection](#smart-variable-detection)
 	* [Smart insertion location](#smart-insertion-location)
+	* [List all log statements in the project](#list-all-log-statements-in-the-project)
 - [Configuration](#configuration)
 	* [Basic configuration](#basic-configuration)
 	* [Customize log statements via templates](#customize-log-statements-via-templates)
@@ -56,7 +57,8 @@ Smart and highly customizable insertion of various kinds of log statements.
 ## Installation
 **Requirements**
 - nvim 0.10+
-- Treesitter parser for the languages you with this plugin
+- recommended: Treesitter parser for the languages you want to use with this
+  plugin.
 
 ```lua
 -- lazy.nvim
@@ -69,14 +71,11 @@ Smart and highly customizable insertion of various kinds of log statements.
 -- packer
 use {
 	"chrisgrieser/nvim-chainsaw"
-	config = function ()
-		require("chainsaw").setup()
+	config = function()
+		require("chainsaw").setup() -- required, even if left empty
 	end,
 }
 ```
-
-Note that the `.setup()` call (or `lazy.nvim`'s `opts`) is required, even if
-called without options.
 
 ## Built-in language support
 - JavaScript (+ Typescript, Svelte, React)
@@ -93,8 +92,7 @@ called without options.
 
 > [!NOTE]
 > Not every language supports every type of log statement. For the statements
-> used, see
-> [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
+> used, see [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
 [^1]: `nvim_lua` uses log statements that inspect objects and is designed to
 	work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
@@ -154,14 +152,14 @@ require("chainsaw").clearLog()
 
 ---------------------------------------------------
 
--- remove all log statements or all log statements in visually selected region
--- created by nvim-chainsaw
+-- remove all log statements created by nvim-chainsaw
+-- (when used in visual mode, remove only log statements in the selected lines)
 require("chainsaw").removeLogs()
 ```
 
 These features can also be accessed with the user command `:Chainsaw`. Each
 option corresponds to the commands above. For example, `:Chainsaw
-variableLog` is same as `:lua require("chainsaw").variableLog()`.
+variableLog` is same as `require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
@@ -190,9 +188,10 @@ PRs adding support for more languages are welcome. See
 [smart-var-detect.lua](./lua/chainsaw/config/smart-var-detect.lua).
 
 ### Smart insertion location
-`chainsaw` by default inserts the log statement below the cursor. The insertion
-location is automatically adapted if doing would result in invalid code. (Note
-that this feature requires the Treesitter parser of the respective language.)
+`nvim-chainsaw` by default inserts the log statement below the cursor. This can,
+however, sometimes result in invalid code. Thus, the plugin automatically
+adjusts the insertion location to prevent invalid code. (Note that this feature
+requires the Treesitter parser of the respective language.)
 
 ```lua
 -- [] marks the cursor position
@@ -205,7 +204,7 @@ local f[o]obar = 1
 local f[o]o = {
 	bar = 1
 }
--- will insert log statement, here after the assignment
+-- will insert log statement here, after the assignment
 
 -- returns statements
 local function foobar()
@@ -323,14 +322,14 @@ There are various **placeholders** that are dynamically replaced:
 - `{{marker}}` inserts the value from `config.marker`. Each log statement should
   have one, so that the line can be removed via `.removeLogs()`.
 - `{{var}}`: variable as described further above.
-- `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision, use
+- `{{time}}`: timestamp formatted as `HH:MM:SS`. (For millisecond-precision, use
   `.timeLog()` instead)
-- `{{filename}}`: basename of the current file
-- `{{lnum}}`: line number of the log statement
+- `{{filename}}`: basename of the current file.
+- `{{lnum}}`: line number of the log statement.
 - `{{insert}}`: will enter insert mode at this location; by default used in
   `assertLog` and `messageLog`. (For multi-line statements only works on the
   last line.)
-- `.emojiLog()` only: `{{emoji}}` inserts the emoji
+- `.emojiLog()` only: `{{emoji}}` inserts the emoji.
 - `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
   differentiate between variables when using `timeLog` multiple times).
 
@@ -470,7 +469,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | visual emphasis of log statements                 | signcolumn, line-highlight, status line, scrollbar                                                      | ❌                                                                         | flash on inserting statement                                    |
 | extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                      | ❌                                                                         | ❌                                                               |
 | log file watcher                                  | ❌                                                                                                      | ❌                                                                         | ✅                                                               |
-| maintainability / efficiency                      | ~1000 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
+| maintainability / efficiency                      | ~1100 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
 <!-- LTeX: enabled=true -->
 
 ## About the developer
