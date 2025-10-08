@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*           For Neovim           Last change: 2025 August 18
+*nvim-chainsaw.txt*           For Neovim          Last change: 2025 October 08
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -33,6 +33,7 @@ TABLE OF CONTENTS             *nvim-chainsaw-nvim-chainsaw--table-of-contents*
     - |nvim-chainsaw-list-of-commands|
     - |nvim-chainsaw-smart-variable-detection|
     - |nvim-chainsaw-smart-insertion-location|
+    - |nvim-chainsaw-list-all-log-statements-in-the-project|
 - |nvim-chainsaw-configuration|
     - |nvim-chainsaw-basic-configuration|
     - |nvim-chainsaw-customize-log-statements-via-templates|
@@ -69,8 +70,8 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
 
-**Requirements** - nvim 0.10+ - Treesitter parser for the languages you with
-this plugin
+**Requirements** - nvim 0.10+ - recommended: Treesitter parser for the
+languages you want to use with this plugin.
 
 >lua
     -- lazy.nvim
@@ -83,14 +84,11 @@ this plugin
     -- packer
     use {
         "chrisgrieser/nvim-chainsaw"
-        config = function ()
-            require("chainsaw").setup()
+        config = function()
+            require("chainsaw").setup() -- required, even if left empty
         end,
     }
 <
-
-Note that the `.setup()` call (or `lazy.nvim`’s `opts`) is required, even if
-called without options.
 
 
 BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support*
@@ -165,14 +163,14 @@ All operations are dot-repeatable.
     
     ---------------------------------------------------
     
-    -- remove all log statements or all log statements in visually selected region
-    -- created by nvim-chainsaw
+    -- remove all log statements created by nvim-chainsaw
+    -- (when used in visual mode, remove only log statements in the selected lines)
     require("chainsaw").removeLogs()
 <
 
 These features can also be accessed with the user command `:Chainsaw`. Each
 option corresponds to the commands above. For example, `:Chainsaw variableLog`
-is same as `:lua require("chainsaw").variableLog()`.
+is same as `require("chainsaw").variableLog()`.
 
 When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
 `assertLog` can also be used in **visual mode** to use the visual selection
@@ -203,9 +201,10 @@ PRs adding support for more languages are welcome. See smart-var-detect.lua
 
 SMART INSERTION LOCATION ~
 
-`chainsaw` by default inserts the log statement below the cursor. The insertion
-location is automatically adapted if doing would result in invalid code. (Note
-that this feature requires the Treesitter parser of the respective language.)
+`nvim-chainsaw` by default inserts the log statement below the cursor. This
+can, however, sometimes result in invalid code. Thus, the plugin automatically
+adjusts the insertion location to prevent invalid code. (Note that this feature
+requires the Treesitter parser of the respective language.)
 
 >lua
     -- [] marks the cursor position
@@ -218,7 +217,7 @@ that this feature requires the Treesitter parser of the respective language.)
     local f[o]o = {
         bar = 1
     }
-    -- will insert log statement, here after the assignment
+    -- will insert log statement here, after the assignment
     
     -- returns statements
     local function foobar()
@@ -239,7 +238,7 @@ LIST ALL LOG STATEMENTS IN THE PROJECT ~
 Since all log statements are marked with a specific string, you list easily use
 any picker plugin to list and navigate to log statements across your project.
 For example, when using snacks.nvim <https://github.com/folke/snacks.nvim> with
-`ripgrep`
+`ripgrep`:
 
 >lua
     local marker = require("chainsaw.config.config").config.marker
@@ -256,7 +255,7 @@ For example, when using snacks.nvim <https://github.com/folke/snacks.nvim> with
 
 CONFIGURATION                     *nvim-chainsaw-nvim-chainsaw--configuration*
 
-The`setup()` call is required.
+The `setup()` call is required.
 
 
 BASIC CONFIGURATION ~
@@ -266,7 +265,7 @@ BASIC CONFIGURATION ~
     require("chainsaw").setup {
         -- The marker should be a unique string, since signs and highlights are based
         -- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
-        -- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
+        -- unique emojis or strings like "[Chainsaw]" are recommended.
         marker = "🪚",
     
         -- Appearance of lines with the marker
@@ -292,8 +291,8 @@ BASIC CONFIGURATION ~
             notifyOnInstall = true,
             hookPath = ".chainsaw", -- relative to git root
     
-            -- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
-            -- and exit non-zero when marker is found to block the commit.)
+            -- Will insert the marker as `%s`. (To block the commit, pre-commit hooks
+            -- require a shebang and exit non-zero when marker is found.)
             hookContent = [[#!/bin/sh
                 if git grep --fixed-strings --line-number "%s" .; then
                     echo
@@ -339,15 +338,15 @@ as reference. PRs adding log statements for more languages are welcome.
 
 There are various **placeholders** that are dynamically replaced: -
 `{{marker}}` inserts the value from `config.marker`. Each log statement should
-have one, so that the line can be removed via `.removeLogs()`. -
-`{{var}}`variable as described further above. - `{{time}}`timestamp formatted
-as `HH:MM:SS` (for millisecond-precision, use `.timeLog()` instead) -
-`{{filename}}`basename of the current file - `{{lnum}}`current line number -
-`{{insert}}`will enter insert mode at this location; by default used in
-`assertLog` and `messageLog`. (For multi-line statements only works on the last
-line.) - `.emojiLog()` only: `{{emoji}}` inserts the emoji - `.timeLog()` only:
-`{{index}}` inserts a running index. (Needed to differentiate between variables
-when using `timeLog` multiple times).
+have one, so that the line can be removed via `.removeLogs()`. - `{{var}}`:
+variable as described further above. - `{{time}}`: timestamp formatted as
+`HH:MM:SS`. (For millisecond-precision, use `.timeLog()` instead) -
+`{{filename}}`: basename of the current file. - `{{lnum}}`: line number of the
+log statement. - `{{insert}}`: will enter insert mode at this location; by
+default used in `assertLog` and `messageLog`. (For multi-line statements only
+works on the last line.) - `.emojiLog()` only: `{{emoji}}` inserts the emoji. -
+`.timeLog()` only: `{{index}}` inserts a running index. (Needed to
+differentiate between variables when using `timeLog` multiple times).
 
 >lua
     require("chainsaw").setup ({
@@ -380,7 +379,7 @@ more concise manner.
 <http://github.com/folke/snacks.nvim>. Syntax highlighting inside the
 notification requires `snacks.nvim`.
 
-**Setup:** You can use it by setting a custom log statement like this:
+**Setup:** Set a custom log statement like this:
 
 >lua
     require("chainsaw").setup {
@@ -527,7 +526,7 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
 
   logfile watcher                                                  
 
-  maintainability/    ~1000 LoC                 ~1600 LoC          ~4500 LoC
+  maintainability/    ~1100 LoC                 ~1600 LoC          ~4500 LoC
   efficiency                                                       (excluding tests)
   -----------------------------------------------------------------------------------
 
