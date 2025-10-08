@@ -326,7 +326,7 @@ There are various **placeholders** that are dynamically replaced:
 - `{{time}}`: timestamp formatted as `HH:MM:SS` (for millisecond-precision, use
   `.timeLog()` instead)
 - `{{filename}}`: basename of the current file
-- `{{lnum}}`: current line number
+- `{{lnum}}`: line number of the log statement
 - `{{insert}}`: will enter insert mode at this location; by default used in
   `assertLog` and `messageLog`. (For multi-line statements only works on the
   last line.)

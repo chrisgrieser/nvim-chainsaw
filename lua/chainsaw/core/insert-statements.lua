@@ -132,7 +132,6 @@ function M.insert(logType, logtypeSpecific)
 				if var == "" then errorMsg = "Could not find a variable to insert." end
 				return var
 			end
-			if placeholder == "{{lnum}}" then return tostring(vim.api.nvim_win_get_cursor(0)[1]) end
 			if placeholder == "{{filename}}" then
 				return vim.fs.basename(vim.api.nvim_buf_get_name(0))
 			end
@@ -141,7 +140,8 @@ function M.insert(logType, logtypeSpecific)
 				if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
 				return logtypeSpecific
 			end
-			if placeholder == "{{insert}}" then return end -- just to avoid error
+			-- these are dependent of the line number shift and thus inserted later
+			if placeholder == "{{lnum}}" or placeholder == "{{insert}}" then return end
 			errorMsg = "Unknown placeholder: " .. placeholder
 		end)
 		return line
@@ -157,6 +157,8 @@ function M.insert(logType, logtypeSpecific)
 	assert(ln <= vim.api.nvim_buf_line_count(0), "Insert location is past the end of the buffer.")
 	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
+		-- insert at line of log statement, not line of var https://github.com/chrisgrieser/nvim-chainsaw/pull/37#issuecomment-3381582599
+		line = line:gsub("{{lnum}}", tostring(ln))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
 		if line:find(marker, nil, true) then
 			require("chainsaw.visuals.styling").addStylingToLine(ln)
