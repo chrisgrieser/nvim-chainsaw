@@ -113,7 +113,7 @@ All operations are dot-repeatable.
 
 ```lua
 -- log the file & line number under the cursor
-require("chainsaw").variableLog()
+require("chainsaw").lineLog()
 
 -- log the name & value of the variable under the cursor
 require("chainsaw").variableLog()
