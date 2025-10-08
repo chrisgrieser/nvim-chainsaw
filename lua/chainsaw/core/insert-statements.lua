@@ -127,16 +127,16 @@ function M.insert(logType, logtypeSpecific)
 	local errorMsg
 	logLines = vim.tbl_map(function(line)
 		line = line:gsub("{{%w-}}", function(placeholder)
-			if placeholder == "{{marker}}" then return marker end
-			if placeholder == "{{var}}" then
+			if placeholder == "{{marker}}" then
+				return marker
+			elseif placeholder == "{{var}}" then
 				if var == "" then errorMsg = "Could not find a variable to insert." end
 				return var
-			end
-			if placeholder == "{{filename}}" then
+			elseif placeholder == "{{filename}}" then
 				return vim.fs.basename(vim.api.nvim_buf_get_name(0))
-			end
-			if placeholder == "{{time}}" then return tostring(os.date("%H:%M:%S")) end
-			if placeholder == "{{index}}" or placeholder == "{{emoji}}" then
+			elseif placeholder == "{{time}}" then
+				return tostring(os.date("%H:%M:%S"))
+			elseif placeholder == "{{index}}" or placeholder == "{{emoji}}" then
 				if not logtypeSpecific then errorMsg = "This log type does not use " .. placeholder end
 				return logtypeSpecific
 			end
@@ -157,7 +157,7 @@ function M.insert(logType, logtypeSpecific)
 	assert(ln <= vim.api.nvim_buf_line_count(0), "Insert location is past the end of the buffer.")
 	local indent = determineIndent(ln) -- using `:normal ==` would break dot-repeatability
 	for _, line in pairs(logLines) do
-		-- insert at line of log statement, not line of var https://github.com/chrisgrieser/nvim-chainsaw/pull/37#issuecomment-3381582599
+		-- populate `{{lnum}}` with line of log statement, not line of var https://github.com/chrisgrieser/nvim-chainsaw/pull/37#issuecomment-3381582599
 		line = line:gsub("{{lnum}}", tostring(ln))
 		vim.api.nvim_buf_set_lines(0, ln, ln, true, { indent .. line })
 		if line:find(marker, nil, true) then
