@@ -122,9 +122,7 @@ you want to use.
 
 All operations are dot-repeatable.
 
-    -- log the file & line number under the cursor
-    require("chainsaw").lineLog()
-
+>lua
     -- log the name & value of the variable under the cursor
     require("chainsaw").variableLog()
     
