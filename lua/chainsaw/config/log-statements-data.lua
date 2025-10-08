@@ -16,7 +16,6 @@ M.logStatements = {
 	lineLog = {
 		applescript = 'log "{{marker}} {{filename}}:{{lnum}}"',
 		cpp = 'std::cout << "{{marker}} {{filename}}:{{lnum}}" << std::endl;',
-		css = "outline: 2px solid red !important; /* {{marker}} {{filename}}:{{lnum}} */",
 		go = 'fmt.Println("{{marker}} {{filename}}:{{lnum}}")',
 		javascript = 'console.log("{{marker}} {{filename}}:{{lnum}}");',
 		lua = 'print("{{marker}} {{filename}}:{{lnum}}")',
