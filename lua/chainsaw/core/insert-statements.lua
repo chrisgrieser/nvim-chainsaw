@@ -77,21 +77,6 @@ local function ensureValidQuotesInVar(var, templateLines)
 	return var
 end
 
--- DEPRECATION (2024-11-23)
----@param logLines string[]
----@return boolean
----@nodiscard
-local function isDeprecatedTemplate(logLines)
-	local allLines = table.concat(logLines)
-	if allLines:find("%%s") and not allLines:find("{{%w-}}") then
-		local msg =
-			"The `%s` placeholder is has been replaced with `{{placeholders}}`. See the readme."
-		require("chainsaw.utils").warn(msg)
-		return true
-	end
-	return false
-end
-
 ---@return number
 ---@nodiscard
 local function shiftInInsertLocation()
@@ -115,9 +100,6 @@ function M.insert(logType, logtypeSpecific)
 	if not logType then logType = vim.b.chainsawLogType end
 	local logLines = getTemplateStr(logType)
 	if not logLines then return false end
-
-	-- DEPRECATION (2024-11-23)
-	if isDeprecatedTemplate(logLines) then return false end
 
 	-- INSERT PLACEHOLDERS
 	-- run `getVar` only once, since it leaves visual, resulting in a changed result the 2nd time

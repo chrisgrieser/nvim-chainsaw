@@ -249,7 +249,7 @@ The `setup()` call is required.
 require("chainsaw").setup {
 	-- The marker should be a unique string, since signs and highlights are based
 	-- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
-	-- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
+	-- unique emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
 	-- Appearance of lines with the marker
@@ -275,8 +275,8 @@ require("chainsaw").setup {
 		notifyOnInstall = true,
 		hookPath = ".chainsaw", -- relative to git root
 
-		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
-		-- and exit non-zero when marker is found to block the commit.)
+		-- Will insert the marker as `%s`. (To block the commit, pre-commit hooks
+		-- require a shebang and exit non-zero when marker is found.)
 		hookContent = [[#!/bin/sh
 			if git grep --fixed-strings --line-number "%s" .; then
 				echo
@@ -363,7 +363,7 @@ more concise manner.
 [snacks.nvim](http://github.com/folke/snacks.nvim). Syntax highlighting inside
 the notification requires `snacks.nvim`.
 
-**Setup:** You can use it by setting a custom log statement like this:
+**Setup:** Set a custom log statement like this:
 
 ```lua
 require("chainsaw").setup {

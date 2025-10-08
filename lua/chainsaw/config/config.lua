@@ -5,7 +5,7 @@ local M = {}
 local defaultConfig = {
 	-- The marker should be a unique string, since signs and highlights are based
 	-- on it. Furthermore, `.removeLogs()` will remove any line with it. Thus,
-	-- unique emojis or strings (e.g., "[Chainsaw]") are recommended.
+	-- unique emojis or strings like "[Chainsaw]" are recommended.
 	marker = "🪚",
 
 	-- Appearance of lines with the marker
@@ -31,8 +31,8 @@ local defaultConfig = {
 		notifyOnInstall = true,
 		hookPath = ".chainsaw", -- relative to git root
 
-		-- Will insert the marker as `%s`. (Pre-commit hooks requires a shebang
-		-- and exit non-zero when marker is found to block the commit.)
+		-- Will insert the marker as `%s`. (To block the commit, pre-commit hooks
+		-- require a shebang and exit non-zero when marker is found.)
 		hookContent = [[#!/bin/sh
 			if git grep --fixed-strings --line-number "%s" .; then
 				echo
@@ -92,29 +92,8 @@ function M.setup(userConfig)
 		M.supersetInheritance(logType)
 	end
 
-	---@diagnostic disable: undefined-field
-	-- DEPRECATION 2024-12-02
-	local warn = require("chainsaw.utils").warn
-	if M.config.logEmojis then
-		local msg = "Config `logEmojis` is deprecated. Use `logTypes.emojiLog.emojis` instead."
-		warn(msg)
-	end
-	if M.config.logtypes then
-		local msg = "Config `logtypes` is deprecated. Use `logTypes` instead."
-		warn(msg)
-	end
-	if M.config.logHighlightGroup then
-		local msg = "Config `logHighlightGroup` is deprecated. Use `visuals.lineHlgroup` instead."
-		warn(msg)
-	end
-	if M.config.loglines then warn("Config `loglines` is deprecated. Use `visuals` instead.") end
-	-- DEPRECATION (2024-12-18)
-	if M.config.visuals.sign then
-		warn("Config `visuals.sign` is deprecated. Use `visuals.icon` instead.")
-	end
-	---@diagnostic enable: undefined-field
-
 	-- VALIDATE
+	local warn = require("chainsaw.utils").warn
 	local emojis = M.config.logTypes.emojiLog.emojis
 	if not emojis or type(emojis) ~= "table" or #emojis == 0 then
 		M.config.logTypes.emojiLog.emojis = defaultConfig.logTypes.emojiLog.emojis
