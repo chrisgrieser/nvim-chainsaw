@@ -14,7 +14,6 @@ if not satelliteInstalled or not config.enabled then return end
 
 local ns = vim.api.nvim_create_namespace("chainsaw.markers")
 
----@type Satellite.Handler
 local handler = {
 	name = "chainsaw",
 	ns = vim.api.nvim_create_namespace("chainsaw.satellite-integration"),
@@ -36,7 +35,6 @@ local handler = {
 				local rowWithMarker = extm[2] + 1
 				local scrollbarPos, _ = require("satellite.util").row_to_barpos(winid, rowWithMarker)
 
-				---@type Satellite.Mark
 				local mark = {
 					pos = scrollbarPos,
 					highlight = config.hlgroup,
