@@ -93,7 +93,7 @@ languages you want to use with this plugin.
 
 BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support*
 
-- JavaScript (+ Typescript, Svelte, React)
+- JavaScript (+ TypeScript, Svelte, and React)
 - Python
 - Lua (+ special considerations for `nvim-lua`)
 - bash, zsh, fish
@@ -101,7 +101,7 @@ BUILT-IN LANGUAGE SUPPORT*nvim-chainsaw-nvim-chainsaw--built-in-language-support
 - C++
 - Ruby
 - Rust
-- CSS (+ SCSS, SASS, LESS)
+- CSS (+ SCSS, SASS, and LESS)
 - Go
 - Swift
 
@@ -172,7 +172,7 @@ These features can also be accessed with the user command `:Chainsaw`. Each
 option corresponds to the commands above. For example, `:Chainsaw variableLog`
 is same as `require("chainsaw").variableLog()`.
 
-When using lua functions, `variableLog`, `objectLog`, `typeLog`, and
+When using Lua functions, `variableLog`, `objectLog`, `typeLog`, and
 `assertLog` can also be used in **visual mode** to use the visual selection
 instead of the word under the cursor. `removeLogs` can also be used in visual
 mode to only remove log statements inside the selected lines.
@@ -496,7 +496,7 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
   accidentally commit pre-commit hook (opt-in)                     
   log statements                                                   
 
-  logstatement        line numbers, filenames,  line               line numbers,
+  logstatement        line numbers, filenames,  line               line numbers &
   customization       time, multi-line          numbers+filename   insertation
                       statements                (location), nearby location
                                                 line snippet,      
