@@ -371,8 +371,9 @@ require("chainsaw").setup {
 	},
 }
 
+-- Optional
 -- 1. avoids `undefined-global` diagnostic from the lua-lsp in your config
--- 2. loads `nvim-chainsaw` when calling `Chainsaw` if it hasn't been loaded yet
+-- 2. lazy-loads `nvim-chainsaw` when calling `Chainsaw`
 _G.Chainsaw = function(name)
 	require("chainsaw")
 	Chainsaw(name)
@@ -383,19 +384,18 @@ To disable the `lua_ls` diagnostic `undefined-global` for nvim-plugins, use one
 of the following methods:
 
 <details>
-<summary>Options to </summary>
+<summary>Options</summary>
 
 ```lua
 -- Option 1: nvim-lspconfig
-vim.lsp.config.lua_ls {
-	settings = {
-		Lua = {
-			diagnostics = {
-				globals = { "Chainsaw", "vim" },
-			},
-		},
-	},
-}
+vim.lsp.config("lua_ls", {
+	on_init = function(client)
+		if client.root_dir:find("nvim") then
+			local globals = client.config.settings.Lua.diagnostics.globals or {}
+			globals = vim.list_extend(globals, { "Chainsaw" })
+		end
+	end,
+})
 ```
 
 ```jsonc
@@ -409,7 +409,7 @@ vim.lsp.config.lua_ls {
 
 ```lua
 -- Option 3: lazydev.nvim
-opts = {
+require("lazydev").setup {
 	library = {
 		{ path = "nvim-chainsaw", words = { "Chainsaw" } },
 	},
