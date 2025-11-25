@@ -94,6 +94,17 @@ function M.removeLogs()
 	vim.b.timelogStart = nil
 	vim.b.timeLogIndex = nil
 end
+--------------------------------------------------------------------------------
+
+setmetatable(M, {
+	__index = function(_, key)
+		return function()
+			local msg = ("There is no log command called `%s`.\n\n"):format(key)
+				.. "Make sure it exists in the list of log command, and that you haven't misspelled it."
+			require("chainsaw.utils").warn(msg)
+		end
+	end,
+})
 
 --------------------------------------------------------------------------------
 return M
