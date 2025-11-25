@@ -455,7 +455,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 
 <!-- LTeX: enabled=false -->
 <!-- markdownlint-disable table-column-style -->
-|                                                   | nvim-chainsaw                                                                                           | debugprint.nvim                                                            | timber.nvim                                                     |
+|                                                   | `nvim-chainsaw`                                                                                         | `debugprint.nvim`                                                          | `timber.nvim`                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console  | variables                                                                  | variables, objects, time                                        |
 | built-in language support                         | ~20                                                                                                     | ~35                                                                        | ~15                                                             |
