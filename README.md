@@ -371,14 +371,52 @@ require("chainsaw").setup {
 	},
 }
 
--- Optional snippet
--- 1. avoids `undefined-global` diagnostic from the lua-lsp 
+-- 1. avoids `undefined-global` diagnostic from the lua-lsp in your config
 -- 2. loads `nvim-chainsaw` when calling `Chainsaw` if it hasn't been loaded yet
 _G.Chainsaw = function(name)
 	require("chainsaw")
 	Chainsaw(name)
 end
 ```
+
+To disable the `lua_ls` diagnostic `undefined-global` for nvim-plugins, use one
+of the following methods:
+
+<details>
+<summary>Options to </summary>
+
+```lua
+-- Option 1: nvim-lspconfig
+vim.lsp.config.lua_ls {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "Chainsaw", "vim" },
+			},
+		},
+	},
+}
+```
+
+```jsonc
+// Option 2: .luarc.jsonc
+{
+	"diagnostics": {
+		"globals": ["Chainsaw"],
+	},
+}
+```
+
+```lua
+-- Option 3: lazydev.nvim
+opts = {
+	library = {
+		{ path = "nvim-chainsaw", words = { "Chainsaw" } },
+	},
+},
+```
+
+</details>
 
 ### Make the formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
