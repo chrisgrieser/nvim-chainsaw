@@ -75,7 +75,7 @@ function _G.Chainsaw(varValue)
 		local buffer = vim.iter(vim.fn.getbufinfo())
 			:find(function(buf) return buf.name == sourceAbspath end)
 		if buffer then
-			callerLine = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1] or ""
+			callerLine = vim.api.nvim_buf_get_lines(buffer.bufnr, lnum - 1, lnum, false)[1] or ""
 		else
 			local file, _ = io.open(sourceAbspath, "r")
 			callerLine = file and vim.split(file:read("*a"), "\n")[lnum] or ""
