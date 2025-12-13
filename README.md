@@ -41,7 +41,7 @@ Smart and highly customizable insertion of various kinds of log statements.
 - [Built-in support for ~20 languages](#built-in-language-support). Easy
   configuration for additional languages.
 - [Flexible templating options](#customize-log-statements-via-templates) for
-  customizing log statements, including support for multi-line templates.
+  customizing log statements, including support for multiline templates.
 - Special support and utilities for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
   clear the console.
@@ -251,7 +251,9 @@ require("chainsaw").setup {
 
 	-- Appearance of lines with the marker
 	visuals = {
-		icon = "󰹈", ---@type string|false as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+		-- as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+		icon = "󰹈", ---@type string|false
+
 		signHlgroup = "DiagnosticSignInfo", ---@type string|false
 		signPriority = 50,
 		lineHlgroup = false, ---@type string|false
@@ -325,7 +327,7 @@ There are various **placeholders** that are dynamically replaced:
 - `{{filename}}`: basename of the current file.
 - `{{lnum}}`: line number of the log statement.
 - `{{insert}}`: will enter insert mode at this location; by default used in
-  `assertLog` and `messageLog`. (For multi-line statements only works on the
+  `assertLog` and `messageLog`. (For multiline statements only works on the
   last line.)
 - `.emojiLog()` only: `{{emoji}}` inserts the emoji.
 - `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
@@ -344,7 +346,7 @@ require("chainsaw").setup ({
 ```
 
 > [!NOTE]
-> The strings may not include line breaks. If you want to use multi-line log
+> The strings may not include line breaks. If you want to use multiline log
 > statements, use a list of strings instead, each string representing one line.
 
 ### The global pretty-logging function `Chainsaw()`
@@ -465,7 +467,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | delete all log statements                         | ✅                                                                                                      | ✅                                                                         | ✅                                                              |
 | comment all log statements                        | ❌                                                                                                      | ✅                                                                         | ✅                                                              |
 | protection to accidentally commit log statements  | via auto-installed pre-commit hook (opt-in)                                                             | ❌                                                                         | ❌                                                              |
-| log statement customization                       | line numbers, filenames, time, multi-line statements                                                    | line numbers+filename (location), nearby line snippet, unique counter      | line numbers & insertation location                             |
+| log statement customization                       | line numbers, filenames, time, multiline statements                                                     | line numbers+filename (location), nearby line snippet, unique counter      | line numbers & insertation location                             |
 | insertation location                              | below, treesitter-based adjustments for some languages                                                  | below, above                                                               | below, above, surround, operator, treesitter-based adjustments  |
 | variable detection                                | word under cursor, visual selection, treesitter-based selection                                         | word under cursor, operator, visual selection, treesitter-based selection  | word under cursor, visual selection, treesitter-based selection |
 | dot-repeatability                                 | ✅                                                                                                      | ✅                                                                         | ✅                                                              |

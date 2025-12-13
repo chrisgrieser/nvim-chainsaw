@@ -10,7 +10,9 @@ local defaultConfig = {
 
 	-- Appearance of lines with the marker
 	visuals = {
-		icon = "󰹈", ---@type string|false as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+		-- as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+		icon = "󰹈", ---@type string|false
+
 		signHlgroup = "DiagnosticSignInfo", ---@type string|false
 		signPriority = 50,
 		lineHlgroup = false, ---@type string|false
