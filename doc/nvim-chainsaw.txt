@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2025 November 26
+*nvim-chainsaw.txt*          For Neovim          Last change: 2025 December 13
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -56,7 +56,7 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - |nvim-chainsaw-built-in-support-for-~20-languages|. Easy
     configuration for additional languages.
 - |nvim-chainsaw-flexible-templating-options| for
-    customizing log statements, including support for multi-line templates.
+    customizing log statements, including support for multiline templates.
 - Special support and utilities for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
     clear the console.
@@ -270,7 +270,9 @@ BASIC CONFIGURATION ~
     
         -- Appearance of lines with the marker
         visuals = {
-            icon = "󰹈", ---@type string|false as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+            -- as opposed to the marker only used in nvim, thus nerdfont glyphs are okay
+            icon = "󰹈", ---@type string|false
+    
             signHlgroup = "DiagnosticSignInfo", ---@type string|false
             signPriority = 50,
             lineHlgroup = false, ---@type string|false
@@ -343,7 +345,7 @@ variable as described further above. - `{{time}}`: timestamp formatted as
 `HH:MM:SS`. (For millisecond-precision, use `.timeLog()` instead) -
 `{{filename}}`: basename of the current file. - `{{lnum}}`: line number of the
 log statement. - `{{insert}}`: will enter insert mode at this location; by
-default used in `assertLog` and `messageLog`. (For multi-line statements only
+default used in `assertLog` and `messageLog`. (For multiline statements only
 works on the last line.) - `.emojiLog()` only: `{{emoji}}` inserts the emoji. -
 `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
 differentiate between variables when using `timeLog` multiple times).
@@ -361,7 +363,7 @@ differentiate between variables when using `timeLog` multiple times).
 <
 
 
-  [!NOTE] The strings may not include line breaks. If you want to use multi-line
+  [!NOTE] The strings may not include line breaks. If you want to use multiline
   log statements, use a list of strings instead, each string representing one
   line.
 
@@ -502,7 +504,7 @@ COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-sim
   log statements                                                   
 
   logstatement        line numbers, filenames,  line               line numbers &
-  customization       time, multi-line          numbers+filename   insertation
+  customization       time, multiline           numbers+filename   insertation
                       statements                (location), nearby location
                                                 line snippet,      
                                                 unique counter     
