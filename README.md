@@ -14,16 +14,16 @@ Smart and highly customizable insertion of various kinds of log statements.
 - [Installation](#installation)
 - [Built-in language support](#built-in-language-support)
 - [Usage](#usage)
-	* [List of commands](#list-of-commands)
-	* [Smart variable detection](#smart-variable-detection)
-	* [Smart insertion location](#smart-insertion-location)
-	* [List all log statements in the project](#list-all-log-statements-in-the-project)
+    - [List of commands](#list-of-commands)
+    - [Smart variable detection](#smart-variable-detection)
+    - [Smart insertion location](#smart-insertion-location)
+    - [List all log statements in the project](#list-all-log-statements-in-the-project)
 - [Configuration](#configuration)
-	* [Basic configuration](#basic-configuration)
-	* [Customize log statements via templates](#customize-log-statements-via-templates)
-	* [The global pretty-logging function `Chainsaw()`](#the-global-pretty-logging-function-chainsaw)
-	* [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
-	* [Status line](#status-line)
+    - [Basic configuration](#basic-configuration)
+    - [Customize log statements via templates](#customize-log-statements-via-templates)
+    - [The global pretty-logging function `Chainsaw()`](#the-global-pretty-logging-function-chainsaw)
+    - [Make the formatter ignore the log statements](#make-the-formatter-ignore-the-log-statements)
+    - [Status line](#status-line)
 - [Comparison with similar plugins](#comparison-with-similar-plugins)
 - [About the developer](#about-the-developer)
 
@@ -93,10 +93,10 @@ use {
 > used, see [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
 [^1]: `nvim_lua` uses log statements that inspect objects and is designed to
-	work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
-	`noice.nvim`.
+    work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
+    `noice.nvim`.
 [^2]: Uses statements such as `outline: 2px solid red !important;` that are the
-	 somewhat similar logging.
+     somewhat similar logging.
 [^3]: The `fmt` package needs to be imported manually.
 
 ## Usage
@@ -424,8 +424,8 @@ require("lazydev").setup {
 
 ### Make the formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
-into multiple lines, making them hard to read and breaking `.removeLogs()`, which
-relies on each line containing the marker emoji.
+into multiple lines, making them hard to read and breaking `.removeLogs()`,
+which relies on each line containing the marker emoji.
 
 The simplest method to deal with this is to customize the log statement in your
 configuration to include an ignore-comment: `/* prettier-ignore */`
@@ -459,6 +459,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 
 <!-- LTeX: enabled=false -->
 <!-- markdownlint-disable table-column-style -->
+
 |                                                   | `nvim-chainsaw`                                                                                         | `debugprint.nvim`                                                          | `timber.nvim`                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console  | variables                                                                  | variables, objects, time                                        |
@@ -475,6 +476,7 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                       | ❌                                                                         | ❌                                                              |
 | log file watcher                                  | ❌                                                                                                      | ❌                                                                         | ✅                                                              |
 | maintainability / efficiency                      | ~1100 LoC                                                                                               | ~1600 LoC                                                                  | ~4500 LoC (excluding tests)                                     |
+
 <!-- markdownlint-enable table-column-style -->
 <!-- LTeX: enabled=true -->
 
