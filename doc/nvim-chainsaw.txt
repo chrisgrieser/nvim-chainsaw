@@ -4,7 +4,7 @@
 Table of Contents                            *nvim-chainsaw-table-of-contents*
 
 1. nvim-chainsaw                                |nvim-chainsaw-nvim-chainsaw-|
-  - Table of Contents         |nvim-chainsaw-nvim-chainsaw--table-of-contents|
+  - Table of contents         |nvim-chainsaw-nvim-chainsaw--table-of-contents|
   - Features                           |nvim-chainsaw-nvim-chainsaw--features|
   - Installation                   |nvim-chainsaw-nvim-chainsaw--installation|
   - Built-in language support|nvim-chainsaw-nvim-chainsaw--built-in-language-support|
@@ -347,7 +347,7 @@ variable as described further above. - `{{time}}`: timestamp formatted as
 log statement. - `{{insert}}`: will enter insert mode at this location; by
 default used in `assertLog` and `messageLog`. (For multiline statements only
 works on the last line.) - `.emojiLog()` only: `{{emoji}}` inserts the emoji. -
-`.timeLog()` only: `{{index}}` inserts a running index. (Needed to
+`.timeLog()` only: `{{index}}` inserts a running index. (Required to
 differentiate between variables when using `timeLog` multiple times).
 
 >lua
