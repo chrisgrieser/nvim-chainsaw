@@ -6,7 +6,7 @@ Smart and highly customizable insertion of various kinds of log statements.
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
 
-## Table of Contents
+## Table of contents
 
 <!-- toc -->
 
@@ -53,7 +53,7 @@ Smart and highly customizable insertion of various kinds of log statements.
   statements created by `nvim-chainsaw` (opt-in).
 
 ## Installation
-**Requirements**
+**Requirements** <!-- rumdl-disable-line MD036 -->
 - nvim 0.10+
 - recommended: Treesitter parser for the languages you want to use with this
   plugin.
@@ -330,7 +330,7 @@ There are various **placeholders** that are dynamically replaced:
   `assertLog` and `messageLog`. (For multiline statements only works on the
   last line.)
 - `.emojiLog()` only: `{{emoji}}` inserts the emoji.
-- `.timeLog()` only: `{{index}}` inserts a running index. (Needed to
+- `.timeLog()` only: `{{index}}` inserts a running index. (Required to
   differentiate between variables when using `timeLog` multiple times).
 
 ```lua
@@ -377,6 +377,7 @@ require("chainsaw").setup {
 To disable the `lua_ls` diagnostic `undefined-global`, use one of the following
 methods:
 
+<!-- rumdl-disable MD033 -->
 <details>
 <summary>Options</summary>
 
@@ -421,6 +422,7 @@ require("lazydev").setup {
 ```
 
 </details>
+<!-- rumdl-enable MD033 -->
 
 ### Make the formatter ignore the log statements
 A common problem is that formatters like `prettier` split up the log statements
