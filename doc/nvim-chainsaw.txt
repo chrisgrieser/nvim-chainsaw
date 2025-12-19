@@ -18,7 +18,7 @@ Table of Contents                            *nvim-chainsaw-table-of-contents*
 
 
 
-Smartand highly customizable insertion of various kinds of log statements.
+Smart and highly customizable insertion of various kinds of log statements.
 
 
 <https://github.com/chrisgrieser/nvim-chainsaw/assets/73286100/fa55ae24-deba-4fed-84e9-554d9a695ad9>
