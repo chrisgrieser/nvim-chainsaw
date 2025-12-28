@@ -55,7 +55,7 @@ Smart and highly customizable insertion of various kinds of log statements.
 ## Installation
 **Requirements** <!-- rumdl-disable-line MD036 -->
 - nvim 0.10+
-- recommended: Treesitter parser for the languages you want to use with this
+- Recommended: Treesitter parser for the languages you want to use with this
   plugin.
 
 ```lua
@@ -459,9 +459,6 @@ require("chainsaw.visuals.statusline").countInBuffer()
 
 ## Comparison with similar plugins
 
-<!-- LTeX: enabled=false -->
-<!-- markdownlint-disable table-column-style -->
-
 |                                                   | `nvim-chainsaw`                                                                                        | `debugprint.nvim`                                                         | `timber.nvim`                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | log types                                         | variables, objects, asserts, types, sound, stacktraces, emoji, messages, debugger, time, clear-console | variables                                                                 | variables, objects, time                                        |
@@ -478,9 +475,6 @@ require("chainsaw.visuals.statusline").countInBuffer()
 | extra features for `nvim_lua`                     | separate configuration, availability of global debugging function                                      | ❌                                                                        | ❌                                                              |
 | log file watcher                                  | ❌                                                                                                     | ❌                                                                        | ✅                                                              |
 | maintainability / efficiency                      | ~1100 LoC                                                                                              | ~1600 LoC                                                                 | ~4500 LoC (excluding tests)                                     |
-
-<!-- markdownlint-enable table-column-style -->
-<!-- LTeX: enabled=true -->
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
