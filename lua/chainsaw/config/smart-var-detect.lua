@@ -6,10 +6,11 @@ local M = {}
 ---@type table<string, fun(node: TSNode): TSNode?>
 M.ftConfig = {
 	lua = function(node)
-		local cursorOnField = node:parent()
-			and node:parent():type() == "dot_index_expression"
+		if not node:parent() then return node end
+		local cursorOnField = node:parent():type() == "dot_index_expression"
 			and (node:prev_named_sibling() ~= nil)
-		if cursorOnField then node = node:parent() end
+		local cursorOnArrayNumber = node:parent():type() == "bracket_index_expression"
+		if cursorOnField or cursorOnArrayNumber then node = node:parent() end
 		return node
 	end,
 	python = function(node)
