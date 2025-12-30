@@ -1,4 +1,4 @@
-# nvim-chainsaw 🪚 <!-- rumdl-disable-line MD063 `nvim` lowercased -->
+# nvim-chainsaw 🪚 <!-- rumdl-disable-line MD063 -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-chainsaw/shield"/></a>
 
