@@ -10,7 +10,7 @@ M.ftConfig = {
 	lua = function(node)
 		-- return statement
 		local parent = node:parent()
-		while parent and parent:type() ~= "function_call" do
+		while parent and not parent:type():find("function") do
 			if parent:type() == "return_statement" then return -1 end
 			parent = parent:parent()
 		end
