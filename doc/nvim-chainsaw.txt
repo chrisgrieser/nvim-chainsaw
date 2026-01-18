@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2025 December 30
+*nvim-chainsaw.txt*           For Neovim          Last change: 2026 January 18
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -49,7 +49,7 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - Quick insertion of log statements for the variable under the cursor
     (normal mode) or the selection (visual mode).
 - |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
-    and the |nvim-chainsaw-correct-insertion-location-of-the-log-statement| via Treesitter.
+    and the |nvim-chainsaw-correct-insertion-location-of-the-statement| via Treesitter.
 - Commands for **a dozen different log statement types**, including assert
     statements, stack traces, or acoustic logging.
 - All commands are **dot-repeatable**.
@@ -57,15 +57,15 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
     configuration for additional languages.
 - |nvim-chainsaw-flexible-templating-options| for
     customizing log statements, including support for multiline templates.
-- Special support and utilities for `nvim-lua`.
+- Special support for `nvim-lua`.
 - Helper commands to remove all log statements created by `nvim-chainsaw` or to
     clear the console.
 - |nvim-chainsaw-status-line-component| to display the count of log statements
     in the current buffer. In addition, visual indication of log statements via
     line-highlights, signcolumn, or scrollbar (when using
     satellite.nvim <https://github.com/lewis6991/satellite.nvim>).
-- Auto-install a **pre-commit hook** that prevents committing files with the log
-    statements created by `nvim-chainsaw` (opt-in).
+- _Opt-in_: Auto-install a **pre-commit hook** that prevents committing files
+    with the log statements created by `nvim-chainsaw`.
 
 
 INSTALLATION                       *nvim-chainsaw-nvim-chainsaw--installation*
@@ -235,9 +235,9 @@ smart-insert-location.lua <./lua/chainsaw/config/smart-insert-location.lua>.
 
 LIST ALL LOG STATEMENTS IN THE PROJECT ~
 
-Since all log statements are marked with a specific string, you list easily use
-any picker plugin to list and navigate to log statements across your project.
-For example, when using snacks.nvim <https://github.com/folke/snacks.nvim> with
+Since all log statements are marked with a specific string, you simply use any
+picker plugin to list and navigate to log statements across your project. For
+example, when using snacks.nvim <https://github.com/folke/snacks.nvim> with
 `ripgrep`:
 
 >lua
@@ -477,65 +477,64 @@ current buffer, for use in your status line.
 
 COMPARISON WITH SIMILAR PLUGINS*nvim-chainsaw-nvim-chainsaw--comparison-with-similar-plugins*
 
-  -----------------------------------------------------------------------------------
-                      nvim-chainsaw             debugprint.nvim    timber.nvim
-  ------------------- ------------------------- ------------------ ------------------
-  log types           variables, objects,       variables          variables,
-                      asserts, types, sound,                       objects, time
-                      stacktraces, emoji,                          
-                      messages, debugger, time,                    
-                      clear-console                                
+  ----------------------------------------------------------------------------------
+                      nvim-chainsaw            debugprint.nvim    timber.nvim
+  ------------------- ------------------------ ------------------ ------------------
+  log types           variables, objects,      variables          variables,
+                      asserts, types, sound,                      objects, time
+                      stacktraces, emoji,                         
+                      messages, debugger,                         
+                      time, clear-console                         
 
-  built-in language   ~20                       ~35                ~15
-  support                                                          
+  built-in language   ~20                      ~35                ~15
+  support                                                         
 
-  inheritance of log                                               
-  statements from                                                  
-  superset langs                                                   
+  Inheritance of log                                              
+  statements from                                                 
+  superset langs                                                  
 
-  deleteall log                                                    
-  statements                                                       
+  deleteall log                                                   
+  statements                                                      
 
-  commentall log                                                   
-  statements                                                       
+  commentall log                                                  
+  statements                                                      
 
-  protectionto        via auto-installed                           
-  accidentally commit pre-commit hook (opt-in)                     
-  log statements                                                   
+  Protectionto        via auto-installed                          
+  accidentally commit pre-commit hook (opt-in)                    
+  log statements                                                  
 
-  logstatement        line numbers, filenames,  line               line numbers &
-  customization       time, multiline           numbers+filename   insertation
-                      statements                (location), nearby location
-                                                line snippet,      
-                                                unique counter     
+  logstatement        line numbers, filenames, line numbers,      line numbers &
+  customization       time, multiline          filename, nearby   insertion location
+                      statements               line snippet,      
+                                               unique counter     
 
-  insertation         below, treesitter-based   below, above       below, above,
-  location            adjustments for some                         surround,
-                      languages                                    operator,
-                                                                   treesitter-based
-                                                                   adjustments
+  insertion location  Below, treesitter-based  below, above       below, above,
+                      adjustments for some                        surround,
+                      languages                                   operator,
+                                                                  treesitter-based
+                                                                  adjustments
 
-  variable detection  word under cursor, visual word under cursor, word under cursor,
-                      selection,                operator, visual   visual selection,
-                      treesitter-based          selection,         treesitter-based
-                      selection                 treesitter-based   selection
-                                                selection          
+  variable detection  word under cursor,       word under cursor, word under cursor,
+                      visual selection,        operator, visual   visual selection,
+                      treesitter-based         selection,         treesitter-based
+                      selection                treesitter-based   selection
+                                               selection          
 
-  dot-repeatability                                                
+  dot-repeatability                                               
 
-  visualemphasis of   signcolumn,                                  flashon inserting
-  log statements      line-highlight, status                       statement
-                      line, scrollbar                              
+  visualemphasis of   signcolumn,                                 
+  log statements      line-highlight, status                      
+                      line, scrollbar                             
 
-  extra features for  separate configuration,                      
-  nvim_lua            availability of global                       
-                      debugging function                           
+  extrafeatures for   separate configuration,                     
+  nvim_lua            availability of global                      
+                      debugging function                          
 
-  logfile watcher                                                  
+  logfile watcher                                                 
 
-  maintainability/    ~1100 LoC                 ~1600 LoC          ~4500 LoC
-  efficiency                                                       (excluding tests)
-  -----------------------------------------------------------------------------------
+  maintainability/    ~1100 LOC                ~1600 LOC          ~4500 LOC
+  efficiency                                                      (excluding tests)
+  ----------------------------------------------------------------------------------
 
 ABOUT THE DEVELOPER         *nvim-chainsaw-nvim-chainsaw--about-the-developer*
 
