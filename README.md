@@ -210,9 +210,17 @@ local function foobar()
 end
 ```
 
+```py
+# python docstrings
+def foobar(b[a]z):
+    """docstring"""
+    # will insert log statement here, after the docstring
+```
+
 Filetypes currently supporting this feature:
 - Lua (and `nvim_lua`)
 - JavaScript (and supersets)
+- Python
 
 PRs adding support for more languages are welcome. See
 [smart-insert-location.lua](./lua/chainsaw/config/smart-insert-location.lua).

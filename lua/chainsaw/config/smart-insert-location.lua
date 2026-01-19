@@ -48,6 +48,32 @@ M.ftConfig = {
 			return paramExtraLines
 		end
 	end,
+	python = function(node)
+		local parent = node:parent()
+		while parent do
+			local type = parent:type()
+			if type == "function_definition" or type == "async_function_definition" then break end
+			parent = parent:parent()
+		end
+		if not parent then return end
+
+		local body = parent:field("body")[1]
+		if not body then return end
+
+		local firstChild = body:named_child(0)
+		if not firstChild then return end
+
+		-- check for docstrings
+		if firstChild:type() == "expression_statement" then
+			local expression = firstChild:child(0)
+			if expression and expression:type() == "string" then
+				local _, _, endRow, _ = firstChild:range()
+				local startRow, _, _, _ = node:range()
+				if startRow > endRow then return end
+				return endRow - startRow
+			end
+		end
+	end,
 }
 
 require("chainsaw.config.config").supersetInheritance(M.ftConfig)
