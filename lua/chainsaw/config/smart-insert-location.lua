@@ -11,9 +11,7 @@ M.ftConfig = {
 		-- return statement
 		local parent = node:parent()
 		while parent and not parent:type():find("function") do
-			if parent:type() == "return_statement" then
-				return -1
-			end
+			if parent:type() == "return_statement" then return -1 end
 			parent = parent:parent()
 		end
 
@@ -26,16 +24,12 @@ M.ftConfig = {
 	end,
 	javascript = function(node)
 		local parent = node:parent()
-		if not parent then
-			return
-		end
+		if not parent then return end
 
 		-- return statement
 		local inReturnStatement = parent:type() == "return_statement"
 			or (parent:parent() and parent:parent():type() == "return_statement")
-		if inReturnStatement then
-			return -1
-		end
+		if inReturnStatement then return -1 end
 
 		-- multiline assignment
 		local isAssignment = parent:type() == "variable_declarator"
@@ -58,24 +52,16 @@ M.ftConfig = {
 		local parent = node:parent()
 		while parent do
 			local type = parent:type()
-			if type == "function_definition" or type == "async_function_definition" then
-				break
-			end
+			if type == "function_definition" or type == "async_function_definition" then break end
 			parent = parent:parent()
 		end
-		if not parent then
-			return
-		end
+		if not parent then return end
 
 		local body = parent:field("body")[1]
-		if not body then
-			return
-		end
+		if not body then return end
 
 		local firstChild = body:named_child(0)
-		if not firstChild then
-			return
-		end
+		if not firstChild then return end
 
 		-- check for docstrings
 		if firstChild:type() == "expression_statement" then
@@ -83,9 +69,7 @@ M.ftConfig = {
 			if expression and expression:type() == "string" then
 				local _, _, endRow, _ = firstChild:range()
 				local startRow, _, _, _ = node:range()
-				if startRow > endRow then
-					return
-				end
+				if startRow > endRow then return end
 				return endRow - startRow
 			end
 		end
