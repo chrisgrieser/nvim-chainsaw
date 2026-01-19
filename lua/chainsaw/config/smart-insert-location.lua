@@ -52,9 +52,7 @@ M.ftConfig = {
 		local parent = node:parent()
 		while parent do
 			local type = parent:type()
-			if type == "function_definition" or type == "async_function_definition" then
-				break
-			end
+			if type == "function_definition" or type == "async_function_definition" then break end
 			parent = parent:parent()
 		end
 		if not parent then return end
@@ -65,6 +63,7 @@ M.ftConfig = {
 		local firstChild = body:named_child(0)
 		if not firstChild then return end
 
+		-- check for docstrings
 		if firstChild:type() == "expression_statement" then
 			local expression = firstChild:child(0)
 			if expression and expression:type() == "string" then
