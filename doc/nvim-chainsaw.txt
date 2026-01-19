@@ -1,4 +1,4 @@
-*nvim-chainsaw.txt*           For Neovim          Last change: 2026 January 18
+*nvim-chainsaw.txt*           For Neovim          Last change: 2026 January 19
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -226,8 +226,15 @@ requires the Treesitter parser of the respective language.)
     end
 <
 
+>py
+    # python docstrings
+    def foobar(b[a]z):
+        """docstring"""
+        # will insert log statement here, after the docstring
+<
+
 Filetypes currently supporting this feature: - Lua (and `nvim_lua`) -
-JavaScript (and supersets)
+JavaScript (and supersets) - Python
 
 PRs adding support for more languages are welcome. See
 smart-insert-location.lua <./lua/chainsaw/config/smart-insert-location.lua>.
