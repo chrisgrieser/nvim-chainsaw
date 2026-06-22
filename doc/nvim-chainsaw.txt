@@ -1,4 +1,5 @@
-*nvim-chainsaw.txt*          For Neovim          Last change: 2026 February 06
+*nvim-chainsaw.txt*
+                                       For Neovim    Last change: 2026 June 22
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
