@@ -50,7 +50,9 @@ FEATURES                               *nvim-chainsaw-nvim-chainsaw--features*
 - Quick insertion of log statements for the variable under the cursor
     (normal mode) or the selection (visual mode).
 - |nvim-chainsaw-smart-detection-of-the-variable-under-the-cursor|
-    and the |nvim-chainsaw-correct-insertion-location-of-the-statement| via Treesitter.
+    and the
+    |nvim-chainsaw-correct-insertion-location-of-the-statement| via
+    Treesitter.
 - Commands for **a dozen different log statement types**, including assert
     statements, stack traces, or acoustic logging.
 - All commands are **dot-repeatable**.
@@ -342,7 +344,7 @@ BASIC CONFIGURATION ~
 CUSTOMIZE LOG STATEMENTS VIA TEMPLATES ~
 
 New log statements can be added, and existing log statements can be modified
-under the config `logStatements`. See log-statements-data.lua
+under the configuration `logStatements`. See log-statements-data.lua
 <./lua/chainsaw/config/log-statements-data.lua> for the built-in log statements
 as reference. PRs adding log statements for more languages are welcome.
 
