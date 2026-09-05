@@ -1,5 +1,5 @@
 *nvim-chainsaw.txt*
-                                       For Neovim    Last change: 2026 June 22
+                                  For Neovim    Last change: 2026 September 05
 
 ==============================================================================
 Table of Contents                            *nvim-chainsaw-table-of-contents*
@@ -194,7 +194,7 @@ requires the Treesitter parser of the respective language.)
 <
 
 Filetypes currently supporting this feature: - Lua (and `nvim_lua`) - Python -
-JavaScript (and supersets)
+JavaScript (and supersets) - Go
 
 PRs adding support for more languages are welcome. See smart-var-detect.lua
 <./lua/chainsaw/config/smart-var-detect.lua>.
