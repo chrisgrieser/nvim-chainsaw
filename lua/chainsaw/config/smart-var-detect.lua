@@ -43,6 +43,19 @@ M.ftConfig = {
 		if onField then node = node:parent() end
 		return node
 	end,
+	go = function(node)
+		if not node:parent() then return node end
+
+		-- cursor on a struct field: myStruct.MyF[i]eld
+		local onField = node:type() == "field_identifier"
+		if onField then return node:parent() end
+
+		-- cursor on an index: mySlice[[0]]
+		local onIndex = node:parent():type() == "index_expression"
+		if onIndex then return node:parent() end
+
+		return node
+	end,
 }
 
 require("chainsaw.config.config").supersetInheritance(M.ftConfig)
