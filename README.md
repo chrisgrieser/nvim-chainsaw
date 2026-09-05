@@ -33,7 +33,9 @@ Smart and highly customizable insertion of various kinds of log statements.
 - Quick insertion of log statements for the variable under the cursor
   (normal mode) or the selection (visual mode).
 - [Smart detection of the variable under the cursor](#smart-variable-detection)
-  and the [correct insertion location of the statement](#smart-insertion-location) via Treesitter.
+  and the
+  [correct insertion location of the statement](#smart-insertion-location) via
+  Treesitter.
 - Commands for **a dozen different log statement types**, including assert
   statements, stack traces, or acoustic logging.
 - All commands are **dot-repeatable**.
@@ -89,7 +91,8 @@ use {
 
 > [!NOTE]
 > Not every language supports every type of log statement. For the statements
-> used, see [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
+> used, see
+> [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua).
 
 [^1]: `nvim_lua` uses log statements that inspect objects and is designed to
     work with various notification plugins like `nvim-notify`, `snacks.nvim`, or
@@ -228,9 +231,10 @@ PRs adding support for more languages are welcome. See
 [smart-insert-location.lua](./lua/chainsaw/config/smart-insert-location.lua).
 
 ### List all log statements in the project
-Since all log statements are marked with a specific string, you simply use
-any picker plugin to list and navigate to log statements across your project.
-For example, when using [snacks.nvim](https://github.com/folke/snacks.nvim) with `ripgrep`:
+Since all log statements are marked with a specific string, you simply use any
+picker plugin to list and navigate to log statements across your project. For
+example, when using [snacks.nvim](https://github.com/folke/snacks.nvim) with
+`ripgrep`:
 
 ```lua
 local marker = require("chainsaw.config.config").config.marker
@@ -321,7 +325,7 @@ require("chainsaw").setup {
 
 ### Customize log statements via templates
 New log statements can be added, and existing log statements can be modified
-under the config `logStatements`. See
+under the configuration `logStatements`. See
 [log-statements-data.lua](./lua/chainsaw/config/log-statements-data.lua) for
 the built-in log statements as reference. PRs adding log statements for more
 languages are welcome.
