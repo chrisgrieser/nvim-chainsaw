@@ -96,7 +96,8 @@ use {
     `noice.nvim`.
 [^2]: Uses statements such as `outline: 2px solid red !important;` that are the
     somewhat similar logging.
-[^3]: The `fmt` package needs to be imported manually.
+[^3]: Go packages (`fmt`, `log`, `time`, `runtime`, `runtime/debug`) need to
+    be imported manually, depending on the log type used.
 
 ## Usage
 
@@ -180,6 +181,7 @@ Filetypes currently supporting this feature:
 - Lua (and `nvim_lua`)
 - Python
 - JavaScript (and supersets)
+- Go
 
 PRs adding support for more languages are welcome. See
 [smart-var-detect.lua](./lua/chainsaw/config/smart-var-detect.lua).
