@@ -36,6 +36,7 @@ M.logStatements = {
 	},
 	assertLog = {
 		cpp = 'if (!({{var}})) throw std::runtime_error("{{marker}} {{var}} {{insert}}");',
+		go = 'if !{{var}} { log.Fatalln("{{marker}} {{var}} {{insert}}") }',
 		javascript = 'if (!{{var}}) throw new Error("{{marker}} {{var}} {{insert}}");', -- no native assert in JS
 		lua = 'assert({{var}}, "{{marker}} {{var}} {{insert}}")',
 		python = 'assert {{var}}, "{{marker}} {{var}} {{insert}}"',
@@ -81,7 +82,7 @@ M.logStatements = {
 	messageLog = {
 		applescript = 'log "{{marker}} {{insert}}"',
 		cpp = 'std::cout << "{{marker}} {{insert}}" << std::endl;',
-		go = 'fmt.Println("{{marker}} ")',
+		go = 'fmt.Println("{{marker}} {{insert}}")',
 		javascript = 'console.log("{{marker}} {{insert}}");',
 		lua = 'print("{{marker}} {{insert}}")',
 		nvim_lua = 'vim.notify("{{marker}} {{insert}}")',
@@ -93,6 +94,7 @@ M.logStatements = {
 	},
 	stacktraceLog = {
 		bash = "print '{{marker}} stacktrace: ' ; caller 0",
+		go = 'debug.PrintStack() // {{marker}} stacktrace (import "runtime/debug")',
 		javascript = 'console.log("{{marker}} stacktrace: ", new Error()?.stack?.replaceAll("\\n", " "));', -- not all JS engines support console.trace()
 		lua = 'print(debug.traceback("{{marker}}"))', -- `debug.traceback` already prepends "stacktrace"
 		nvim_lua = 'vim.notify(debug.traceback("{{marker}}"))',
@@ -101,6 +103,7 @@ M.logStatements = {
 		zsh = 'print "{{marker}} stacktrack: $funcfiletrace $funcstack"',
 	},
 	debugLog = {
+		go = "runtime.Breakpoint() // {{marker}} (import \"runtime\")",
 		javascript = "debugger; // {{marker}}",
 		python = "breakpoint()  # {{marker}}",
 		rust = "dbg!(&{{var}}); // {{marker}}",
@@ -110,6 +113,7 @@ M.logStatements = {
 		},
 	},
 	clearLog = {
+		go = 'fmt.Print("\\033[2J\\033[H") // {{marker}}',
 		javascript = "console.clear(); // {{marker}}",
 		python = "clear()  # {{marker}}",
 		sh = "clear # {{marker}}",
