@@ -114,7 +114,7 @@ All operations are dot-repeatable.
 -- log the name & value of the variable under the cursor
 require("chainsaw").variableLog()
 
--- like variableLog, but with syntax specific to inspect an object, for example
+-- like variableLog, but with syntax to inspect an object, for example
 -- `console.log(JSON.stringify(foobar))` in javascript
 require("chainsaw").objectLog()
 
@@ -160,7 +160,7 @@ require("chainsaw").removeLogs()
 
 These features can also be accessed with the user command `:Chainsaw`. Each
 option corresponds to the commands above. For example, `:Chainsaw
-variableLog` is same as `require("chainsaw").variableLog()`.
+variableLog` does the same as `require("chainsaw").variableLog()`.
 
 When using Lua functions, `variableLog`, `objectLog`, `typeLog`, and `assertLog`
 can also be used in **visual mode** to use the visual selection instead of the
